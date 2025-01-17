@@ -27,14 +27,6 @@ func (ctrl Controller) Home() gin.HandlerFunc {
 	}
 }
 
-func (ctrl Controller) Stage1Candidates() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "stage-1.html", gin.H{
-			"BaseURL": ctrl.AppBaseURL.String(),
-		})
-	}
-}
-
 func (ctrl Controller) FillForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		stage := c.Param("stage")
