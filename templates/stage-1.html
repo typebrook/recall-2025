@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一階段罷免連署</title>
+	<meta name="description" content="簡單四步驟罷免爛立委">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    h1 {
+      text-align: center;
+    }
+    button {
+      padding: 10px 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+			justify-content: center;
+      margin-bottom: 20px;
+    }
+    .button-container button {
+      flex: 0 1 calc(33.333% - 16px);
+      box-sizing: border-box;
+			max-width: 200px;
+			min-width: 160px;
+			margin: auto;
+    }
+		@media (min-width: 768px) {
+			.button-container button {
+				flex: 0 1 calc(33.333% - 16px);
+			}
+		}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>第一階段罷免連署</h1>
+    <div class="button-container">
+      <a href="{{.BaseURL}}/stage-1/taipei-6"><button>羅智強</button></a>
+      <a href="{{.BaseURL}}/stage-1/taipei-7"><button>徐巧芯</button></a>
+    </div>
+  </div>
+</body>
+</html>
