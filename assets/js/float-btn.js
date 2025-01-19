@@ -1,4 +1,4 @@
-async function downloadPDF(className) {
+async function downloadPDF(className, filename, redirectURL) {
 	const { jsPDF } = window.jspdf;
 	const container = document.querySelector('.'+className);
 	const canvas = await html2canvas(container, { scale: 2 });
@@ -12,9 +12,9 @@ async function downloadPDF(className) {
 	const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
 	pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-	pdf.save('document.pdf');
+	pdf.save(filename+'.pdf');
 
-	window.location.href = 'https://recall2025.ourtaiwan.tw/thank-you';
+	window.location.href = redirectURL;
 }
 
 async function copyLink() {

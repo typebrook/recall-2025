@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The only One, Our Taiwan.</title>
+	<meta name="description" content="守護台灣自己來！">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.35">
+</head>
+<body>
+  <div class="container">
+		<h1>感謝您站出來守護臺灣</h1>
+    <div class="section notification">
+			<h2>檢查您下載的連署書</h2>
+				<ol>
+					<li>請檢查「<b>姓名</b>」「<b>國民身分證統一編號</b>」「<b>出身年月日</b>」與「<b>戶籍地址</b>」皆與您身分證上所謄寫的文字<b>完全相同</b></li>
+					<li>請僅在下載表單上的「<b>簽名或蓋章</b>」與「<b>同意人</b>」兩欄位上簽名或蓋章，<b>其餘空白欄位切勿填寫</b></li>
+					{{if .RecallFormURL}}
+					<li>若需重新填寫下載，請點擊 <a href="{{.RecallFormURL}}">{{.Topic}}</a></li>
+					{{end}}
+				</ol>
+    </div>
+
+    <div class="section sponsor">
+      <h2>請支持我們</h2>
+      <div style="padding-left:32px;line-height:32px;">
+				本網站由設計師、律師、工程師等，利用自己的閒暇時間無償提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>
+				若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
+				<div class="bank-account">
+					台北富邦 <b>(012) 728168204519</b><br>
+					捐款時請備註：<b>ourtaiwan</b>
+				</div>
+      </div>
+    </div>
+
+    <div class="section post-action">
+			<a href="{{.BaseURL}}/"><button>回到首頁</button></a>
+		</div>
+  </div>
+</body>
+</html>

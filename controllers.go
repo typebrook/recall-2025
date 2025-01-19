@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
 
 type Controller struct {
@@ -43,44 +44,50 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 		}
 
 		c.HTML(http.StatusOK, "fill-form.html", gin.H{
-			"Topic":         topic,
-			"Zone":          zone,
-			"Stage":         stage,
-			"BaseURL":       ctrl.AppBaseURL.String(),
-			"AddressPrefix": addressPrefix,
+			"Topic":            topic,
+			"Zone":             zone,
+			"Stage":            stage,
+			"BaseURL":          ctrl.AppBaseURL.String(),
+			"AddressPrefix":    addressPrefix,
+			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
 		})
 	}
 }
 
 func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		returnURL := ctrl.AppBaseURL.JoinPath("stage-1")
-
 		stage := c.Param("stage")
 		if stage != "stage-1" && stage != "stage-2" {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", returnURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL))
 			return
 		}
 
 		zone := c.Param("zone")
 		topic, _ := ctrl.GetZoneTopic(zone)
 		if topic == "" {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", returnURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL))
 			return
 		}
 
 		qp := RequestQueryPreview{}
-		if err := c.ShouldBindQuery(&qp); err != nil {
-			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", returnURL))
+		if err := c.ShouldBindWith(&qp, binding.Form); err != nil {
+			fmt.Println(err)
+			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL))
 			return
 		}
 
-		data, err := qp.ToPreviewData(ctrl.Config, topic)
+		redirectURL := ctrl.AppBaseURL.JoinPath("thank-you")
+		query := redirectURL.Query()
+		query.Add("stage", stage)
+		query.Add("zone", zone)
+		redirectURL.RawQuery = query.Encode()
+
+		data, err := qp.ToPreviewData(ctrl.Config, topic, redirectURL.String())
 		if err != nil {
 			c.HTML(http.StatusBadRequest, "4xx.html", ViewHttp4xxError{
 				HttpStatusCode: http.StatusBadRequest,
 				ErrorMessage:   err.Error(),
-				ReturnURL:      returnURL.String(),
+				ReturnURL:      ctrl.AppBaseURL.String(),
 			})
 			return
 		}
@@ -98,7 +105,7 @@ type RequestQueryPreview struct {
 	MobileNumber string `form:"mobile-number" binidng:"omitempty"`
 }
 
-func (r RequestQueryPreview) ToPreviewData(cfg *Config, topic string) (*PreviewData, error) {
+func (r RequestQueryPreview) ToPreviewData(cfg *Config, topic, redirectURL string) (*PreviewData, error) {
 	if !isValidIdNumber(r.IdNumber) {
 		return nil, fmt.Errorf("身份證輸入錯誤")
 	}
@@ -126,6 +133,7 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, topic string) (*PreviewD
 		BirthDate:    birthDate,
 		Address:      sanitizeAddress(r.Address),
 		MobileNumber: r.MobileNumber,
+		RedirectURL:  redirectURL,
 	}
 
 	for i := 0; i < len(r.IdNumber); i += 1 {
@@ -177,6 +185,7 @@ type PreviewData struct {
 		D9 string
 	}
 	MobileNumber string
+	RedirectURL  string
 }
 
 func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
@@ -195,6 +204,52 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 
 		tmpfile := "preview-" + stage + "-" + zone + ".html"
 		c.HTML(http.StatusOK, tmpfile, gin.H{"BaseURL": ctrl.AppBaseURL.String()})
+	}
+}
+
+func (ctrl Controller) VerifyTurnstile() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.PostForm("cf-turnstile-response")
+		if token == "" {
+			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL))
+			c.Abort()
+			return
+		}
+
+		if success, err := ctrl.VerifyTurnstileToken(token); err != nil || !success {
+			c.HTML(http.StatusForbidden, "4xx.html", GetViewHttpError(http.StatusForbidden, "驗證失敗，請回到首頁重新輸入", ctrl.AppBaseURL))
+			c.Abort()
+			return
+		}
+
+		c.Next()
+	}
+}
+
+func (ctrl Controller) ThankYou() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		recallFormURL := ctrl.AppBaseURL
+		stage := c.Query("stage")
+		if stage == "stage-1" || stage == "stage-2" {
+			recallFormURL = recallFormURL.JoinPath(stage)
+		} else {
+			recallFormURL = nil
+		}
+
+		topic := ""
+		zone := c.Query("zone")
+		if ctrl.HasZone(zone) {
+			recallFormURL = recallFormURL.JoinPath(zone)
+			topic, _ = ctrl.GetZoneTopic(zone)
+		} else {
+			recallFormURL = nil
+		}
+
+		c.HTML(http.StatusOK, "thank-you.html", gin.H{
+			"BaseURL":       ctrl.AppBaseURL.String(),
+			"RecallFormURL": recallFormURL,
+			"Topic":         topic,
+		})
 	}
 }
 

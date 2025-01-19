@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<meta name="description" content="簡單四步驟罷免爛立委">
+	<meta name="description" content="守護臺灣自己來！">
 	<style>
 		.note {
 			display: flex;
@@ -44,10 +44,11 @@
 			text-align: center;
 		}
 	</style>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.3">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.4">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/floating-btn.css?v0.0.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/float-btn.js?v0.0.3"></script>
+  <script src="{{.BaseURL}}/assets/js/float-btn.js?v0.0.6"></script>
 </head>
 <body>
   <div class="a4-portrait">
@@ -128,9 +129,7 @@
   </div>
 
 	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="downloadPDF('a4-landscape')">下載 PDF</button>
-		<button class="floating-btn" onclick="copyLink()">複製網址</button>
+		<button class="floating-btn" onclick="downloadPDF('a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">下載 PDF</button>
 	</div>
-	<div id="popout" class="hidden">網址已成功複製！</div>
 </body>
 </html>
