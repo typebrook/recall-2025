@@ -35,3 +35,27 @@ async function copyLink() {
 			console.error('無法複製網址：', err);
 		});
 }
+
+async function copyInnerText(containerSelector) {
+	const container = document.querySelector(containerSelector);
+
+	if (!container) {
+		console.error(`未找到容器: ${containerSelector}`);
+		return;
+	}
+
+	navigator.clipboard.writeText(container.innerText)
+		.then(() => {
+			const popout = document.getElementById('popout');
+			popout.classList.remove('hidden');
+			popout.classList.add('visible');
+
+			setTimeout(() => {
+				popout.classList.remove('visible');
+				popout.classList.add('hidden');
+			}, 2000);
+		})
+		.catch(err => {
+			console.error('無法複製文字', err);
+		});
+}

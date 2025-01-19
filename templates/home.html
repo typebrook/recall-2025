@@ -1,79 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The only One, Our Taiwan.</title>
-	<meta name="description" content="守護臺灣自己來！">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.28">
+  <title>The only one, our Taiwan</title>
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.36">
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.1"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="banner">
-      <img src="{{.BaseURL}}/assets/images/sample-banner.webp" alt="Banner Image">
-    </div>
-		<h1>反對藍白強推惡法, 我們需要你！</h1>
-    <div class="section recall">
-			<h2>想罷免誰</h2>
-  		<ul class="collapsible-list">
-  		  <li>
-  		    <div class="collapsible-header">臺北市<span class="arrow"></span></div>
-  		    <div class="collapsible-content">
-        		<ul class="candidate-list">
-        		  <li>
-        		    <div class="candidate-name">羅智強 - 第六選區 (大安)</div>
-        		    <div class="candidate-action">
-        		      <a href="{{.BaseURL}}/stage-1/taipei-6"><button>罷免 GO</button></a>
-        		    </div>
-        		  </li>
-        		  <li>
-        		    <div class="candidate-name">徐巧芯 - 第七選區 (信義、南松山)</div>
-        		    <div class="candidate-action">
-        		      <a href="{{.BaseURL}}/stage-1/taipei-7"><button>罷免 GO</button></a>
-        		    </div>
-        		  </li>
-        		</ul>
-  		    </div>
-  		  </li>
-  		</ul>
-    </div>
-
-    <div class="section policy">
-      <h2>服務政策與聲明</h2>
-				<ol>
-					<li>本網站由 <b>Our Taiwan</b> (以下簡稱本團隊) 所設計、開發與建置。</li>
-					<li>本網站不蒐集任何個資，<a href="https://github.com/imtaiwanese18741130/recall-2025" target="_blank">公開服務原始碼</a>。</li>
-					<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的複製、修改、分發或商業用途。所有權利受法律保護，違者必究。</li>
-					<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤，<b>本團隊未參與公民團體之作業。</b></li>
-					<li>本網站輸出之連署書，乃按照各選區之公民團體發佈的連署書範本進行套製。</li>
-					<li>如有任何建議或問題，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
-					<li>特別感謝：K (設計師)、S (DevOps)、F (律師)、L (律師)</li>
-				</ol>
-    </div>
-
-    <div class="section sponsor">
-      <h2>請支持我們</h2>
-      <div style="padding-left:32px;line-height:32px;">
-				本網站由設計師、律師、工程師等，利用自己的閒暇時間無償提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>
-				若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
-				<div class="bank-account">
-					台北富邦 <b>(012) 728168204519</b><br>
+  <div class="section banner">
+    <h1 class="primary">反對藍白強推惡法, 我們需要你！</h1>
+    <div class="content-text">放寬中配入籍條件，你也覺得不合理嗎？<br>
+你知道藍白還強推了更多危害台灣民生與體制、有利中國侵台的法案嗎? 身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！</div>
+  </div>
+  <div class="section candidates">
+    <h2>確認『戶籍地址所屬選區』找出你能罷免的立委</h2>
+    <ul>
+      <li>
+				<div class="candidate">
+        	<div class="candidate-name">羅智強</div>
+        	<div class="candidate-zone">臺北市第六選區 (大安)</div>
+				</div>
+        <div class="candidate-action">
+          <a href="#"><button>連署罷免</button></a>
+        </div>
+      </li>
+      <li>
+				<div class="candidate">
+        	<div class="candidate-name">徐巧芯</div>
+        	<div class="candidate-zone">臺北市第七選區 (信義、南松山)</div>
+				</div>
+        <div class="candidate-action">
+          <a href="#"><button>連署罷免</button></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="section faq">
+    <h2>常見問題</h2>
+		<ul>
+			<li class="faq-item">
+				<div class="header">
+					<div class="question">製作並下載連署書後，接下來怎麼做？</div><div class="arrow collapsed">▶</div>
+				</div>
+				<div class="answer">
+					<ol>
+						<li>請檢查「<b>姓名</b>」「<b>國民身分證統一編號</b>」「<b>出身年月日</b>」與「<b>戶籍地址</b>」皆與您身分證上所謄寫的文字<b>完全相同</b></li>
+						<li>請僅在下載表單上的「<b>簽名或蓋章</b>」與「<b>同意人</b>」兩欄位上簽名或蓋章，<b>其餘空白欄位切勿填寫</b></li>
+						<li>按照您的選區之公民團體提供的方法將連署書繳回，您所下載的連署書上大多有描述繳回辦法。</li>
+					</ol>
+				</div>
+			</li>
+			<li class="faq-item">
+				<div class="header">
+					<div class="question">我想支持網站製作團隊，可以怎麼做？</div><div class="arrow collapsed">▶</div>
+				</div>
+				<div class="answer">
+					<ol>
+						<li>請先詳閱 <a href="#footer">服務政策與聲明</a></li>
+						<li>隨喜捐款：<b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><span class="copy-icon"></span></a></li>
+						<li>捐款時請備註：<b>ourtaiwan</b></li>
+					</ol>
+				</div>
+			</li>
+		</ul>
+  </div>
+  <div class="section footer" id="footer">
+    <h2>服務政策與聲明</h2>
+		<ol>
+			<li>本網站由 <b>Our Taiwan</b> (以下簡稱本團隊) 所設計、開發與建置。</li>
+			<li>本網站不蒐集任何個資，<a href="https://github.com/imtaiwanese18741130/recall-2025" target="_blank">公開服務原始碼</a>。</li>
+			<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的複製、修改、分發或商業用途。所有權利受法律保護，違者必究。</li>
+			<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤，<b>本團隊未參與公民團體之作業。</b></li>
+			<li>本網站輸出之連署書，乃按照各選區之公民團體發佈的連署書範本進行套製。時程因素，尚未將所有選區連署書範本套製完畢，本團隊將盡快逐步完成。</li>
+			<li>目前僅供第一階段罷免連署，本網站也會用相同方式協助各選區第二階段連署書範本套製。</li>
+			<li>如有任何建議或問題，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
+			<li>特別感謝：K (設計師)、S (DevOps)、F (律師)、L (律師)</li>
+		</ol>
+		<div class="sponsor-our-work">本網站由設計師、律師、工程師等，利用自己的閒暇時間無償提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
+				<div class="sponsor-info">
+					<div class="bank-account"><b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><span class="copy-icon"></span></a><br></div>
 					捐款時請備註：<b>ourtaiwan</b>
 				</div>
       </div>
-    </div>
+		</div>
   </div>
+	<div id="popout" class="hidden">帳戶已複製到剪貼簿</div>
 	<script>
-		document.querySelectorAll('.collapsible-header').forEach(header => {
-			header.addEventListener('click', () => {
-				header.classList.toggle('active');
-				const content = header.nextElementSibling;
-
-				if (header.classList.contains('active')) {
-					content.style.maxHeight = content.scrollHeight + "px";
-				} else {
-					content.style.maxHeight = 0;
-				}
+		document.querySelectorAll('.faq-item .header').forEach(header => {
+			header.addEventListener('click', event => {
+				const item = header.parentElement;
+				const isExpanded = item.classList.contains('expanded');
+				document.querySelectorAll('.faq-item.expanded').forEach(openItem => {
+					if (openItem !== item) {
+						openItem.classList.remove('expanded');
+						const arrow = openItem.querySelector('.arrow');
+						arrow.classList.remove('collapsed');
+					}
+				});
+				item.classList.toggle('expanded', !isExpanded);
+				const arrow = header.querySelector('.arrow');
+				arrow.classList.toggle('collapsed', !isExpanded);
 			});
 		});
 	</script>
