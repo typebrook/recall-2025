@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<meta name="description" content="守護臺灣自己來！">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.30">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
 	<style>
 		.note {
 			display: flex;
@@ -34,23 +37,22 @@
 			margin: 0 auto;
 			box-sizing: border-box;
 		}
-		.footer {
+		.consenter {
 			padding: 16px 0;
 		}
-		.footer-underline-blank{
+		.consenter-underline-blank{
 			display: inline-block;
 			border-bottom: 1px solid black;
 			width: 250px;
 			text-align: center;
 		}
 	</style>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.4">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/floating-btn.css?v0.0.0">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/float-btn.js?v0.0.6"></script>
 </head>
 <body>
+	<div class="floating-btn-container">
+		<button class="floating-btn" onclick="downloadPDF('a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+		<a href="{{.BaseURL}}/stage-1/taipei-6"><button class="floating-btn">返回重填</button></a>
+	</div>
   <div class="a4-portrait">
 		<h1 style="font-size: 16px">臺北市第 6 選舉區大安區第 11 屆立法委員羅智強罷免案</h1>
   	<table>
@@ -121,15 +123,11 @@
 				<div class="note-right content">平信郵寄：<br><br>106 臺北仁愛路<br>郵局第 158 號信箱</div>
 			</div>
 		</div>
-		<div class="footer">
-			同意人 <span class="footer-underline-blank">&nbsp;</span>&nbsp;&nbsp;&nbsp;
-			行動電話 <span class="footer-underline-blank">{{if .MobileNumber}}{{.MobileNumber}}{{else}}&nbsp;{{end}}</span><br>
+		<div class="consenter">
+			同意人 <span class="consenter-underline-blank">&nbsp;</span>&nbsp;&nbsp;&nbsp;
+			行動電話 <span class="consenter-underline-blank">{{if .MobileNumber}}{{.MobileNumber}}{{else}}&nbsp;{{end}}</span><br>
 			<div style="text-align:right; padding:0 180px 0 0"><input type="checkbox" name="sms-notification" value="sms-notification" {{if .MobileNumber}}checked{{end}}>簡訊確認提議書已收訖</div>
 		</div>
   </div>
-
-	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="downloadPDF('a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">下載 PDF</button>
-	</div>
 </body>
 </html>

@@ -3,69 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{.Topic}}</title>
+  <title>阻止立委濫權妄為, 我們需要你！</title>
 	<meta name="description" content="{{.Topic}}">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.35">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/floating-btn.css?v0.0.0">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/fill-form.css?v0.0.0">
-  <script src="{{.BaseURL}}/assets/js/float-btn.js?v0.0.6"></script>
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.102">
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
-  <div class="container">
-		<h1>{{.Topic}}</h1>
-		<div class="section fill-form">
-			{{if eq .Stage "stage-1"}}
-    	<h2 style="text-align:center;">第一階段罷免連署</h2>
-			{{else if eq .Stage "stage-2"}}
-    	<h2 style="text-align:center;">第二階段罷免連署</h2>
-			{{end}}
-			<form action="{{.BaseURL}}/{{.Stage}}/{{.Zone}}/preview" method="post" onsubmit="combineBirthDate()">
-    	  <div class="form-group">
-    	    <label for="name">姓名：</label>
-    	    <input type="text" id="name" name="name" required>
-    	  </div>
-    	  <div class="form-group">
-    	    <label for="id-number">身分證字號：</label>
-    	    <input type="text" id="id-number" name="id-number" required pattern="^[A-Z][1-2]\d{8}$" title="請輸入您的身分證字號">
-    	  </div>
-    	  <div class="form-group birth-date">
-    	    <label>出生日期：</label>
-    	    <input type="number" id="birth-year" placeholder="年 (民國)" min="1" max="94" required>
-    	    <input type="number" id="birth-month" placeholder="月" min="1" max="12" required>
-    	    <input type="number" id="birth-day" placeholder="日" min="1" max="31" required>
-    	    <input type="hidden" id="birth-date" name="birth-date">
-    	  </div>
-    	  <div class="form-group">
-    	    <label for="address">戶籍地址：</label>
-    	    <input type="text" id="address" name="address" value="{{.AddressPrefix}}" required>
-    	  </div>
-    	  <div class="form-group">
-    	    <label for="mobile-number">手機號碼：</label>
-    	    <input type="tel" id="mobile-number" name="mobile-number" required pattern="^09\d{8}$">
-    	  </div>
-				<div class="cf-turnstile" data-sitekey="{{.TurnstileSiteKey}}"></div>
-    	  <button type="submit" class="submit-button">製作連署書</button>
-    	</form>
-		</div>
-
-    <div class="section post-action">
-			<a href="{{.BaseURL}}/"><button>回到首頁</button></a>
+  <div class="banner">
+		<div class="section">
+			<a class="goback" href="{{.BaseURL}}">
+				<div class="goback-icon"></div>&nbsp;<div style="color:#ffffff;">回首頁</div>
+			</a>
+    	<h1 style="font-size:32px;color:#ffffff;">我是{{.ZoneName}}選民<br>我要罷免<span class="primary">『{{.CandidateName}}』</span></h1>
+    	<div class="content-text">{{.ZoneName}} ({{.Districts}})</div>
 		</div>
   </div>
-  <script>
-    function combineBirthDate() {
-      const year = document.getElementById('birth-year').value;
-      const month = document.getElementById('birth-month').value;
-      const day = document.getElementById('birth-day').value;
-      const westernYear = parseInt(year) + 1911;
-      const birthDate = `${westernYear}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      document.getElementById('birth-date').value = birthDate;
-    }
-  </script>
-	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="copyLink()">複製網址</button>
+	<div class="section fill-form">
+		<h2>請拿出國民身分證填寫以下資訊</h2>
+		<form action="{{.BaseURL}}/{{.Stage}}/{{.ZoneCode}}/preview" id="recall-form" method="post" onsubmit="combineBirthDate()">
+  	  <div class="form-group">
+  	    <label for="name">姓名</label>
+				<div class="input-group">
+  	    	<input type="text" id="name" name="name" required>
+				</div>
+  	  </div>
+  	  <div class="form-group">
+  	    <label for="id-number">身分證字號</label>
+				<div class="input-group">
+  	    	<input type="text" id="id-number" name="id-number" pattern="^[A-Z][1-2]\d{8}$" required>
+  	  	</div>
+  	  </div>
+  	  <div class="form-group birth-date">
+  	    <label>出生年 / 月 / 日</label>
+				<div class="input-group">
+					<input type="date" name="birth-date" max="{{.MaxBirthDate}}" required>
+				</div>
+				<div class="form-comment">系統將自動轉換西元出生年月日至民國</div>
+  	  </div>
+  	  <div class="form-group">
+  	    <label for="address">戶籍地址</label>
+				<div class="input-group">
+  	    	<input type="text" id="address" name="address" value="{{.AddressPrefix}}" required>
+  	  	</div>
+				<div class="form-comment">
+					請完全按照您國民身分證上<b>住址</b>欄位，<b>完全對照填寫</b>。特別留意以下情況：
+					<ul>
+						<li>
+							<div class="cw-sample-container"><div class="cw-icon correct"></div><div style="width:60px;">臺北</div><div class="cw-icon wrong"></div>台北<div>
+						</li>
+						<li>
+							<div class="cw-sample-container"><div class="cw-icon correct"></div><div style="width:60px;">二段</div><div class="cw-icon wrong"></div>2 段<div>
+						</li>
+						<li>
+							<div class="cw-sample-container"><div class="cw-icon correct"></div><div style="width:60px;">十二樓</div><div class="cw-icon wrong"></div>12 樓<div>
+						</li>
+					</ul>
+				</div>
+  	  </div>
+  	  <div class="form-group">
+  	    <label for="mobile-number">手機號碼</label>
+				<div class="input-group">
+  	    	<input type="tel" id="mobile-number" name="mobile-number" required pattern="^09\d{8}$">
+  	  	</div>
+				<div class="form-comment">僅用於輸出在連署書上，若公民團體檢查發現填寫資料有誤、或時至第二階段連署時方便與您聯繫。<b>本網站不保留您的手機號碼</b>。若您的選區連署書上無手機號碼欄位，則不會輸出。</div>
+  	  </div>
+			<div class="form-group">
+  	    <label for="turnstile">人機驗證</label>
+				<div class="input-group">
+					<div class="cf-turnstile" data-sitekey="{{.TurnstileSiteKey}}" data-theme="light"></div>
+				</div>
+			</div>
+  	  <div class="form-group">
+				<div class="input-group">
+  	  		<button type="submit" class="submit-btn" style="margin-bottom:-16px;">製作連署書</button>
+  	  	</div>
+  	  </div>
+  	</form>
+		<div class="form-group">
+			<div class="input-group">
+				<button style="background-color:#e5e5e5; margin-bottom:64px;" onclick="copyCurrentLink()">複製連結分享給親友</button>
+			</div>
+		</div>
 	</div>
-	<div id="popout" class="hidden">網址已成功複製！</div>
+
+	<div id="popout" class="hidden">已複製到剪貼簿</div>
+	<script>
+    const form = document.getElementById("recall-form");
+    const idInput = document.getElementById("id-number");
+		idInput.addEventListener("input", () => {
+			idInput.setCustomValidity("");
+		});
+
+		form.addEventListener("submit", (event) => {
+      const idValue = idInput.value;
+      if (!isValidIdNumber(idValue)) {
+        idInput.setCustomValidity("請輸入合法的身分證字號");
+        idInput.reportValidity();
+        event.preventDefault();
+      }
+    });
+	</script>
+	
 </body>
 </html>

@@ -16,11 +16,8 @@ async function downloadPDF(className, filename, redirectURL) {
 
 	window.location.href = redirectURL;
 }
-
-async function copyLink() {
-	const currentUrl = window.location.href;
-
-	navigator.clipboard.writeText(currentUrl)
+async function copyLink(url) {
+	navigator.clipboard.writeText(url)
 		.then(() => {
 			const popout = document.getElementById('popout');
 			popout.classList.remove('hidden');
@@ -35,7 +32,10 @@ async function copyLink() {
 			console.error('無法複製網址：', err);
 		});
 }
-
+async function copyCurrentLink() {
+	const currentUrl = window.location.href;
+	copyLink(currentUrl)
+}
 async function copyInnerText(containerSelector) {
 	const container = document.querySelector(containerSelector);
 
@@ -58,4 +58,52 @@ async function copyInnerText(containerSelector) {
 		.catch(err => {
 			console.error('無法複製文字', err);
 		});
+}
+function isValidIdNumber(idNumber) {
+	if (idNumber.length !== 10) {
+		return false;
+	}
+
+	const letterMap = {
+		A: 10, B: 11, C: 12, D: 13, E: 14,
+		F: 15, G: 16, H: 17, J: 18, K: 19,
+		L: 20, M: 21, N: 22, P: 23, Q: 24,
+		R: 25, S: 26, T: 27, U: 28, V: 29,
+		X: 30, Y: 31, W: 32, Z: 33, I: 34,
+		O: 35,
+	};
+
+	const firstLetter = idNumber[0];
+	if (!letterMap[firstLetter]) {
+		return false;
+	}
+
+	const firstDigit = letterMap[firstLetter];
+	const digits = [
+		Math.floor(firstDigit / 10),
+		firstDigit % 10,
+	];
+
+	for (let i = 1; i < 10; i++) {
+		const num = parseInt(idNumber[i], 10);
+		if (isNaN(num)) {
+			return false;
+		}
+		digits.push(num);
+	}
+
+	const checksum =
+		digits[0] +
+		digits[1] * 9 +
+		digits[2] * 8 +
+		digits[3] * 7 +
+		digits[4] * 6 +
+		digits[5] * 5 +
+		digits[6] * 4 +
+		digits[7] * 3 +
+		digits[8] * 2 +
+		digits[9] +
+		digits[10];
+
+	return checksum % 10 === 0;
 }

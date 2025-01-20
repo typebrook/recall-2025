@@ -3,45 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The only one, our Taiwan</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.36">
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.1"></script>
+  <title>阻止立委濫權妄為, 我們需要你！</title>
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.102">
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
 </head>
 <body>
-  <div class="section banner">
-    <h1 class="primary">反對藍白強推惡法, 我們需要你！</h1>
-    <div class="content-text">放寬中配入籍條件，你也覺得不合理嗎？<br>
-你知道藍白還強推了更多危害台灣民生與體制、有利中國侵台的法案嗎? 身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！</div>
+  <div class="banner">
+		<div class="section">
+    	<h1 class="primary">阻止立委濫權妄為, 我們需要你！</h1>
+    	<div class="content-text">放寬中配入籍條件，你也覺得不合理嗎？<br>你知道立法院過去兩會期強推了多少危害台灣民生與體制、有利中國侵台的法案嗎? 身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！</div>
+		</div>
   </div>
   <div class="section candidates">
     <h2>確認『戶籍地址所屬選區』找出你能罷免的立委</h2>
-    <ul>
-      <li>
-				<div class="candidate">
-        	<div class="candidate-name">羅智強</div>
-        	<div class="candidate-zone">臺北市第六選區 (大安)</div>
+		<ul>
+		{{range $city, $zones := .RecallList }}
+			<li class="city-row">
+				<div class="city-header">
+					<div class="city-name">{{$city}}</div><div class="arrow">▶</div>
 				</div>
-        <div class="candidate-action">
-          <a href="#"><button>連署罷免</button></a>
-        </div>
-      </li>
-      <li>
-				<div class="candidate">
-        	<div class="candidate-name">徐巧芯</div>
-        	<div class="candidate-zone">臺北市第七選區 (信義、南松山)</div>
+				<div class="city-content">
+					<ul>
+						{{range $z := $zones}}
+      			<li>
+							<div class="candidate">
+      			  	<div class="candidate-name">{{$z.CandidateName}}</div>
+      			  	<div class="candidate-zone">{{$z.ZoneName}} ({{$z.Districts}})</div>
+							</div>
+      			  <div class="candidate-action">
+      			    <a href="{{$.BaseURL}}/stage-1/{{$z.ZoneCode}}"><button>連署罷免</button></a>
+      			  </div>
+      			</li>
+						{{end}}
+					</ul>
 				</div>
-        <div class="candidate-action">
-          <a href="#"><button>連署罷免</button></a>
-        </div>
-      </li>
-    </ul>
+			</li>
+		{{end}}
+		<ul>
   </div>
   <div class="section faq">
     <h2>常見問題</h2>
 		<ul>
-			<li class="faq-item">
-				<div class="header">
-					<div class="question">製作並下載連署書後，接下來怎麼做？</div><div class="arrow collapsed">▶</div>
+			<li class="faq-row">
+				<div class="faq-header">
+					<div class="question">製作並下載連署書後，接下來怎麼做？</div><div class="arrow">▶</div>
 				</div>
 				<div class="answer">
 					<ol>
@@ -51,14 +56,14 @@
 					</ol>
 				</div>
 			</li>
-			<li class="faq-item">
-				<div class="header">
-					<div class="question">我想支持網站製作團隊，可以怎麼做？</div><div class="arrow collapsed">▶</div>
+			<li class="faq-row">
+				<div class="faq-header">
+					<div class="question">我想支持網站製作團隊，可以怎麼做？</div><div class="arrow">▶</div>
 				</div>
 				<div class="answer">
 					<ol>
 						<li>請先詳閱 <a href="#footer">服務政策與聲明</a></li>
-						<li>隨喜捐款：<b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><span class="copy-icon"></span></a></li>
+						<li>隨喜捐款：<b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><div class="copy-icon"></div></a></li>
 						<li>捐款時請備註：<b>ourtaiwan</b></li>
 					</ol>
 				</div>
@@ -79,19 +84,19 @@
 		</ol>
 		<div class="sponsor-our-work">本網站由設計師、律師、工程師等，利用自己的閒暇時間無償提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
 				<div class="sponsor-info">
-					<div class="bank-account"><b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><span class="copy-icon"></span></a><br></div>
+					<div class="bank-account"><b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><div class="copy-icon"></div></a><br></div>
 					捐款時請備註：<b>ourtaiwan</b>
 				</div>
       </div>
 		</div>
   </div>
-	<div id="popout" class="hidden">帳戶已複製到剪貼簿</div>
+	<div id="popout" class="hidden">已複製到剪貼簿</div>
 	<script>
-		document.querySelectorAll('.faq-item .header').forEach(header => {
+		document.querySelectorAll('.faq-row .faq-header').forEach(header => {
 			header.addEventListener('click', event => {
 				const item = header.parentElement;
 				const isExpanded = item.classList.contains('expanded');
-				document.querySelectorAll('.faq-item.expanded').forEach(openItem => {
+				document.querySelectorAll('.faq-row.expanded').forEach(openItem => {
 					if (openItem !== item) {
 						openItem.classList.remove('expanded');
 						const arrow = openItem.querySelector('.arrow');
@@ -103,6 +108,23 @@
 				arrow.classList.toggle('collapsed', !isExpanded);
 			});
 		});
+
+  	document.querySelectorAll('.city-row .city-header').forEach(header => {
+  	  header.addEventListener('click', () => {
+  	    const item = header.parentElement;
+  	    const isExpanded = item.classList.contains('expanded');
+  	    document.querySelectorAll('.city-row.expanded').forEach(openItem => {
+  	      if (openItem !== item) {
+  	        openItem.classList.remove('expanded');
+  	        const arrow = openItem.querySelector('.arrow');
+  	        arrow.classList.remove('collapsed');
+  	      }
+  	    });
+  	    item.classList.toggle('expanded', !isExpanded);
+  	    const arrow = header.querySelector('.arrow');
+  	    arrow.classList.toggle('collapsed', !isExpanded);
+  	  });
+  	});
 	</script>
 </body>
 </html>

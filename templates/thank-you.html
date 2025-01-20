@@ -1,41 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The only One, Our Taiwan.</title>
-	<meta name="description" content="守護台灣自己來！">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.35">
+  <title>阻止立委濫權妄為, 我們需要你！</title>
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.102">
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
 </head>
+<style>
+</style>
 <body>
-  <div class="container">
-		<h1>感謝您站出來守護臺灣</h1>
-    <div class="section notification">
-			<h2>檢查您下載的連署書</h2>
-				<ol>
-					<li>請檢查「<b>姓名</b>」「<b>國民身分證統一編號</b>」「<b>出身年月日</b>」與「<b>戶籍地址</b>」皆與您身分證上所謄寫的文字<b>完全相同</b></li>
-					<li>請僅在下載表單上的「<b>簽名或蓋章</b>」與「<b>同意人</b>」兩欄位上簽名或蓋章，<b>其餘空白欄位切勿填寫</b></li>
-					{{if .RecallFormURL}}
-					<li>若需重新填寫下載，請點擊 <a href="{{.RecallFormURL}}">{{.Topic}}</a></li>
-					{{end}}
-				</ol>
-    </div>
+  <div class="banner">
+		<div class="section">
+			<a class="goback" href="{{.BaseURL}}">
+				<div class="goback-icon"></div>&nbsp;<div style="color:#ffffff;">回首頁</div>
+			</a>
+    	<h1 class="primary">感謝您的連署</h1>
+    	<div class="content-text">多了您這份連署很重要，再幾個步驟就完成了！</div>
+		</div>
+  </div>
 
-    <div class="section sponsor">
-      <h2>請支持我們</h2>
-      <div style="padding-left:32px;line-height:32px;">
-				本網站由設計師、律師、工程師等，利用自己的閒暇時間無償提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>
-				若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
-				<div class="bank-account">
-					台北富邦 <b>(012) 728168204519</b><br>
+  <div class="section notification">
+		<h2>檢查您下載的連署書</h2>
+		<ol>
+			<li>請確認「<b>姓名</b>」「<b>國民身分證統一編號</b>」「<b>出身年月日</b>」與「<b>住址</b>」皆與您身分證上所謄寫的文字<b>完全相同</b>。請特別留意：國字和數字不得替換，也不可寫簡體字。</li>
+			<li>請僅在下載表單上的「<b>簽名或蓋章</b>」與「<b>同意人</b>」兩欄位上簽名或蓋章，<b>其餘空白欄位切勿填寫</b></li>
+			<li>如遇到連署書輸出格式跑版，請先改使用 Chrome 瀏覽器重新操作一次。也歡迎您來信 <a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a> 讓我們知道您使用的裝置與瀏覽器，我們會盡快處理。</li>
+			<li>檢查無誤後，按照連署書上或您所屬選區的公民團體公告的方式，將連署書繳回。</li>
+			<li>如需重新填寫下載，請點擊 <a href="{{.RecallFormURL}}">{{.Topic}}</a></li>
+		</ol>
+  </div>
+
+  <div class="section share">
+			<button onclick="copyLink('{{.BaseURL}}')">複製連結分享給親友</button>
+	</div>
+
+  <div class="section footer" id="footer">
+    <h2>服務政策與聲明</h2>
+		<ol>
+			<li>本網站由 <b>Our Taiwan</b> (以下簡稱本團隊) 所設計、開發與建置。</li>
+			<li>本網站不蒐集任何個資，<a href="https://github.com/imtaiwanese18741130/recall-2025" target="_blank">公開服務原始碼</a>。</li>
+			<li>本網站之設計與程式碼，為本團隊所有，僅供查看，禁止未經授權的複製、修改、分發或商業用途。所有權利受法律保護，違者必究。</li>
+			<li>本網站目的僅協助用戶罷免連署便利、減少填寫錯誤，<b>本團隊未參與公民團體之作業。</b></li>
+			<li>本網站輸出之連署書，乃按照各選區之公民團體發佈的連署書範本進行套製。時程因素，尚未將所有選區連署書範本套製完畢，本團隊將盡快逐步完成。</li>
+			<li>目前僅供第一階段罷免連署，本網站也會用相同方式協助各選區第二階段連署書範本套製。</li>
+			<li>如有任何建議或問題，歡迎來信：<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a></li>
+			<li>特別感謝：K (設計師)、S (DevOps)、F (律師)、L (律師)</li>
+		</ol>
+		<div class="sponsor-our-work">本網站由設計師、律師、工程師等，利用自己的閒暇時間無償提供專業服務，才得以順利建置。伺服器常態租賃費用與維運，也皆由 Our Taiwan 成員自行負擔。我們需要您的支持與幫助，協助我們繼續把服務做下去、協助我們做得更好。<br><br>若您願意支持本專案的開發、維護及營運成本，可使用以下方式支持我們：<br>
+				<div class="sponsor-info">
+					<div class="bank-account"><b>台北富邦&nbsp;(012)&nbsp;</b><a class="hyperlink-style" onclick="copyInnerText('#bank-account')"><b id="bank-account">728168204519</b><div class="copy-icon"></div></a><br></div>
 					捐款時請備註：<b>ourtaiwan</b>
 				</div>
       </div>
-    </div>
-
-    <div class="section post-action">
-			<a href="{{.BaseURL}}/"><button>回到首頁</button></a>
 		</div>
   </div>
+	<div id="popout" class="hidden">已複製到剪貼簿</div>
+	<script>
+	</script>
 </body>
 </html>

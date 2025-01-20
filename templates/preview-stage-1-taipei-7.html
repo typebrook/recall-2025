@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<meta name="description" content="守護臺灣自己來！">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.30">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
 	<style>
 		.header {
 			display: flex;
@@ -34,13 +37,12 @@
 			font-weight: bold;
 		}
 	</style>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.4">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/floating-btn.css?v0.0.0">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/float-btn.js?v0.0.6"></script>
 </head>
 <body>
+	<div class="floating-btn-container">
+		<button class="floating-btn" onclick="downloadPDF('a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+		<a href="{{.BaseURL}}/stage-1/taipei-7"><button class="floating-btn">返回重填</button></a>
+	</div>
   <div class="a4-landscape">
 		<div class="header">
 			<div class="contact-info">
@@ -104,8 +106,5 @@
 		<div class="declaration" style="padding:10px;text-align:center;font-size:22px;">提議人之領銜人                                                   (簽名或蓋章)<br><br>中華民國            年            月            日造</div>
   </div>
 
-	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="downloadPDF('a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">下載 PDF</button>
-	</div>
 </body>
 </html>

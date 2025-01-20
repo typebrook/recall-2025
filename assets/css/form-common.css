@@ -4,9 +4,9 @@ body {
 	background-color: #f0f0f0;
 	display: flex;
 	justify-content: center;
-	align-items: flex-start;
-	min-height: 100vh;
+	align-items: center;
 	box-sizing: border-box;
+	font-family: Arial, sans-serif;
 }
 .a4-portrait {
 	position: relative;
@@ -16,6 +16,7 @@ body {
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	padding: 64px 32px;
 	box-sizing: border-box;
+	margin-bottom: 64px;
 }
 .a4-landscape {
 	position: relative;
@@ -26,6 +27,7 @@ body {
 	padding: 16px 16px;
 	box-sizing: border-box;
 	margin: 0 auto;
+	margin-bottom: 64px;
 }
 @media (max-width: 1024px) {
   .a4-landscape {
@@ -67,4 +69,30 @@ th, td {
 .idnumber {
 	height: 30px;
 	width: 16px;
+}
+.floating-btn-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  gap: 64px;
+  z-index: 1000;
+	margin-bottom: 32px;
+}
+.floating-btn {
+  background-color: #00ff9c;
+  color: #2d2d2d;
+  border: none;
+  border-radius: 100px;
+  width: 250px;
+  padding: 20px;
+  font-size: 34px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.floating-btn:hover {
+	background-color: #00cc7a;
 }

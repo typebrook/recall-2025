@@ -23,7 +23,8 @@ func NewController(cfg *Config) *Controller {
 func (ctrl Controller) Home() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home.html", gin.H{
-			"BaseURL": ctrl.AppBaseURL.String(),
+			"BaseURL":    ctrl.AppBaseURL.String(),
+			"RecallList": ctrl.ToRecallListViewData(),
 		})
 	}
 }
@@ -32,24 +33,30 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		stage := c.Param("stage")
 		if stage != "stage-1" && stage != "stage-2" {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
 		zone := c.Param("zone")
-		topic, addressPrefix := ctrl.GetZoneTopic(zone)
-		if topic == "" {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL))
+		z := ctrl.GetZone(zone)
+		if z == nil {
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
+		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
+
 		c.HTML(http.StatusOK, "fill-form.html", gin.H{
-			"Topic":            topic,
-			"Zone":             zone,
+			"Topic":            z.GetTopic(),
+			"ZoneCode":         z.ZoneCode,
+			"ZoneName":         z.ZoneName,
+			"Districts":        z.Districts,
+			"CandidateName":    z.CandidateName,
 			"Stage":            stage,
 			"BaseURL":          ctrl.AppBaseURL.String(),
-			"AddressPrefix":    addressPrefix,
+			"AddressPrefix":    z.AddressPrefix,
 			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
+			"MaxBirthDate":     twentyYearsAgo,
 		})
 	}
 }
@@ -58,21 +65,21 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		stage := c.Param("stage")
 		if stage != "stage-1" && stage != "stage-2" {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
 		zone := c.Param("zone")
-		topic, _ := ctrl.GetZoneTopic(zone)
-		if topic == "" {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL))
+		z := ctrl.GetZone(zone)
+		if z == nil {
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
 		qp := RequestQueryPreview{}
 		if err := c.ShouldBindWith(&qp, binding.Form); err != nil {
 			fmt.Println(err)
-			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL))
+			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
@@ -82,7 +89,7 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 		query.Add("zone", zone)
 		redirectURL.RawQuery = query.Encode()
 
-		data, err := qp.ToPreviewData(ctrl.Config, topic, redirectURL.String())
+		data, err := qp.ToPreviewData(ctrl.Config, z.GetTopic(), redirectURL.String())
 		if err != nil {
 			c.HTML(http.StatusBadRequest, "4xx.html", ViewHttp4xxError{
 				HttpStatusCode: http.StatusBadRequest,
@@ -192,18 +199,29 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		stage := c.Param("stage")
 		if stage != "stage-1" && stage != "stage-2" {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
 		zone := c.Param("zone")
-		if !ctrl.HasZone(zone) {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL))
+		z := ctrl.GetZone(zone)
+		if z == nil {
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
+		redirectURL := ctrl.AppBaseURL.JoinPath("thank-you")
+		query := redirectURL.Query()
+		query.Add("stage", stage)
+		query.Add("zone", zone)
+		redirectURL.RawQuery = query.Encode()
+
 		tmpfile := "preview-" + stage + "-" + zone + ".html"
-		c.HTML(http.StatusOK, tmpfile, gin.H{"BaseURL": ctrl.AppBaseURL.String()})
+		c.HTML(http.StatusOK, tmpfile, gin.H{
+			"BaseURL":     ctrl.AppBaseURL.String(),
+			"Topic":       z.GetTopic() + "(空白)",
+			"RedirectURL": redirectURL.String(),
+		})
 	}
 }
 
@@ -211,13 +229,13 @@ func (ctrl Controller) VerifyTurnstile() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.PostForm("cf-turnstile-response")
 		if token == "" {
-			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL))
+			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			c.Abort()
 			return
 		}
 
 		if success, err := ctrl.VerifyTurnstileToken(token); err != nil || !success {
-			c.HTML(http.StatusForbidden, "4xx.html", GetViewHttpError(http.StatusForbidden, "驗證失敗，請回到首頁重新輸入", ctrl.AppBaseURL))
+			c.HTML(http.StatusForbidden, "4xx.html", GetViewHttpError(http.StatusForbidden, "驗證失敗，請回到首頁重新輸入", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			c.Abort()
 			return
 		}
@@ -238,9 +256,10 @@ func (ctrl Controller) ThankYou() gin.HandlerFunc {
 
 		topic := ""
 		zone := c.Query("zone")
-		if ctrl.HasZone(zone) {
+		z := ctrl.GetZone(zone)
+		if z != nil {
 			recallFormURL = recallFormURL.JoinPath(zone)
-			topic, _ = ctrl.GetZoneTopic(zone)
+			topic = z.GetTopic()
 		} else {
 			recallFormURL = nil
 		}
@@ -279,7 +298,7 @@ type RequestURIAsset struct {
 
 func (ctrl Controller) NotFound() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL))
+		c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 	}
 }
 
