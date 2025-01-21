@@ -3,24 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>阻止立委濫權妄為, 我們需要你！</title>
+  <title>阻止失能暴衝的立院, 守護台灣，我們需要你！</title>
 	<meta name="description" content="{{.Topic}}">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.107">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.110">
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
+<style>
+</style>
 <body>
   <div class="banner">
 		<div class="section">
 			<a class="goback" href="{{.BaseURL}}">
 				<div class="goback-icon"></div>&nbsp;<div style="color:#ffffff;">回首頁</div>
 			</a>
-    	<h1 style="font-size:32px;color:#ffffff;">我是{{.ZoneName}}選民<br>我要罷免<span class="primary">『{{.CandidateName}}』</span></h1>
+    	<h1 style="font-size:32px; color:#ffffff;">我是{{.ZoneName}}選民<br>我要罷免<span class="primary">『{{.CandidateName}}』</span></h1>
     	<div class="content-text">{{.ZoneName}} ({{.Districts}})<br></div>
 		</div>
   </div>
+	<div class="section browser-note-container">
+		<div class="browser-note">提醒您！若您用 LINE 或 Messenger 等通訊軟體開啟本網站，請點擊通訊軟體瀏覽器於右上或右下角的功能按鈕，以外部瀏覽器開啟。</div>
+	</div>
 	<div class="section fill-form">
-		<div class="section content-text" style="text-align:center; line-height:1.8;">提醒您！若您用的是 LINE 或 Messenger 等通訊軟體開啟本網站，<br>請<a class="hyperlink-style">複製連結<div class="copy-icon"></div></a>後用 Chrome, Safari 或 Firefox 重新開啟</div>
 		<h2>請拿出國民身分證填寫以下資訊</h2>
 		<form action="{{.BaseURL}}/{{.Stage}}/{{.ZoneCode}}/preview" id="recall-form" method="post" onsubmit="combineBirthDate()">
   	  <div class="form-group">

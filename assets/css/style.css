@@ -34,7 +34,7 @@ h2 {
 }
 .banner h1 {
 	width: 100%;
-	font-size: 40px;
+	font-size: 38px;
 }
 .banner .content-text {
 	width: 100%;
@@ -359,4 +359,15 @@ h2 {
 	cursor: pointer;
   display: block;
   margin: 0 auto 32px auto;
+}
+.browser-note-container {
+	display: flex;
+	justify-content: center;
+	margin: 16px auto 0 auto;
+}
+.browser-note {
+	width: 75%;
+	text-align: center;
+	line-height: 1.8;
+	color: #888888;
 }
