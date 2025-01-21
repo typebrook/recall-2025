@@ -234,17 +234,6 @@ h2 {
   color: #888888;
   text-align: left;
 }
-.fill-form button {
-	width: 100%;
-	border: none;
-	border-radius: 100px;
-	font-size: 16px;
-	color: #2d2d2d;
-	padding: 16px;
-	text-align: center;
-	background-color: #00ff9c;
-	cursor: pointer;
-}
 #popout {
 	position: fixed;
 	bottom: 20px;
@@ -331,11 +320,16 @@ h2 {
 .notification li {
 	padding: 12px 0 16px 8px;
 }
+.post-action-container {
+  display: flex;
+  justify-content: center;
+}
 .post-action {
+	width: 75%;
 	padding: 16px;
 }
-.post-action .share {
-  width: 75%;
+.wide-btn-primary {
+  width: 100%;
 	border: none;
 	border-radius: 100px;
 	font-size: 16px;
@@ -347,8 +341,12 @@ h2 {
   display: block;
   margin: 0 auto 16px auto;
 }
-.post-action .sponsor {
-  width: 75%;
+.wide-btn-primary:hover {
+	background-color: #00cc7a;
+	opacity: 0.9;
+}
+.wide-btn-secondary {
+  width: 100%;
 	border: none;
 	border-radius: 100px;
 	font-size: 16px;
@@ -358,7 +356,11 @@ h2 {
 	background-color: #e5e5e5;
 	cursor: pointer;
   display: block;
-  margin: 0 auto 32px auto;
+  margin: 0 auto 16px auto;
+}
+.wide-btn-secondary:hover {
+	background-color: #cccccc;
+	opacity: 0.9;
 }
 .browser-note-container {
 	display: flex;
