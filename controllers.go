@@ -172,27 +172,29 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, topic, redirectURL strin
 }
 
 type PreviewData struct {
-	BaseURL    string
-	Topic      string
-	Name       string
-	BirthYear  int
-	BirthMonth int
-	BirthDate  int
-	Address    string
-	IdNumber   struct {
-		D0 string
-		D1 string
-		D2 string
-		D3 string
-		D4 string
-		D5 string
-		D6 string
-		D7 string
-		D8 string
-		D9 string
-	}
+	BaseURL      string
+	Topic        string
+	Name         string
+	BirthYear    int
+	BirthMonth   int
+	BirthDate    int
+	Address      string
+	IdNumber     IdNumber
 	MobileNumber string
 	RedirectURL  string
+}
+
+type IdNumber struct {
+	D0 string
+	D1 string
+	D2 string
+	D3 string
+	D4 string
+	D5 string
+	D6 string
+	D7 string
+	D8 string
+	D9 string
 }
 
 func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
@@ -218,9 +220,16 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 
 		tmpfile := "preview-" + stage + "-" + zone + ".html"
 		c.HTML(http.StatusOK, tmpfile, gin.H{
-			"BaseURL":     ctrl.AppBaseURL.String(),
-			"Topic":       z.GetTopic() + "(空白)",
-			"RedirectURL": redirectURL.String(),
+			"BaseURL":      ctrl.AppBaseURL.String(),
+			"Topic":        z.GetTopic(),
+			"RedirectURL":  redirectURL.String(),
+			"Name":         "邱吉爾",
+			"BirthYear":    63,
+			"BirthMonth":   11,
+			"BirthDate":    30,
+			"Address":      "某某市某某區某某里某某路三段 123 號七樓",
+			"IdNumber":     IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
+			"MobileNumber": "0987654321",
 		})
 	}
 }

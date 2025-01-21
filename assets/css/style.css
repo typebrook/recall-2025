@@ -331,10 +331,10 @@ h2 {
 .notification li {
 	padding: 12px 0 16px 8px;
 }
-.share {
+.post-action {
 	padding: 16px;
 }
-.share button {
+.post-action .share {
   width: 75%;
 	border: none;
 	border-radius: 100px;
@@ -343,6 +343,19 @@ h2 {
 	padding: 16px;
 	text-align: center;
 	background-color: #00ff9c;
+	cursor: pointer;
+  display: block;
+  margin: 0 auto 16px auto;
+}
+.post-action .sponsor {
+  width: 75%;
+	border: none;
+	border-radius: 100px;
+	font-size: 16px;
+	color: #2d2d2d;
+	padding: 16px;
+	text-align: center;
+	background-color: #e5e5e5;
 	cursor: pointer;
   display: block;
   margin: 0 auto 32px auto;

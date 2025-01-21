@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.30">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.34">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
 	<style>
 		.note {
 			display: flex;
@@ -50,26 +50,26 @@
 </head>
 <body>
 	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="downloadPDF('a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+		<button class="floating-btn" onclick="downloadPDF('.a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
 		<a href="{{.BaseURL}}/stage-1/taipei-6"><button class="floating-btn">返回重填</button></a>
 	</div>
   <div class="a4-portrait">
 		<h1 style="font-size: 16px">臺北市第 6 選舉區大安區第 11 屆立法委員羅智強罷免案</h1>
   	<table>
   	  <tr>
-  	    <th colspan="15" style="height: 32px;">臺北市第 6 選舉區第 11 屆立法委員羅智強罷免案提議人名冊</th>
+  	    <th colspan="15" style="height:32px;">臺北市第 6 選舉區第 11 屆立法委員羅智強罷免案提議人名冊</th>
   	  </tr>
   	  <tr>
-  	    <th rowspan="2">編號</th>
-  	    <th colspan="10">姓名</th>
-  	    <th rowspan="2" style="width: 50px;">出生<br>年月日</th>
-  	    <th>戶籍地址</th>
-  	    <th rowspan="2" style="width: 40px;">簽名<br>或<br>蓋章</th>
-  	    <th rowspan="2">備註</th>
+  	    <th rowspan="2" style="width:5%;">編號</th>
+  	    <th colspan="10" style="width:35%;">姓名</th>
+  	    <th rowspan="2" style="width:5%;">出生<br>年月日</th>
+  	    <th style="width:45%;">戶籍地址</th>
+  	    <th rowspan="2" style="width:10%;">簽名<br>或<br>蓋章</th>
+  	    <th rowspan="2" style="width:5%;">備註</th>
   	  </tr>
 			<tr>
   	    <th colspan="10">國民身分證<br>統一編號</th>
-  	    <th style="padding: 8px 12px 8px 8px; text-align: right">市 (縣)         區 (鄉、鎮、市)<br>里 (村)         鄰<br>路 (街)           段         巷<br>弄         號         樓之    </th>
+  	    <th style="padding: 8px 12px 8px 8px; text-align: right">市 (縣)             區 (鄉、鎮、市)<br>里 (村)           鄰<br>路 (街)           段         巷<br>弄         號         樓之    </th>
 			</tr>
   	  <tr>
   	    <td rowspan="2"></td>

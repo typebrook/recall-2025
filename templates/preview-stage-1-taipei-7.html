@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.30">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.34">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
 	<style>
 		.header {
 			display: flex;
@@ -40,7 +40,7 @@
 </head>
 <body>
 	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="downloadPDF('a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+		<button class="floating-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
 		<a href="{{.BaseURL}}/stage-1/taipei-7"><button class="floating-btn">返回重填</button></a>
 	</div>
   <div class="a4-landscape">
@@ -70,16 +70,16 @@
   		    <th colspan="15" style="height:40px; font-size:24px;">臺北市第七選區信義、南松山第 11 屆立法委員 徐巧芯 罷免案提議人名冊</th>
   		  </tr>
   		  <tr>
-  		    <th rowspan="2">編號</th>
-  		    <th colspan="10">姓名</th>
-  		    <th rowspan="2" style="width:50px;">出生<br>年月日</th>
-  		    <th>戶籍地址</th>
-  		    <th rowspan="2" style="padding:0 10px;">簽名或蓋章</th>
-  		    <th rowspan="2">備註</th>
+  		    <th rowspan="2" style="width:6%;">編號</th>
+  		    <th colspan="10" style="width:29%; height:35px;">姓名</th>
+  		    <th rowspan="2" style="width:7%;">出生<br>年月日</th>
+  		    <th style="width:39%;">戶籍地址</th>
+  		    <th rowspan="2" style="width:13%;">簽名或蓋章</th>
+  		    <th rowspan="2" style="width:6%;">備註</th>
   		  </tr>
 				<tr>
-  		    <th colspan="10">國民身分證統一編號</th>
-  		    <th style="padding:8px 15px 8px 8px; text-align:right;">市 (縣)            區 (鄉、鎮、市)            里 (村)            鄰<br>路 (街)                  段            巷<br>弄            號           樓之    </th>
+  		    <th colspan="10" style="height:35px;">國民身分證統一編號</th>
+  		    <th style="padding:0 15px 0 8px; text-align:right;">臺北市            區            里            鄰<br>路(街、道)                  段            巷<br>弄            號           樓之    </th>
 				</tr>
   		  <tr>
   		    <td rowspan="2"></td>

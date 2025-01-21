@@ -1,8 +1,9 @@
 body {
 	margin: 0;
-	padding: 64px 0;
+	padding: 32px 0;
 	background-color: #f0f0f0;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	box-sizing: border-box;
@@ -16,7 +17,7 @@ body {
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	padding: 64px 32px;
 	box-sizing: border-box;
-	margin-bottom: 64px;
+	margin-bottom: 32px;
 }
 .a4-landscape {
 	position: relative;
@@ -27,26 +28,7 @@ body {
 	padding: 16px 16px;
 	box-sizing: border-box;
 	margin: 0 auto;
-	margin-bottom: 64px;
-}
-@media (max-width: 1024px) {
-  .a4-landscape {
-    width: 100%;
-    height: auto;
-  }
-}
-@media (max-width: 768px) {
-  .a4-landscape {
-    width: 100%;
-    height: auto;
-  }
-}
-@media (max-width: 480px) {
-  .a4-landscape {
-    width: 100%;
-    height: auto;
-    padding: 8px;
-  }
+	margin-bottom: 32px;
 }
 table {
 	width: 100%;

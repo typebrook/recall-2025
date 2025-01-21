@@ -1,19 +1,31 @@
-async function downloadPDF(className, filename, redirectURL) {
+async function downloadPDF(containerSelector, filename, redirectURL) {
 	const { jsPDF } = window.jspdf;
-	const container = document.querySelector('.'+className);
-	const canvas = await html2canvas(container, { scale: 2 });
-	const imgData = canvas.toDataURL('image/png');
+	const containers = document.querySelectorAll(containerSelector);
 
-	const isLandscape = className === 'a4-landscape';
+	if (containers.length === 0) {
+		console.error('No elements found with the given class name.');
+		return;
+	}
+
+	const isLandscape = containerSelector === '.a4-landscape';
 	const orientation = isLandscape ? 'l' : 'p';
 
 	const pdf = new jsPDF(orientation, 'mm', 'a4');
 	const pdfWidth = pdf.internal.pageSize.getWidth();
-	const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-	pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-	pdf.save(filename+'.pdf');
+	for (const [index, container] of containers.entries()) {
+		const canvas = await html2canvas(container, { scale: 2 });
+		const imgData = canvas.toDataURL('image/png');
+		const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
+		if (index > 0) {
+			pdf.addPage();
+		}
+
+		pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+	}
+
+	pdf.save(filename + '.pdf');
 	window.location.href = redirectURL;
 }
 async function copyLink(url) {
@@ -29,7 +41,7 @@ async function copyLink(url) {
 			}, 2000);
 		})
 		.catch(err => {
-			console.error('無法複製網址：', err);
+			console.error('cannot copy:', err);
 		});
 }
 async function copyCurrentLink() {
@@ -40,7 +52,7 @@ async function copyInnerText(containerSelector) {
 	const container = document.querySelector(containerSelector);
 
 	if (!container) {
-		console.error(`未找到容器: ${containerSelector}`);
+		console.error(`cannot find container: ${containerSelector}`);
 		return;
 	}
 
@@ -56,7 +68,7 @@ async function copyInnerText(containerSelector) {
 			}, 2000);
 		})
 		.catch(err => {
-			console.error('無法複製文字', err);
+			console.error('cannot copy', err);
 		});
 }
 function isValidIdNumber(idNumber) {
