@@ -41,6 +41,7 @@ th, td {
 	text-align: center;
 	padding: 4px;
 	white-space: pre;
+	font-weight: normal;
 }
 .declaration {
 	text-align: right;
