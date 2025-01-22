@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.38">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.42">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
@@ -129,8 +129,8 @@
 </head>
 <body>
 	<div class="floating-btn-container">
-		<button class="floating-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
-		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn">返回重填</button></a>
+		<button class="floating-btn primary-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
   <div class="a4-landscape">
 		<div class="a4-container">
@@ -197,12 +197,12 @@
   			    <th colspan="15" style="height:40px; font-size:24px;">臺北市第四選舉區內湖、南港區 第 11 屆立法委員李彥秀罷免案 提議人名冊</th>
   			  </tr>
   			  <tr>
-  			    <th rowspan="2" style="width:6%;">編<br>號</th>
-  			    <th colspan="10" style="width:30%; letter-spacing:4px;">姓名</th>
-  			    <th rowspan="2" style="width:7%;">出生<br>日期</th>
-  			    <th rowspan="2" style="width:34%; letter-spacing:16px;">戶籍地址</th>
-  			    <th rowspan="2" style="width:17%;">簽名 (正楷親簽)<br>或蓋章</th>
-  			    <th rowspan="2" style="width:6%;">備<br>註</th>
+						<th rowspan="2" style="width:6%;">編<br>號</th>
+						<th colspan="10" style="width:30%;">姓 名</th>
+						<th rowspan="2" style="width:7%;">出生<br>日期</th>
+						<th rowspan="2" style="width:34%;">戶   籍   地   址</th>
+						<th rowspan="2" style="width:17%;">簽名 (正楷親簽)<br>或蓋章</th>
+						<th rowspan="2" style="width:6%;">備<br>註</th>
   			  </tr>
 					<tr>
   			    <th colspan="10" style="height:35px;">國民身分證統一編號</th>

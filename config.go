@@ -58,6 +58,7 @@ func LoadConfig() (*Config, error) {
 
 	cfg.AppBaseURL = baseURL
 	cfg.Zones = map[string]*Zone{
+		"taipei-3":    &Zone{"taipei-3", "臺北市第三選區", "王鴻薇", "中山、北松山", "臺北市", 3},
 		"taipei-4":    &Zone{"taipei-4", "臺北市第四選區", "李彥秀", "內湖、南港", "臺北市", 4},
 		"taipei-6":    &Zone{"taipei-6", "臺北市第六選區", "羅智強", "大安", "臺北市大安區", 6},
 		"taipei-7":    &Zone{"taipei-7", "臺北市第七選區", "徐巧芯", "信義、南松山", "臺北市", 7},

@@ -1,7 +1,7 @@
 body {
 	margin: 0;
 	padding: 32px 0;
-	background-color: #f0f0f0;
+	background-color: #2d2d2d;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -53,6 +53,18 @@ th, td {
 	height: 30px;
 	width: 16px;
 }
+.primary-btn {
+  background-color: #00ff9c;
+}
+.primary-btn:hover {
+	background-color: #00cc7a;
+}
+.secondary-btn {
+  background-color: #e5e5e5;
+}
+.secondary-btn:hover {
+  background-color: #cccccc;
+}
 .floating-btn-container {
   position: fixed;
   bottom: 20px;
@@ -65,7 +77,6 @@ th, td {
 	margin-bottom: 8px;
 }
 .floating-btn {
-  background-color: #00ff9c;
   color: #2d2d2d;
   border: none;
   border-radius: 100px;
@@ -75,9 +86,6 @@ th, td {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: all 0.3s ease;
-}
-.floating-btn:hover {
-	background-color: #00cc7a;
 }
 .address-input {
 	white-space: normal;
