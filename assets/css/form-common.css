@@ -62,7 +62,7 @@ th, td {
   flex-direction: row;
   gap: 64px;
   z-index: 1000;
-	margin-bottom: 32px;
+	margin-bottom: 8px;
 }
 .floating-btn {
   background-color: #00ff9c;
@@ -78,4 +78,8 @@ th, td {
 }
 .floating-btn:hover {
 	background-color: #00cc7a;
+}
+.address-input {
+	white-space: normal;
+	word-break: break-word;
 }

@@ -34,13 +34,26 @@ func LoadConfig() (*Config, error) {
 		TurnstileSecretKey: os.Getenv("TURNSTILE_SECRET_KEY"),
 	}
 
-	baseURL, err := url.ParseRequestURI("https://" + cfg.AppHostname + cfg.AppPath)
+	var baseURL *url.URL
+	if !strings.HasPrefix(cfg.AppPath, "/") {
+		cfg.AppPath = "/" + cfg.AppPath
+	}
+
+	rootPath := ""
+	if cfg.AppPath == "/" {
+		rootPath = cfg.AppHostname
+	} else {
+		rootPath = cfg.AppHostname + cfg.AppPath
+	}
+
+	baseURL, err := url.ParseRequestURI("https://" + rootPath)
 	if err != nil {
 		return nil, err
 	}
 
 	cfg.AppBaseURL = baseURL
 	cfg.Zones = map[string]*Zone{
+		"taipei-4":    &Zone{"taipei-4", "臺北市第四選區", "李彥秀", "內湖、南港", "臺北市", 4},
 		"taipei-6":    &Zone{"taipei-6", "臺北市第六選區", "羅智強", "大安", "臺北市大安區", 6},
 		"taipei-7":    &Zone{"taipei-7", "臺北市第七選區", "徐巧芯", "信義、南松山", "臺北市", 7},
 		"newtaipei-7": &Zone{"newtaipei-7", "新北市第七選區", "葉元之", "板橋", "新北市板橋區", 7},

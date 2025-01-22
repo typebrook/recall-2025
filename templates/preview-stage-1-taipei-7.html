@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.35">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.38">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
@@ -50,11 +50,11 @@
 				滿 7 份可撥打小蜜蜂收件專線：0965-240-548<br>
 				(撥打時間：10 點 - 20 點；收件地區：信義區、松山區)
 			</div>
-			<h1 style="font-size:42px;white-space:pre;text-align:center;width:30%;">同    意    書</h1>
+			<h1 style="font-size:42px; letter-spacing:46px; text-align:center; width:30%;">同意書</h1>
 			<div class="sample-qr">
 				<div style="text-decoration:underline;">填寫範例請掃</div>&nbsp;
 				<div class="text-arrow">➔</div>&nbsp;
-				<img style="padding:0 0 8px 0; width:100px; height:100px;" src="{{.BaseURL}}/assets/images/taipei-7-qr.png" alt="">
+				<img style="padding:0 0 8px 0; width:100px; height:100px;" src="{{.BaseURL}}/assets/images/qr-{{.Stage}}-{{.Zone}}.png" alt="">
 			</div>
 		</div>
 		<div style="padding:0 0 0 100px;">
@@ -85,7 +85,7 @@
 					<td rowspan="2" style="border-right:4px solid;"></td>
 					<td colspan="10" style="height:100px; border-top:4px solid;">{{.Name}}</td>
 					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
-					<td style="white-space:normal; word-break: break-word; border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
+					<td class="address-input" style="border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
 					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"></td>
 					<td rowspan="2"></td>
 				</tr>

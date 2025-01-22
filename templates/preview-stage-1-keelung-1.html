@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.35">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.38">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
@@ -26,7 +26,7 @@
 			font-size: 20px;
 		}
 		.consent-content ol {
-			list-style-type: none;
+			list-style-type: cjk-ideographic;
 		}
 		.consenter-container {
 			display: flex;
@@ -63,7 +63,7 @@
 					<td rowspan="2" style="border-right:4px solid;"></td>
 					<td colspan="10" style="height:100px; border-top:4px solid;">{{.Name}}</td>
 					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
-					<td style="white-space:normal; word-break: break-word; border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
+					<td class="address-input" style="border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
 					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"></td>
 					<td rowspan="2"></td>
 				</tr>
@@ -87,8 +87,8 @@
 		<h1 class="consent-title">同意書</h1>
 		<div class="consent-content">
 			<ol>
-				<li>一、相關個人資料只用於罷免基隆市選舉區第 11 屆立法委員林沛祥之用。</li>
-				<li>二、本人同意於中選會審查第一階段過後，接獲通知後簽署成為第二階段連署人。</li>
+				<li>相關個人資料只用於罷免基隆市選舉區第 11 屆立法委員林沛祥之用。</li>
+				<li>本人同意於中選會審查第一階段過後，接獲通知後簽署成為第二階段連署人。</li>
 			</ol>
 		</div>
 		<div class="consenter-container">
