@@ -81,25 +81,25 @@
   		    <th colspan="10" style="height:35px;">國民身分證統一編號</th>
   		    <th style="padding:0 15px 0 8px; text-align:right;">臺北市            區            里            鄰<br>路(街、道)                  段            巷<br>弄            號           樓之    </th>
 				</tr>
-  		  <tr>
-  		    <td rowspan="2"></td>
-					<td colspan="10" style="height:100px;">{{.Name}}</td>
-  		    <td rowspan="2">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
-  		    <td style="white-space:normal; word-break: break-word;" rowspan="2">{{.Address}}</td>
-  		    <td rowspan="2"></td>
-  		    <td rowspan="2"></td>
-  		  </tr>
 				<tr>
-  		    <td class="idnumber">{{.IdNumber.D0}}</td>
-  		    <td class="idnumber">{{.IdNumber.D1}}</td>
-  		    <td class="idnumber">{{.IdNumber.D2}}</td>
-  		    <td class="idnumber">{{.IdNumber.D3}}</td>
-  		    <td class="idnumber">{{.IdNumber.D4}}</td>
-  		    <td class="idnumber">{{.IdNumber.D5}}</td>
-  		    <td class="idnumber">{{.IdNumber.D6}}</td>
-  		    <td class="idnumber">{{.IdNumber.D7}}</td>
-  		    <td class="idnumber">{{.IdNumber.D8}}</td>
-  		    <td class="idnumber">{{.IdNumber.D9}}</td>
+					<td rowspan="2" style="border-right:4px solid;"></td>
+					<td colspan="10" style="height:100px; border-top:4px solid;">{{.Name}}</td>
+					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
+					<td style="white-space:normal; word-break: break-word; border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
+					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"></td>
+					<td rowspan="2"></td>
+				</tr>
+				<tr>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D0}}</td>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D1}}</td>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D2}}</td>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D3}}</td>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D4}}</td>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D5}}</td>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D6}}</td>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D7}}</td>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D8}}</td>
+					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D9}}</td>
 				</tr>
   		</table>
 		</div>

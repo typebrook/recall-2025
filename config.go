@@ -44,6 +44,7 @@ func LoadConfig() (*Config, error) {
 		"taipei-6":    &Zone{"taipei-6", "臺北市第六選區", "羅智強", "大安", "臺北市大安區", 6},
 		"taipei-7":    &Zone{"taipei-7", "臺北市第七選區", "徐巧芯", "信義、南松山", "臺北市", 7},
 		"newtaipei-7": &Zone{"newtaipei-7", "新北市第七選區", "葉元之", "板橋", "新北市板橋區", 7},
+		"keelung-1":   &Zone{"keelung-1", "基隆市", "林沛祥", "基隆", "基隆市", 1},
 	}
 
 	return cfg, nil
