@@ -89,7 +89,7 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 		query.Add("zone", zone)
 		redirectURL.RawQuery = query.Encode()
 
-		data, err := qp.ToPreviewData(ctrl.Config, z.GetTopic(), redirectURL.String())
+		data, err := qp.ToPreviewData(ctrl.Config, stage, zone, z.GetTopic(), redirectURL.String())
 		if err != nil {
 			c.HTML(http.StatusBadRequest, "4xx.html", ViewHttp4xxError{
 				HttpStatusCode: http.StatusBadRequest,
@@ -112,7 +112,7 @@ type RequestQueryPreview struct {
 	MobileNumber string `form:"mobile-number" binidng:"omitempty"`
 }
 
-func (r RequestQueryPreview) ToPreviewData(cfg *Config, topic, redirectURL string) (*PreviewData, error) {
+func (r RequestQueryPreview) ToPreviewData(cfg *Config, stage, zone, topic, redirectURL string) (*PreviewData, error) {
 	if !isValidIdNumber(r.IdNumber) {
 		return nil, fmt.Errorf("身份證輸入錯誤")
 	}
@@ -133,6 +133,8 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, topic, redirectURL strin
 
 	data := &PreviewData{
 		BaseURL:      cfg.AppBaseURL.String(),
+		Stage:        stage,
+		Zone:         zone,
 		Topic:        topic,
 		Name:         r.Name,
 		BirthYear:    birthYear,
@@ -173,6 +175,8 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, topic, redirectURL strin
 
 type PreviewData struct {
 	BaseURL      string
+	Stage        string
+	Zone         string
 	Topic        string
 	Name         string
 	BirthYear    int
@@ -221,6 +225,8 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 		tmpfile := "preview-" + stage + "-" + zone + ".html"
 		c.HTML(http.StatusOK, tmpfile, gin.H{
 			"BaseURL":      ctrl.AppBaseURL.String(),
+			"Stage":        stage,
+			"Zone":         zone,
 			"Topic":        z.GetTopic(),
 			"RedirectURL":  redirectURL.String(),
 			"Name":         "邱吉爾",
