@@ -39,6 +39,11 @@ func LoadConfig() (*Config, error) {
 		cfg.AppPath = "/" + cfg.AppPath
 	}
 
+	scheme := "https"
+	if cfg.AppHostname == "localhost" {
+		scheme = "http"
+	}
+
 	rootPath := ""
 	if cfg.AppPath == "/" {
 		rootPath = cfg.AppHostname
@@ -46,7 +51,7 @@ func LoadConfig() (*Config, error) {
 		rootPath = cfg.AppHostname + cfg.AppPath
 	}
 
-	baseURL, err := url.ParseRequestURI("https://" + rootPath)
+	baseURL, err := url.ParseRequestURI(scheme + "://" + rootPath)
 	if err != nil {
 		return nil, err
 	}
