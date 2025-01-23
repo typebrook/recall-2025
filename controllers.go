@@ -23,8 +23,8 @@ func NewController(cfg *Config) *Controller {
 func (ctrl Controller) Home() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home.html", gin.H{
-			"BaseURL":    ctrl.AppBaseURL.String(),
-			"RecallList": ctrl.ToRecallListViewData(),
+			"BaseURL":  ctrl.AppBaseURL.String(),
+			"AreaList": ctrl.ToAreaList(),
 		})
 	}
 }

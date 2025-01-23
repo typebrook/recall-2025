@@ -18,29 +18,33 @@
   <div class="section candidates">
     <h2>確認『戶籍所屬選區』找出你能罷免的立委</h2>
 		<ul>
-		{{range $city, $zones := .RecallList }}
+			{{range $a := .AreaList }}
 			<li class="city-row">
 				<div class="city-header">
-					<div class="city-name">{{$city}}</div><div class="arrow">▶</div>
+					<div class="city-name">{{$a.Name}}</div><div class="arrow">▶</div>
 				</div>
 				<div class="city-content">
 					<ul>
-						{{range $z := $zones}}
-      			<li>
+						{{range $z := $a.Zones}}
+						<li>
 							<div class="candidate">
-      			  	<div class="candidate-name">{{$z.CandidateName}}</div>
-      			  	<div class="candidate-zone">{{$z.ZoneName}} ({{$z.Districts}})</div>
+								<div class="candidate-name">{{$z.CandidateName}}</div>
+								<div class="candidate-zone">{{$z.ZoneName}} ({{$z.Districts}})</div>
 							</div>
-      			  <div class="candidate-action">
-      			    <a href="{{$.BaseURL}}/stage-1/{{$z.ZoneCode}}"><button>連署罷免</button></a>
-      			  </div>
-      			</li>
+							<div class="candidate-action">
+								{{if $z.Deployed}}
+								<a href="{{$.BaseURL}}/stage-1/{{$z.ZoneCode}}"><button>連署罷免</button></a>
+								{{else}}
+								<div style="color:#aaaaaa;">趕工中</div>
+								{{end}}
+							</div>
+						</li>
 						{{end}}
 					</ul>
 				</div>
 			</li>
-		{{end}}
-		<ul>
+			{{end}}
+			<ul>
   </div>
 
   <div class="section faq">
