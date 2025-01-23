@@ -18,14 +18,15 @@ function drawBorder(rect, isVisible) {
 
   if (isVisible) {
     const textDiv = document.createElement("div");
-    textDiv.textContent = "在這簽名";
+    textDiv.textContent = "列印後簽名處";
     textDiv.style.position = "absolute";
     textDiv.style.top = "50%";
     textDiv.style.left = "50%";
     textDiv.style.transform = "translate(-50%, -50%)";
     textDiv.style.color = "#ff073a";
-    textDiv.style.fontSize = "18px";
+    textDiv.style.fontSize = "24px";
     textDiv.style.fontWeight = "bold";
+    textDiv.style.whiteSpace = "nowrap";
     textDiv.style.pointerEvents = "none";
 
     borderDiv.appendChild(textDiv);
