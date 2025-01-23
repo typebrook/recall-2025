@@ -3,15 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>阻止失能暴衝的立院, 守護台灣，我們需要你！</title>
+  <title>阻止失能暴衝的立院, 我們需要你！</title>
 	<meta name="description" content="{{.Topic}}">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.130">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.132">
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.4"></script>
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
-<style>
-</style>
 <body>
+	<div class="browser-warning-container" id="browser-warning-container">
+		<div class="browser-waring-title">
+			您使用的瀏覽器無法下載連署書
+		</div>
+		<div class="browser-warning-content">
+			您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。<br>
+			請於功能按鈕，點選「以預設 (外部) 瀏覽器開啟」，<br>
+			或<a class="hyperlink-style" onclick="copyCurrentLink()"><div class="copy-icon"></div>複製連結</a>後至其他瀏覽器開啟。
+		</div>
+	</div>
   <div class="banner">
 		<div class="section">
 			<a class="goback" href="{{.BaseURL}}">
@@ -21,9 +29,6 @@
     	<div class="content-text">{{.ZoneName}} ({{.Districts}})<br></div>
 		</div>
   </div>
-	<div class="section browser-note-container">
-		<div class="browser-note">提醒您！若您用 LINE 或 Messenger 等通訊軟體開啟本網站，請點擊通訊軟體瀏覽器於右上或右下角的功能按鈕，以外部瀏覽器開啟。</div>
-	</div>
 	<div class="section fill-form">
 		<h2>請拿出國民身分證填寫以下資訊</h2>
 		<form action="{{.BaseURL}}/{{.Stage}}/{{.ZoneCode}}/preview" id="recall-form" method="post" onsubmit="combineBirthDate()">
@@ -108,6 +113,19 @@
         event.preventDefault();
       }
     });
+
+		(function() {
+			const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+			const isLine = userAgent.toLowerCase().includes("line");
+			const isMessenger = userAgent.toLowerCase().includes("fbav") || userAgent.toLowerCase().includes("messenger");
+			const isWhatsApp = userAgent.toLowerCase().includes("whatsapp");
+			const isWeChat = userAgent.toLowerCase().includes("micromessenger");
+
+			if (isLine || isMessenger || isWhatsApp || isWeChat) {
+				const warningElement = document.getElementById('browser-warning-container');
+				warningElement.style.display = 'flex'; /* 顯示浮動提示，並使用 Flexbox 屬性 */
+			}
+		})();
 	</script>
 	
 </body>
