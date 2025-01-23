@@ -8,6 +8,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
 	<style>
+		.table-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 100px 40px 64px 40px;
+			font-size: 18px;
+			box-sizing: border-box;
+		}
 		.a4-container {
 			width: 100%;
 			height: 100%;
@@ -15,14 +23,8 @@
 			padding: 0 16px 0 16px;
 			box-sizing: border-box;
 		}
-		.table-container {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 100px 32px 64px 32px;
-		}
 		.consent-title {
-			letter-spacing: 16px;
+			letter-spacing: 11px;
 			font-size: 30px;
 			text-align: center;
 			padding: 100px 0 50px 0;
@@ -30,7 +32,7 @@
 		.consent-content {
 			line-height: 3;
 			padding: 16px 0 32px 32px;
-			font-size: 20px;
+			font-size: 18px;
 		}
 		.consent-content ol {
 			list-style-type: cjk-ideographic;
@@ -40,7 +42,7 @@
 			margin: 0 0 0 32px;
 			box-sizing: border-box;
 			position: relative;
-			font-size: 20px;
+			font-size: 18px;
 		}
 		.consenter-form-container {
 			display: flex;
@@ -52,7 +54,7 @@
 		}
 		.consenter-form-group {
 			display: flex;
-			width: 38%;
+			width: 35%;
 			box-sizing: border-box;
 		}
 		.consenter-form-group label {
@@ -79,12 +81,12 @@
 					<th colspan="15" style="height:40px; font-size:24px;">基隆市選舉區 第 11 屆立法委員林沛祥罷免案提議人名冊</th>
 				</tr>
 				<tr>
-					<th rowspan="2" style="width:7%;">編<br>號</th>
-					<th colspan="10" style="width:29%; height:50px;">姓名</th>
-					<th rowspan="2" style="width:11%;">出生年月日</th>
-					<th style="width:29%;">戶籍地址</th>
+					<th rowspan="2" style="width:8%;">編<br>號</th>
+					<th colspan="10" style="width:29%; height:50px;">姓   名</th>
+					<th rowspan="2" style="width:12%;">出生年月日</th>
+					<th style="width:29%;">戶 籍 地 址</th>
 					<th rowspan="2" style="width:16%;">簽名或蓋章</th>
-					<th rowspan="2" style="width:7%;">備<br>註</th>
+					<th rowspan="2" style="width:6%;">備<br>註</th>
 				</tr>
 				<tr>
 					<th colspan="10" style="height:80px;">國   民   身   分   證<br>統    一    編    號</th>
