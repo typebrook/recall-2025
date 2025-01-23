@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.42">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.43">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
@@ -24,16 +24,26 @@
 		}
 		.consent-container {
 			width: 50%;
-			padding: 16px 32px 0 32px;
+			padding: 16px 16px 0 32px;
 			box-sizing: border-box;
+		}
+		.consent-content {
 		}
 		.consent-container ol {
 			list-style-type: cjk-ideographic;
+			margin-left: -8px;
 		}
 		.consenter-container {
 			display: flex;
 			width: 100%;
 			box-sizing: border-box;
+		}
+		.consenter-form-container {
+			display: flex;
+			justify-content: flex-start;
+			width: 100%;
+			box-sizing: border-box;
+			gap: 0;
 		}
 		.consenter-form-group {
 			display: flex;
@@ -101,7 +111,7 @@
 		}
 		.warning-title-container {
 			display: inline-block;
-			border-bottom: 4px solid;
+			border-bottom: 3px solid;
 			margin: auto auto auto 26px;
 			padding: 0 4px;
 		}
@@ -109,6 +119,7 @@
 			background-color: #d6d6d6;
 			padding: 2px 8px;
 			border-radius: 6px;
+			font-size: 17px;
 		}
 		.warning-container ul {
 			list-style: none;
@@ -136,17 +147,21 @@
 		<div class="a4-container">
 			<div class="section">
 				<div class="consent-container">	
-					<div style="text-decoration:underline 2px;">同 意 書</div>
-					<ol>
-						<li>提議人名冊及本同意書中填寫的所有資料，僅做為預計 2025 年 2 月後啟動之立法委員李彥秀罷免案使用。</li>
-						<li>本人同意在中選會審查第一階段通過後，願接獲手機簡訊通知，提醒連署第二階段連署書。</li>
-					</ol>
+					<div class="consent-content">
+						<div style="text-decoration:underline 2px; font-size:18px;">同 意 書</div>
+						<ol>
+							<li>提議人名冊及本同意書中填寫的所有資料，僅做為<br>預計 2025 年 2 月後啟動之立法委員李彥秀罷免案使用。</li>
+							<li>本人同意在中選會審查第一階段通過後，<br>願接獲手機簡訊通知，提醒連署第二階段連署書。</li>
+						</ol>
+					</div>
 					<div class="consenter-container">
-						<div class="consenter-form-group" style="justify-content:flex-start;">
-							<label>同意人：</label><div class="consenter-input"></div>
-						</div>
-						<div class="consenter-form-group" style="justify-content:flex-end;">
-							<label>行動電話：</label><div class="consenter-input">{{.MobileNumber}}</div>
+						<div class="consenter-form-container">
+							<div class="consenter-form-group">
+								<label>同意人：</label><div class="consenter-input"></div>
+							</div>
+							<div class="consenter-form-group">
+								<label>行動電話：</label><div class="consenter-input mobile-number">{{.MobileNumber}}</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -194,7 +209,7 @@
 			<div style="padding:30px 30px;">
   			<table>
   			  <tr>
-  			    <th colspan="15" style="height:40px; font-size:24px;">臺北市第四選舉區內湖、南港區 第 11 屆立法委員李彥秀罷免案 提議人名冊</th>
+  			    <th colspan="15" style="height:32px; font-size:20px; font-weight:700;">臺北市第四選舉區內湖、南港區 第 11 屆立法委員李彥秀罷免案 提議人名冊</th>
   			  </tr>
   			  <tr>
 						<th rowspan="2" style="width:6%;">編<br>號</th>

@@ -91,3 +91,6 @@ th, td {
 	white-space: normal;
 	word-break: break-word;
 }
+.mobile-number {
+	font-size: 18px;
+}

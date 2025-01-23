@@ -109,7 +109,7 @@ type RequestQueryPreview struct {
 	IdNumber     string `form:"id-number" binding:"required"`
 	BirthDate    string `form:"birth-date" binding:"required"`
 	Address      string `form:"address" binding:"required"`
-	MobileNumber string `form:"mobile-number" binidng:"omitempty"`
+	MobileNumber string `form:"mobile-number" binidng:"required"`
 }
 
 func (r RequestQueryPreview) ToPreviewData(cfg *Config, stage, zone, topic, redirectURL string) (*PreviewData, error) {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.42">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.43">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
@@ -24,6 +24,35 @@
   		border: 1px solid black;
 			text-align: center;
   		border-radius: 10px;
+		}
+		.consenter-container {
+			width: 100%;
+			margin: 0 0 0 10px;
+			box-sizing: border-box;
+			position: relative;
+		}
+		.consenter-form-container {
+			display: flex;
+			justify-content: flex-start;
+			width: 100%;
+			box-sizing: border-box;
+			gap: 28px;
+		}
+		.consenter-form-group {
+			display: flex;
+			align-items: center;
+			width: 44%;
+			box-sizing: border-box;
+		}
+		.consenter-form-group label {
+			flex: 0 0 auto;
+			white-space: nowrap;
+			font-size: 30px;
+		}
+		.consenter-input {
+			display: flex;
+			flex: 1;
+			align-items: center;
 		}
 		.sample-qr {
 			width: 35%;
@@ -57,8 +86,17 @@
 				<img style="padding:0 0 8px 0; width:100px; height:100px;" src="{{.BaseURL}}/assets/images/qr-{{.Stage}}-{{.Zone}}.png" alt="">
 			</div>
 		</div>
-		<div style="padding:0 0 0 100px;">
-			<div style="text-align:center; font-size:30px; text-align:left; white-space:pre;">同意人：                          行動電話：{{.MobileNumber}}</div>
+		<div style="padding:0 0 0 160px;">
+			<div class="consenter-container">
+				<div class="consenter-form-container">
+					<div class="consenter-form-group">
+						<label>同意人：</label><div class="consenter-input"></div>
+					</div>
+					<div class="consenter-form-group">
+						<label>行動電話：</label><div class="consenter-input mobile-number">{{.MobileNumber}}</div>
+					</div>
+				</div>
+			</div>
 			<ol style="font-size:20px;">
 				<li>相關資料只用於罷免徐巧芯之用。</li>
 				<li>本人同意於中選會審查第一階段過後，接獲通知後簽署成為第二階段連署人。</li>
