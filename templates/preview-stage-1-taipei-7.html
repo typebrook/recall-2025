@@ -7,7 +7,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
-  <script src="{{.BaseURL}}/assets/js/where-to-sign.js?v0.0.8" defer></script>
+  <script src="{{.BaseURL}}/assets/js/where-to-sign.js?v0.0.9" defer></script>
 	<style>
 		.header {
 			display: flex;
@@ -73,7 +73,6 @@
 <body>
 	<div class="floating-btn-container">
 		<button class="floating-btn primary-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
-		<button class="floating-btn secondary-btn" id="btn-where-to-sign" onclick="whereToSign()">簽哪裡？(2)</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
 	<div id="where-to-sign"></div>
