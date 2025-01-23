@@ -60,12 +60,12 @@ func LoadConfig() (*Config, error) {
 	cfg.Zones = map[string]*Zone{
 		"keelung-1": &Zone{"keelung-1", "基隆市選區", "林沛祥", "基隆", "基隆市", true, 1},
 
-		"newtaipei-1":  &Zone{"newtaipei-1", "新北市第一選區", "洪孟楷", "石門、三芝、淡水、八里、林口、泰山", "新北市", false, 1},
+		"newtaipei-1":  &Zone{"newtaipei-1", "新北市第一選區", "洪孟楷", "石門、三芝、淡水等 6 區", "新北市", false, 1},
 		"newtaipei-7":  &Zone{"newtaipei-7", "新北市第七選區", "葉元之", "板橋", "新北市板橋區", true, 7},
 		"newtaipei-8":  &Zone{"newtaipei-8", "新北市第八選區", "張智倫", "中和", "新北市中和區", false, 8},
 		"newtaipei-9":  &Zone{"newtaipei-9", "新北市第九選區", "林德福", "永和、中和", "新北市", false, 9},
-		"newtaipei-11": &Zone{"newtaipei-11", "新北市第十一選區", "羅明才", "新店、深坑、石碇、坪林、烏來", "新北市", false, 11},
-		"newtaipei-12": &Zone{"newtaipei-12", "新北市第十二選區", "廖先翔", "汐止、金山、萬里、瑞芳、平溪、雙溪、貢寮", "新北市", false, 12},
+		"newtaipei-11": &Zone{"newtaipei-11", "新北市第十一選區", "羅明才", "新店、深坑、石碇等 5 區", "新北市", false, 11},
+		"newtaipei-12": &Zone{"newtaipei-12", "新北市第十二選區", "廖先翔", "汐止、金山、萬里等 7 區", "新北市", false, 12},
 
 		"taipei-3": &Zone{"taipei-3", "臺北市第三選區", "王鴻薇", "中山、北松山", "臺北市", true, 3},
 		"taipei-4": &Zone{"taipei-4", "臺北市第四選區", "李彥秀", "內湖、南港", "臺北市", true, 4},
@@ -81,12 +81,12 @@ func LoadConfig() (*Config, error) {
 		"taoyuan-6": &Zone{"taoyuan-6", "桃園市第六選區", "邱若華", "八德、大溪、復興、中壢", "桃園市", false, 6},
 
 		//"hsinchucounty-1": &Zone{"hsinchucounty-1", "新竹縣第一選區", "徐欣瑩", "新豐、湖口、新埔、芎林、關西、尖石、竹北", "新竹縣", false, 1},
-		"hsinchucounty-2": &Zone{"hsinchucounty-2", "新竹縣第二選區", "林思銘", "竹東、寶山、北埔、峨眉、橫山、五峰、竹北", "新竹縣", false, 2},
+		"hsinchucounty-2": &Zone{"hsinchucounty-2", "新竹縣第二選區", "林思銘", "竹東、寶山、北埔等 7 區", "新竹縣", false, 2},
 
-		"miaoli-1": &Zone{"miaoli-1", "苗栗縣第一選區", "陳超明", "竹南、後龍、造橋、通霄、西湖、銅鑼、三義、苑裡", "苗栗縣", false, 1},
-		"miaoli-2": &Zone{"miaoli-2", "苗栗縣第二選區", "邱鎮軍", "頭份、三灣、南庄、苗栗、公館、頭屋、大湖、獅潭、卓蘭、泰安", "苗栗縣", false, 2},
+		"miaoli-1": &Zone{"miaoli-1", "苗栗縣第一選區", "陳超明", "竹南、後龍、造橋等 8 區", "苗栗縣", false, 1},
+		"miaoli-2": &Zone{"miaoli-2", "苗栗縣第二選區", "邱鎮軍", "頭份、三灣、南庄等 10 區", "苗栗縣", false, 2},
 
-		"taichung-2": &Zone{"taichung-2", "臺中市第二選區", "顏寬恒", "沙鹿、霧峰、大肚、烏日、龍井", "臺中市", false, 2},
+		"taichung-2": &Zone{"taichung-2", "臺中市第二選區", "顏寬恒", "沙鹿、霧峰、大肚等 5 區", "臺中市", false, 2},
 		"taichung-3": &Zone{"taichung-3", "臺中市第三選區", "楊瓊瓔", "大雅、潭子、神岡、后里", "臺中市", false, 3},
 		"taichung-4": &Zone{"taichung-4", "臺中市第四選區", "廖偉翔", "西屯、南屯", "臺中市", false, 4},
 		"taichung-5": &Zone{"taichung-5", "臺中市第五選區", "黃健豪", "北屯、北區", "臺中市", false, 5},
@@ -94,8 +94,8 @@ func LoadConfig() (*Config, error) {
 
 		"changhua-3": &Zone{"changhua-3", "彰化縣第三選區", "謝衣鳯", "第五、第七、第八", "彰化縣", false, 3},
 
-		"nantou-1": &Zone{"nantou-1", "南投縣第一選區", "馬文君", "埔里、草屯、中寮、魚池、國姓、仁愛", "南投縣", false, 1},
-		"nantou-2": &Zone{"nantou-2", "南投縣第二選區", "游顥", "南投、名間、集集、竹山、鹿谷、水里、信義", "南投縣", false, 2},
+		"nantou-1": &Zone{"nantou-1", "南投縣第一選區", "馬文君", "埔里、草屯、中寮等 6 區", "南投縣", false, 1},
+		"nantou-2": &Zone{"nantou-2", "南投縣第二選區", "游顥", "南投、名間、集集、竹山等 7 區", "南投縣", false, 2},
 
 		"yunlin-1": &Zone{"yunlin-1", "雲林縣第一選區", "丁學忠", "第三、第五、第六", "雲林縣", false, 1},
 
