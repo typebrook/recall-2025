@@ -81,7 +81,7 @@ func LoadConfig() (*Config, error) {
 		"taoyuan-5": &Zone{"taoyuan-5", "桃園市第五選區", "呂玉玲", "平鎮、龍潭", "桃園市", false, 5},
 		"taoyuan-6": &Zone{"taoyuan-6", "桃園市第六選區", "邱若華", "八德、大溪等 4 區", "桃園市", false, 6},
 
-		"hsinchucounty-1": &Zone{"hsinchucounty-1", "新竹縣第一選區", "徐欣瑩", "新豐、湖口、新埔、芎林、關西、尖石、竹北", "新竹縣", false, 1},
+		"hsinchucounty-1": &Zone{"hsinchucounty-1", "新竹縣第一選區", "徐欣瑩", "新豐、湖口等 7 區", "新竹縣", false, 1},
 		"hsinchucounty-2": &Zone{"hsinchucounty-2", "新竹縣第二選區", "林思銘", "竹東、寶山等 7 區", "新竹縣", false, 2},
 
 		"miaoli-1": &Zone{"miaoli-1", "苗栗縣第一選區", "陳超明", "竹南、後龍等 8 區", "苗栗縣", false, 1},
