@@ -21,6 +21,7 @@ type Config struct {
 	TurnstileSiteKey   string
 	TurnstileSecretKey string
 	Zones              map[string]*Zone
+	Areas              []*Area
 }
 
 func LoadConfig() (*Config, error) {
@@ -108,6 +109,8 @@ func LoadConfig() (*Config, error) {
 		//"lienchiang-1": &Zone{"lienchiang-1", "連江縣選區", "陳雪生", "連江", "連江縣", false, 1},
 	}
 
+	cfg.Areas = cfg.ToAreas()
+
 	return cfg, nil
 }
 
@@ -157,7 +160,7 @@ const (
 	AreaNameLienchiang    = "連江縣"
 )
 
-func (r Config) ToAreaList() []*Area {
+func (r Config) ToAreas() []*Area {
 	list := map[string][]*Zone{}
 	for code, z := range r.Zones {
 		pieces := strings.Split(code, "-")
@@ -278,14 +281,14 @@ func (r Config) ToAreaList() []*Area {
 		AreaNameLienchiang,
 	}
 
-	sortedSlice := []*Area{}
+	areas := []*Area{}
 	for _, key := range sortedKeys {
 		if zones, exists := list[key]; exists {
-			sortedSlice = append(sortedSlice, &Area{key, zones})
+			areas = append(areas, &Area{key, zones})
 		}
 	}
 
-	return sortedSlice
+	return areas
 }
 
 type Area struct {
