@@ -81,7 +81,7 @@ func LoadConfig() (*Config, error) {
 		"taoyuan-5": &Zone{"taoyuan-5", "桃園市第五選區", "呂玉玲", "平鎮、龍潭", "桃園市", false, 5},
 		"taoyuan-6": &Zone{"taoyuan-6", "桃園市第六選區", "邱若華", "八德、大溪等 4 區", "桃園市", false, 6},
 
-		"hsinchucounty-1": &Zone{"hsinchucounty-1", "新竹縣第一選區", "徐欣瑩", "新豐、湖口等 7 區", "新竹縣", false, 1},
+		"hsinchucounty-1": &Zone{"hsinchucounty-1", "新竹縣第一選區", "徐欣瑩", "新豐、湖口等 7 區", "新竹縣", true, 1},
 		"hsinchucounty-2": &Zone{"hsinchucounty-2", "新竹縣第二選區", "林思銘", "竹東、寶山等 7 區", "新竹縣", false, 2},
 
 		"miaoli-1": &Zone{"miaoli-1", "苗栗縣第一選區", "陳超明", "竹南、後龍等 8 區", "苗栗縣", false, 1},
@@ -93,7 +93,7 @@ func LoadConfig() (*Config, error) {
 		"taichung-5": &Zone{"taichung-5", "臺中市第五選區", "黃健豪", "北屯、北區", "臺中市", false, 5},
 		"taichung-6": &Zone{"taichung-6", "臺中市第六選區", "羅廷瑋", "中、西、東、南", "臺中市", false, 6},
 
-		"changhua-3": &Zone{"changhua-3", "彰化縣第三選區", "謝衣鳯", "第五、第七、第八", "彰化縣", false, 3},
+		"changhua-3": &Zone{"changhua-3", "彰化縣第三選區", "謝衣鳯", "第五、第七、第八", "彰化縣", true, 3},
 
 		"nantou-1": &Zone{"nantou-1", "南投縣第一選區", "馬文君", "埔里、草屯等 6 區", "南投縣", false, 1},
 		"nantou-2": &Zone{"nantou-2", "南投縣第二選區", "游顥", "南投、名間等 7 區", "南投縣", false, 2},

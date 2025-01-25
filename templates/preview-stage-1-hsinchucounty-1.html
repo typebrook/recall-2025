@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"/>
+  <title>第一階段罷免連署書 - {{.Topic}}</title>
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.11"></script>
+  <script src="{{.BaseURL}}/assets/js/where-to-sign.js?v0.0.14" defer></script>
+</head>
+<style>
+	.idnumber-container {
+		/* customize attrs */
+		bottom: 70px;
+		left: 57px;
+	}
+	.idnumber-container table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: auto;
+		background-color: transparent;
+		table-layout: fixed;
+
+		/* customize attrs */
+		width: 194px;
+		height: 40px;
+	}
+	.idnumber-container td {
+		border: 1px solid black;
+		text-align: center;
+		font-weight: normal;
+	}
+	.name-container {
+		border: 1px solid black;
+		/* position attrs */
+		bottom: 109px;
+		left: 57px;
+		width: 194px;
+		height: 73px;
+	}
+	.birthdate-container {
+		border: 1px solid black;
+		/* position attrs */
+		bottom: 70px;
+		left: 250px;
+		width: 79px;
+		height: 112px;
+	}
+	.address-container {
+		border: 1px solid black;
+		padding: 0 8px;
+		word-break: break-word;
+		/* position attrs */
+		bottom: 70px; /* Same as .idnumber-container */
+		left: 328px;
+		width: 311px;
+		height: 112px; /* Same as .birth-container */
+	}
+	.petitioner-container {
+		/* position attrs */
+		bottom: 76px;
+		left: 637px;
+		width: 90px;
+		height: 107px;
+	}
+	.consenter-container {
+		/* position attrs */
+		bottom: 524px;
+		left: 158px;
+		width: 104px;
+		height: 32px;
+	}
+	.mobile-container {
+		font-size: 20px;
+		/* position attrs */
+		bottom: 520px;
+		right: 150px;
+	}
+</style>
+<body>
+	<div class="floating-btn-container">
+		<button class="floating-btn primary-btn" onclick="downloadPDF('.a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
+	</div>
+	<div id="where-to-sign"></div>
+  <div class="a4-portrait" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp'); ">
+		<div class="input-field name-container">{{.Name}}</div>
+		<div class="input-field birthdate-container">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</div>
+		<div class="input-field address-container">{{.Address}}</div>
+		<div class="input-field mobile-container">{{.MobileNumber}}</div>
+		<div class="input-field petitioner-container" id="petitioner"></div>
+		<div class="input-field consenter-container" id="consenter-name"></div>
+		<div class="input-field idnumber-container">
+			<table>
+				<tr>
+					<td>{{.IdNumber.D0}}</td>
+					<td>{{.IdNumber.D1}}</td>
+					<td>{{.IdNumber.D2}}</td>
+					<td>{{.IdNumber.D3}}</td>
+					<td>{{.IdNumber.D4}}</td>
+					<td>{{.IdNumber.D5}}</td>
+					<td>{{.IdNumber.D6}}</td>
+					<td>{{.IdNumber.D7}}</td>
+					<td>{{.IdNumber.D8}}</td>
+					<td>{{.IdNumber.D9}}</td>
+				</tr>
+			</table>
+		</div>
+  </div>
+</body>
+</html>
