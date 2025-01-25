@@ -25,7 +25,7 @@
 				<div class="goback-icon"></div>&nbsp;<div style="color:#ffffff;">罷免其他立委</div>
 			</a>
     	<h1 style="font-size:32px; color:#ffffff;">我是{{.ZoneName}}選民<br>我要罷免<span class="primary">『{{.CandidateName}}』</span></h1>
-    	<div class="content-text">{{.ZoneName}} ({{.Districts}})<br>提醒您！本網站不會保留您的資料：包括【姓名】【身分證字號】【出生年月日】【戶籍地址】以及【手機號碼】皆不保留，您填寫的的資料也經過加密傳輸，請安心使用。</div>
+    	<div class="content-text">{{.ZoneName}} ({{.Districts}})<br><br>提醒您！本網站不保留您填入的任何資料，資料也於傳輸前加密，請安心使用。</div>
 		</div>
   </div>
 	<div class="section fill-form">
@@ -46,7 +46,7 @@
   	  <div class="form-group birth-date">
   	    <label>出生年月日</label>
 				<div class="input-group">
-					<input type="text" name="birth-date" max="{{.MaxBirthDate}}" required>
+					<input type="date" name="birth-date" max="{{.MaxBirthDate}}" required>
 				</div>
 				<div class="form-comment">系統將自動轉換西元出生年月日至民國</div>
   	  </div>
@@ -111,7 +111,6 @@
         idInput.reportValidity();
         event.preventDefault();
       }
-
     });
 
 		(function() {
@@ -123,7 +122,7 @@
 
 			if (isLine || isMessenger || isWhatsApp || isWeChat) {
 				const warningElement = document.getElementById('browser-warning-container');
-				warningElement.style.display = 'flex'; /* 顯示浮動提示，並使用 Flexbox 屬性 */
+				warningElement.style.display = 'flex';
 			}
 		})();
 	</script>
