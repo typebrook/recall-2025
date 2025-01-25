@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.38">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.8">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
@@ -18,49 +18,45 @@
 		<button class="floating-btn primary-btn downloadBtn">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
-	<div class="a4-landscape p0">
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp');">
 		<div class="whereToSign" style=" left: 84.9%; top: 53.2%;  width: 9%; height: 11%;"></div>
-		<img class="printBackground" src="{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-01.webp" alt="">
-		<div class="textContainer">
-			<div class="text md" style=" left: 21.5%; top: 56.5%;    letter-spacing:0.75em">
-				{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
-			</div>
-			<div class="text lg" style=" left: 22%; top: 49%;  ">
-				{{.Name}}
-			</div>
-			<div class="text md" style=" left: 37.4%; top: 51.5%; ">
-				{{.BirthYear}}{{.BirthMonth}}{{.BirthDate}}
-			</div>
-			<div class="text sm" style=" left: 60%; top: 48%;  width: 32%;">
-				{{.Address}}
-			</div>
+		<div class="inputField center md " style=" left: 21.5%; top: 56.5%;    letter-spacing:0.75em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center md " style=" left: 21.5%; top: 56.5%;   width: 22%;">
+			<!-- <table>
+				<tr>
+					<td>{{.IdNumber.D0}}</td>
+					<td>{{.IdNumber.D1}}</td>
+					<td>{{.IdNumber.D2}}</td>
+					<td>{{.IdNumber.D3}}</td>
+					<td>{{.IdNumber.D4}}</td>
+					<td>{{.IdNumber.D5}}</td>
+					<td>{{.IdNumber.D6}}</td>
+					<td>{{.IdNumber.D7}}</td>
+					<td>{{.IdNumber.D8}}</td>
+					<td>{{.IdNumber.D9}}</td>
+				</tr>
+			</table> -->
+		</div>
+		<div class="inputField center lg " style=" left: 22%; top: 49%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center md " style=" left: 37.4%; top: 51.5%; ">
+			{{.BirthYear}}{{.BirthMonth}}{{.BirthDate}}
+		</div>
+		<div class="inputField center sm " style=" left: 60%; top: 48%;  width: 32%;">
+			{{.Address}}
 		</div>
 
 	</div>
-	<div class="a4-landscape p0">
-		<div class="textContainer">
-			<img class="printBackground" src="{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-02.webp" alt="">
-
-			<div class="whereToSign aLine" style=" left: 30%; top: 56%;  width: 25%; height: 8%;"></div>
-			<div class="text xl" style=" left: 67.5%; top:58%; ">
-				{{.MobileNumber}}
-			</div>
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp');">
+		<div class="whereToSign aLine" style=" left: 30%; top: 60%;  width: 25%; height: 8%;"></div>
+		<div class="inputField xl" style=" left: 67.5%; top:58%; ">
+			{{.MobileNumber}}
 		</div>
 	</div>
 </body>
 
-<script>
-	whereToSigns = document.getElementsByClassName('whereToSign')
-	document.getElementsByClassName('downloadBtn')[0].addEventListener('click', () => {
-		console.log(whereToSigns)
-		for (let i = 0; i < whereToSigns.length; i++) {
-			whereToSigns[i].style.opacity = 0;
-		}
-		setTimeout(() => {
-			downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')
-		}, 100)
-	})
-
-</script>
 
 </html>

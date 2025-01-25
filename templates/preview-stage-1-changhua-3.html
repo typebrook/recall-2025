@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
-  <meta charset="utf-8"/>
-  <title>第一階段罷免連署書 - {{.Topic}}</title>
+	<meta charset="utf-8" />
+	<title>第一階段罷免連署書 - {{.Topic}}</title>
 	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.8">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.11"></script>
-  <script src="{{.BaseURL}}/assets/js/where-to-sign.js?v0.0.14" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.11"></script>
+	<script src="{{.BaseURL}}/assets/js/where-to-sign.js?v0.0.14" defer></script>
 </head>
 <style>
 	.idnumber-container {
@@ -15,6 +16,7 @@
 		bottom: 278px;
 		left: 162px;
 	}
+
 	.idnumber-container table {
 		width: 100%;
 		border-collapse: collapse;
@@ -26,11 +28,13 @@
 		width: 252px;
 		height: 124px;
 	}
+
 	.idnumber-container td {
 		border: 1px solid black;
 		text-align: center;
 		font-weight: normal;
 	}
+
 	.name-container {
 		border: 1px solid black;
 		/* position attrs */
@@ -39,6 +43,7 @@
 		width: 252px;
 		height: 103px;
 	}
+
 	.birthdate-container {
 		border: 1px solid black;
 		background-color: white;
@@ -49,6 +54,7 @@
 		width: 52px;
 		height: 226px;
 	}
+
 	.address-container {
 		background-color: white;
 		border: 1px solid black;
@@ -60,6 +66,7 @@
 		width: 401px;
 		height: 226px;
 	}
+
 	.petitioner-container {
 		/* position attrs */
 		bottom: 284px;
@@ -67,6 +74,7 @@
 		width: 115px;
 		height: 221px;
 	}
+
 	.consenter-container {
 		/* position attrs */
 		bottom: 597px;
@@ -74,6 +82,7 @@
 		width: 170px;
 		height: 32px;
 	}
+
 	.mobile-container {
 		font-size: 20px;
 		/* position attrs */
@@ -81,18 +90,21 @@
 		right: 235px;
 	}
 </style>
+
 <body>
 	<div class="floating-btn-container">
-		<button class="floating-btn primary-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+		<button class="floating-btn primary-btn"
+			onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
 	<div id="where-to-sign"></div>
-  <div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp'); ">
-		<div class="input-field name-container">{{.Name}}</div>
-		<div class="input-field birthdate-container">民<br>國<br>{{.BirthYear}}<br>年<br>{{.BirthMonth}}<br>月<br>{{.BirthDate}}<br>日</div>
-		<div class="input-field address-container">{{.Address}}</div>
-		<div class="input-field petitioner-container" id="petitioner"></div>
-		<div class="input-field idnumber-container">
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp'); ">
+		<div class="inputField name-container">{{.Name}}</div>
+		<div class="inputField birthdate-container">
+			民<br>國<br>{{.BirthYear}}<br>年<br>{{.BirthMonth}}<br>月<br>{{.BirthDate}}<br>日</div>
+		<div class="inputField address-container">{{.Address}}</div>
+		<div class="inputField petitioner-container" id="petitioner"></div>
+		<div class="inputField idnumber-container">
 			<table>
 				<tr>
 					<td>{{.IdNumber.D0}}</td>
@@ -108,10 +120,12 @@
 				</tr>
 			</table>
 		</div>
-  </div>
-  <div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp'); ">
-		<div class="input-field mobile-container">{{.MobileNumber}}</div>
-		<div class="input-field consenter-container" id="consenter-name"></div>
-  </div>
+
+	</div>
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp'); ">
+		<div class="inputField mobile-container">{{.MobileNumber}}</div>
+		<div class="inputField consenter-container" id="consenter-name"></div>
+	</div>
 </body>
+
 </html>

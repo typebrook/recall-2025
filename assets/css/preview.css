@@ -9,85 +9,230 @@ body {
 	box-sizing: border-box;
 	font-family: Arial, sans-serif;
 }
+
 .a4-portrait {
 	position: relative;
 	width: 210mm;
 	height: 297mm;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	box-sizing: border-box;
-	background-size:100% 100%;
-	background-repeat:no-repeat;
-	background-position:center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #fff;
 	margin-bottom: 32px;
 }
+
 .a4-portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
+	width: 100%;
+	height: 100%;
+	object-fit: fill;
 }
+
 .a4-landscape {
 	position: relative;
 	width: 297mm;
 	height: 210mm;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	box-sizing: border-box;
-	background-size:100% 100%;
-	background-repeat:no-repeat;
-	background-position:center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: #fff;
+
 	margin-bottom: 32px;
 }
+
 .a4-landscape img {
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
+	width: 100%;
+	height: 100%;
+	object-fit: fill;
 }
+
 .primary-btn {
-  background-color: #00ff9c;
+	background-color: #00ff9c;
 }
+
 .primary-btn:hover {
 	background-color: #00cc7a;
 }
+
 .secondary-btn {
-  background-color: #e5e5e5;
+	background-color: #e5e5e5;
 }
+
 .secondary-btn:hover {
-  background-color: #cccccc;
+	background-color: #cccccc;
 }
+
 .floating-btn-container {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: row;
-  gap: 64px;
-  z-index: 1000;
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: row;
+	gap: 64px;
+	z-index: 1000;
 	margin-bottom: 8px;
 }
+
 .floating-btn {
-  color: #2d2d2d;
-  border: none;
-  border-radius: 100px;
-  width: 250px;
-  padding: 20px;
-  font-size: 34px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: all 0.3s ease;
+	color: #2d2d2d;
+	border: none;
+	border-radius: 100px;
+	width: 250px;
+	padding: 20px;
+	font-size: 34px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	transition: all 0.3s ease;
 }
+
 #where-to-sign {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 9998;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: 9998;
 }
-.input-field {
+
+
+
+
+
+
+
+
+
+
+
+/* *************************************
+
+	new
+
+**************************************** */
+
+
+
+.printBackground {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+
+.inputField {
 	position: absolute;
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+}
+
+.inputField.center {
+	transform: translateX(-50%);
+}
+
+.inputField.whiteBg {
+	background-color: #fff;
+}
+
+
+.inputField>table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: auto;
+	/* background-color: white; */
+	table-layout: fixed;
+}
+
+.inputField>table td {
+	border: 1px solid black;
+	text-align: center;
+	font-weight: normal;
+}
+
+
+.inputField.xl {
+	font-size: 32px;
+	letter-spacing: 0.2em
+}
+
+.inputField.lg {
+	font-size: 23px;
+	letter-spacing: 0.2em
+}
+
+.inputField.md {
+	font-size: 19px;
+	letter-spacing: 0.2em
+}
+
+.inputField.sm {
+	font-size: 16px;
+}
+
+
+.whereToSign {
+	width: 50%;
+	height: 40%;
+	position: absolute;
+	pointer-events: none;
+	z-index: 9998;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transform: translate(-50%, -50%);
+}
+
+.whereToSign::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 100%;
+	height: 100%;
+	background-color: #ff000011;
+	border: 2px dashed #ec1c00;
+	border-radius: 5px;
+	animation: breathingFlash 2s infinite ease-in-out;
+
+}
+
+
+.whereToSign::after {
+	content: "列印後\A簽名處";
+	white-space: pre-line;
+	color: #da1900;
+	text-align: center;
+	padding: 2px;
+	font-size: 20px;
+}
+
+.whereToSign.aLine::after {
+	content: "列印後簽名處";
+}
+
+.whereToSign.sm::after {
+	font-size: 12px;
+}
+
+
+@keyframes breathingFlash {
+
+	0%,
+	100% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1.02);
+	}
+
+	50% {
+		opacity: 0.3;
+		transform: translate(-50%, -50%) scale(1);
+	}
 }
