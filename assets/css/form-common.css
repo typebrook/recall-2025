@@ -238,8 +238,12 @@ td {
 
 .whereToSign.aLine::after {
 	content: "列印後簽名處";
-
 }
+
+.whereToSign.sm::after {
+	font-size: 12px;
+}
+
 
 @keyframes breathingFlash {
 
