@@ -19,7 +19,6 @@
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
 	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp');">
-		<div class="whereToSign" style=" left: 84.9%; top: 53.2%;  width: 9%; height: 11%;"></div>
 		<img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt="">
 		<div class="inputField center lg" style=" left: 25.6%; top: 67%;    letter-spacing:0.85em">
 			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
@@ -27,12 +26,19 @@
 		<div class="inputField center xl" style=" left: 25.5%; top: 51.5%;  ">
 			{{.Name}}
 		</div>
-		<div class="inputField center md" style=" left: 37.4%; top: 55%; ">
-			{{.BirthYear}}{{.BirthMonth}}{{.BirthDate}}
+		<div class="inputField center lg" style=" left: 42.5%; top: 52%;">
+			{{.BirthYear}}
+		</div>
+		<div class="inputField center lg" style=" left: 42.5%; top: 61%;">
+			{{.BirthMonth}}
+		</div>
+		<div class="inputField center lg" style=" left: 42.5%; top: 68%;">
+			{{.BirthDate}}
 		</div>
 		<div class="inputField center whiteBg" style=" left: 63.5%; top: 46%;  width: 28.5%; height: 25%;">
 			{{.Address}}
 		</div>
+		<div class="whereToSign" style=" left: 83.8%; top: 58.2%;  width: 10%; height: 22%;"></div>
 
 	</div>
 	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp');">
