@@ -18,37 +18,31 @@
 		<button class="floating-btn primary-btn downloadBtn">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
-	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
-		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt=""> -->
-		<div class="inputField center lg" style=" left: 24.2%; top: 49%;    letter-spacing:0.62em">
+	<div class="a4-portrait " style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position_2.png" alt=""> -->
+
+		<div class="inputField center md" style=" left: 21.5%; top: 92%;    letter-spacing:0.52em">
 			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
 		</div>
-		<div class="inputField center xl" style=" left: 24%; top: 33%;  ">
+		<div class="inputField center lg" style=" left: 22%; top: 84%;  ">
 			{{.Name}}
 		</div>
-		<div class="inputField center md" style=" left: 38.5%; top: 29%; ">
+		<div class="inputField center" style=" left: 37%; top: 82.5%;">
 			{{.BirthYear}}
 		</div>
-		<div class="inputField center md" style=" left: 38.5%; top: 36%; ">
+		<div class="inputField center" style=" left: 37%; top: 86.5%;">
 			{{.BirthMonth}}
 		</div>
-		<div class="inputField center md" style=" left: 38.5%; top: 44.5%; ">
+		<div class="inputField center" style=" left: 37%; top:91%;">
 			{{.BirthDate}}
 		</div>
-		<div class="inputField center sm whiteBg" style=" left: 58%; top: 26%;  width: 32%; height: 26%;">
+		<div class="inputField center whiteBg" style=" left: 59.5%; top: 82%;  width: 37.5%; height:13%;">
 			{{.Address}}
 		</div>
-		<div class="whereToSign" style=" left: 81%; top: 39.3%;  width: 9%; height: 26.5%;"></div>
-
-		<div class="whereToSign aLine sm" style=" left: 18%; top: 88%;  width:7%; height: 4.5%;"></div>
-		<div class="inputField center md" style=" left: 34%; top:87%; ">
-			{{.MobileNumber}}
-		</div>
+		<div class="whereToSign" style=" left: 85%; top: 88%;  width: 10%; height: 11%;"></div>
 
 	</div>
-
 </body>
-
 
 
 </html>
