@@ -16,7 +16,11 @@
 
 <body>
 	<div class="floating-btn-container">
+		<button class="floating-btn primary-btn downloadBtn"
+			onclick="downloadPDF('.a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
 		<button class="floating-btn primary-btn downloadBtn">確認下載</button>
+
+
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
 	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
