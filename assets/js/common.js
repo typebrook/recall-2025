@@ -20,20 +20,34 @@ async function downloadPDF(containerSelector, filename, redirectURL) {
 
 	const pdf = new jsPDF(orientation, 'mm', 'a4');
 	const pdfWidth = pdf.internal.pageSize.getWidth();
+	const pdfHeight = pdf.internal.pageSize.getHeight();
+	const scale = 3;
 
 	for (const [index, container] of containers.entries()) {
-		const canvas = await html2canvas(container, { scale: 2 });
+		const canvas = await html2canvas(container, { scale });
 		const imgData = canvas.toDataURL('image/png');
-		const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+		const canvasWidth = canvas.width / scale;
+		const canvasHeight = canvas.height / scale;
+		const aspectRatio = canvasWidth / canvasHeight;
+
+		let renderWidth, renderHeight;
+		if (aspectRatio > pdfWidth / pdfHeight) {
+			renderWidth = pdfWidth;
+			renderHeight = renderWidth / aspectRatio;
+		} else {
+			renderHeight = pdfHeight;
+			renderWidth = renderHeight * aspectRatio;
+		}
 
 		if (index > 0) {
 			pdf.addPage();
 		}
 
-		pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+		pdf.addImage(imgData, 'PNG', (pdfWidth - renderWidth) / 2, (pdfHeight - renderHeight) / 2, renderWidth, renderHeight);
 	}
 
-	pdf.save(filename + '.pdf');
+	pdf.save(`${filename}.pdf`);
 	window.location.href = redirectURL;
 }
 async function copyLink(url) {
