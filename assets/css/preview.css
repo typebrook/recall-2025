@@ -179,3 +179,40 @@ body {
 		transform: translate(-50%, -50%) scale(1);
 	}
 }
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s;
+}
+.mask.active {
+  visibility: visible;
+  opacity: 1;
+}
+.spinner {
+  width: 80px;
+  height: 80px;
+  border: 8px solid rgba(0, 255, 156, 0.3);
+  border-top: 8px solid #00ff9c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
