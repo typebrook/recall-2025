@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+	<meta charset="utf-8" />
+	<title>第一階段罷免連署書 - {{.Topic}}</title>
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.8">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
+	<style>
+
+	</style>
+</head>
+
+<body>
+	<div class="floating-btn-container">
+		<button class="floating-btn primary-btn downloadBtn">確認下載</button>
+		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
+	</div>
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt=""> -->
+
+		<div class="whereToSign aLine sm" style=" left: 75%; top: 14%;  width: 15%; height: 4%;"></div>
+
+		<div class="inputField center sm" style=" left: 73%; top: 16.2%;  ">
+			{{.MobileNumber}}
+		</div>
+		<div class="inputField center lg" style=" left: 26.2%; top: 85.5%;    letter-spacing:0.84em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center xl" style=" left: 25%; top: 72%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center lg" style=" left: 44%; top: 73%; ">
+			{{.BirthYear}}
+		</div>
+		<div class="inputField center lg" style=" left: 44%; top: 79%; ">
+			{{.BirthMonth}}
+		</div>
+		<div class="inputField center lg" style=" left: 44%; top: 85%; ">
+			{{.BirthDate}}
+		</div>
+		<div class="inputField center md whiteBg" style=" left: 65%; top: 69%;  width: 28%; height: 23%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign" style=" left: 83.3%; top: 81%;  width: 7%; height: 21%;"></div>
+
+	</div>
+
+
+</body>
+
+<script>
+	whereToSigns = document.getElementsByClassName('whereToSign')
+	document.getElementsByClassName('downloadBtn')[0].addEventListener('click', () => {
+		console.log(whereToSigns)
+		for (let i = 0; i < whereToSigns.length; i++) {
+			whereToSigns[i].style.opacity = 0;
+		}
+		setTimeout(() => {
+			downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')
+		}, 100)
+	})
+
+</script>
+
+</html>
