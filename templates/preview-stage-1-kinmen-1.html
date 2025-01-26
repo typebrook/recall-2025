@@ -8,24 +8,19 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
-	<style>
-
-	</style>
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.9"></script>
 </head>
 
 <body>
+	<div class="mask">
+		<div class="spinner"></div>
+	</div>
 	<div class="floating-btn-container">
-		<button class="floating-btn primary-btn downloadBtn"
-			onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
-		<button class="floating-btn primary-btn downloadBtn">確認下載</button>
-
-
+		<button class="floating-btn primary-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
 	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
 		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt=""> -->
-
 		<div class="inputField center lg" style=" left: 25.6%; top: 48%;    letter-spacing:0.58em">
 			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
 		</div>
@@ -45,17 +40,11 @@
 			{{.Address}}
 		</div>
 		<div class="whereToSign" style=" left: 79%; top: 45.5%;  width: 13%; height: 17.5%;"></div>
-
-
 		<div class="whereToSign aLine sm" style=" left: 19.5%; top: 90.5%;  width: 13%; height: 4%;"></div>
 		<div class="inputField center md" style=" left: 42%; top: 89.5%;  ">
 			{{.MobileNumber}}
 		</div>
 	</div>
-
-
 </body>
-
-
 
 </html>

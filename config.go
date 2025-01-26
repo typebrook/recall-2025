@@ -61,12 +61,12 @@ func LoadConfig() (*Config, error) {
 	cfg.Zones = map[string]*Zone{
 		"keelung-1": &Zone{"keelung-1", "基隆市選區", "林沛祥", "基隆", "基隆市", true, 1},
 
-		"newtaipei-1":  &Zone{"newtaipei-1", "新北市第一選區", "洪孟楷", "石門、三芝等 6 區", "新北市", false, 1},
+		"newtaipei-1":  &Zone{"newtaipei-1", "新北市第一選區", "洪孟楷", "石門、三芝等 6 區", "新北市", true, 1},
 		"newtaipei-7":  &Zone{"newtaipei-7", "新北市第七選區", "葉元之", "板橋", "新北市板橋區", true, 7},
-		"newtaipei-8":  &Zone{"newtaipei-8", "新北市第八選區", "張智倫", "中和", "新北市中和區", false, 8},
-		"newtaipei-9":  &Zone{"newtaipei-9", "新北市第九選區", "林德福", "永和、中和", "新北市", false, 9},
-		"newtaipei-11": &Zone{"newtaipei-11", "新北市第十一選區", "羅明才", "新店、深坑等 5 區", "新北市", false, 11},
-		"newtaipei-12": &Zone{"newtaipei-12", "新北市第十二選區", "廖先翔", "汐止、金山等 7 區", "新北市", false, 12},
+		"newtaipei-8":  &Zone{"newtaipei-8", "新北市第八選區", "張智倫", "中和", "新北市中和區", true, 8},
+		"newtaipei-9":  &Zone{"newtaipei-9", "新北市第九選區", "林德福", "永和、中和", "新北市", true, 9},
+		"newtaipei-11": &Zone{"newtaipei-11", "新北市第十一選區", "羅明才", "新店、深坑等 5 區", "新北市", true, 11},
+		"newtaipei-12": &Zone{"newtaipei-12", "新北市第十二選區", "廖先翔", "汐止、金山等 7 區", "新北市", true, 12},
 
 		"taipei-3": &Zone{"taipei-3", "臺北市第三選區", "王鴻薇", "中山、北松山", "臺北市", true, 3},
 		"taipei-4": &Zone{"taipei-4", "臺北市第四選區", "李彥秀", "內湖、南港", "臺北市", true, 4},
@@ -74,37 +74,37 @@ func LoadConfig() (*Config, error) {
 		"taipei-7": &Zone{"taipei-7", "臺北市第七選區", "徐巧芯", "信義、南松山", "臺北市", true, 7},
 		"taipei-8": &Zone{"taipei-8", "臺北市第八選區", "賴士葆", "文山、南中正", "臺北市", true, 8},
 
-		"taoyuan-1": &Zone{"taoyuan-1", "桃園市第一選區", "牛煦庭", "蘆竹、龜山、桃園", "桃園市", false, 1},
-		"taoyuan-2": &Zone{"taoyuan-2", "桃園市第二選區", "涂權吉", "大園、觀音等 4 區", "桃園市", false, 2},
-		"taoyuan-3": &Zone{"taoyuan-3", "桃園市第三選區", "魯明哲", "中壢", "桃園市中壢區", false, 3},
-		"taoyuan-4": &Zone{"taoyuan-4", "桃園市第四選區", "萬美玲", "桃園", "桃園市桃園區", false, 4},
-		"taoyuan-5": &Zone{"taoyuan-5", "桃園市第五選區", "呂玉玲", "平鎮、龍潭", "桃園市", false, 5},
-		"taoyuan-6": &Zone{"taoyuan-6", "桃園市第六選區", "邱若華", "八德、大溪等 4 區", "桃園市", false, 6},
+		"taoyuan-1": &Zone{"taoyuan-1", "桃園市第一選區", "牛煦庭", "蘆竹、龜山、桃園", "桃園市", true, 1},
+		"taoyuan-2": &Zone{"taoyuan-2", "桃園市第二選區", "涂權吉", "大園、觀音等 4 區", "桃園市", true, 2},
+		"taoyuan-3": &Zone{"taoyuan-3", "桃園市第三選區", "魯明哲", "中壢", "桃園市中壢區", true, 3},
+		"taoyuan-4": &Zone{"taoyuan-4", "桃園市第四選區", "萬美玲", "桃園", "桃園市桃園區", true, 4},
+		"taoyuan-5": &Zone{"taoyuan-5", "桃園市第五選區", "呂玉玲", "平鎮、龍潭", "桃園市", true, 5},
+		"taoyuan-6": &Zone{"taoyuan-6", "桃園市第六選區", "邱若華", "八德、大溪等 4 區", "桃園市", true, 6},
 
 		"hsinchucounty-1": &Zone{"hsinchucounty-1", "新竹縣第一選區", "徐欣瑩", "新豐、湖口等 7 區", "新竹縣", true, 1},
-		"hsinchucounty-2": &Zone{"hsinchucounty-2", "新竹縣第二選區", "林思銘", "竹東、寶山等 7 區", "新竹縣", false, 2},
+		"hsinchucounty-2": &Zone{"hsinchucounty-2", "新竹縣第二選區", "林思銘", "竹東、寶山等 7 區", "新竹縣", true, 2},
 
-		"miaoli-1": &Zone{"miaoli-1", "苗栗縣第一選區", "陳超明", "竹南、後龍等 8 區", "苗栗縣", false, 1},
-		"miaoli-2": &Zone{"miaoli-2", "苗栗縣第二選區", "邱鎮軍", "頭份、三灣等 10 區", "苗栗縣", false, 2},
+		"miaoli-1": &Zone{"miaoli-1", "苗栗縣第一選區", "陳超明", "竹南、後龍等 8 區", "苗栗縣", true, 1},
+		"miaoli-2": &Zone{"miaoli-2", "苗栗縣第二選區", "邱鎮軍", "頭份、三灣等 10 區", "苗栗縣", true, 2},
 
-		"taichung-2": &Zone{"taichung-2", "臺中市第二選區", "顏寬恒", "沙鹿、霧峰等 5 區", "臺中市", false, 2},
-		"taichung-3": &Zone{"taichung-3", "臺中市第三選區", "楊瓊瓔", "大雅、潭子等 4 區", "臺中市", false, 3},
-		"taichung-4": &Zone{"taichung-4", "臺中市第四選區", "廖偉翔", "西屯、南屯", "臺中市", false, 4},
-		"taichung-5": &Zone{"taichung-5", "臺中市第五選區", "黃健豪", "北屯、北區", "臺中市", false, 5},
-		"taichung-6": &Zone{"taichung-6", "臺中市第六選區", "羅廷瑋", "中、西、東、南", "臺中市", false, 6},
+		"taichung-2": &Zone{"taichung-2", "臺中市第二選區", "顏寬恒", "沙鹿、霧峰等 5 區", "臺中市", true, 2},
+		"taichung-3": &Zone{"taichung-3", "臺中市第三選區", "楊瓊瓔", "大雅、潭子等 4 區", "臺中市", true, 3},
+		"taichung-4": &Zone{"taichung-4", "臺中市第四選區", "廖偉翔", "西屯、南屯", "臺中市", true, 4},
+		"taichung-5": &Zone{"taichung-5", "臺中市第五選區", "黃健豪", "北屯、北區", "臺中市", true, 5},
+		"taichung-6": &Zone{"taichung-6", "臺中市第六選區", "羅廷瑋", "中、西、東、南", "臺中市", true, 6},
 
 		"changhua-3": &Zone{"changhua-3", "彰化縣第三選區", "謝衣鳯", "第五、第七、第八", "彰化縣", true, 3},
 
-		"nantou-1": &Zone{"nantou-1", "南投縣第一選區", "馬文君", "埔里、草屯等 6 區", "南投縣", false, 1},
-		"nantou-2": &Zone{"nantou-2", "南投縣第二選區", "游顥", "南投、名間等 7 區", "南投縣", false, 2},
+		"nantou-1": &Zone{"nantou-1", "南投縣第一選區", "馬文君", "埔里、草屯等 6 區", "南投縣", true, 1},
+		"nantou-2": &Zone{"nantou-2", "南投縣第二選區", "游顥", "南投、名間等 7 區", "南投縣", true, 2},
 
-		"yunlin-1": &Zone{"yunlin-1", "雲林縣第一選區", "丁學忠", "第三、第五、第六", "雲林縣", false, 1},
+		"yunlin-1": &Zone{"yunlin-1", "雲林縣第一選區", "丁學忠", "第三、第五、第六", "雲林縣", true, 1},
 
-		"hualien-1": &Zone{"hualien-1", "花蓮縣選區", "傅崐萁", "花蓮", "花蓮縣", false, 1},
+		"hualien-1": &Zone{"hualien-1", "花蓮縣選區", "傅崐萁", "花蓮", "花蓮縣", true, 1},
 
-		"taitung-1": &Zone{"taitung-1", "臺東縣選區", "黃建賓", "臺東", "臺東縣", false, 1},
+		"taitung-1": &Zone{"taitung-1", "臺東縣選區", "黃建賓", "臺東", "臺東縣", true, 1},
 
-		"kinmen-1": &Zone{"kinmen-1", "金門縣選區", "陳玉珍", "金門", "金門縣", false, 1},
+		"kinmen-1": &Zone{"kinmen-1", "金門縣選區", "陳玉珍", "金門", "金門縣", true, 1},
 
 		//"lienchiang-1": &Zone{"lienchiang-1", "連江縣選區", "陳雪生", "連江", "連江縣", false, 1},
 	}

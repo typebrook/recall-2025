@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.55">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.56">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.8"></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.9"></script>
 	<style>
 		.a4-container {
 			width: 100%;
@@ -20,10 +20,8 @@
 			font-weight: bold;
 			padding: 8px 0 8px 0;
 		}
-		.consent-content ol {
-			list-style-type: cjk-ideographic;
+		.consent-content {
 			line-height: 1.8;
-			margin: 0 auto auto -8px;
 			letter-spacing: 1px;
 		}
 		.consenter-container {
@@ -77,6 +75,9 @@
 	</style>
 </head>
 <body>
+	<div class="mask">
+		<div class="spinner"></div>
+	</div>
 	<div class="floating-btn-container">
 		<button class="floating-btn primary-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
@@ -129,10 +130,8 @@
 			<div class="consent-container">
 				<div class="consent-title">同意書</div>
 				<div class="consent-content">
-					<ol>
-						<li>相關個人資料只使用於賴士葆罷免案之用。</li>
-						<li>本人同意於中選會審查第一階段通過後，接獲通知並簽署為第二階段罷免連署人。</li>
-					</ol>
+					一、相關個人資料只使用於賴士葆罷免案之用。<br>
+					二、本人同意於中選會審查第一階段通過後，接獲通知並簽署為第二階段罷免連署人。
 				</div>
 				<div class="consenter-container">
 					<div class="consenter-form-container">
