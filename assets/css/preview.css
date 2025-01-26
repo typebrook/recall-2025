@@ -1,6 +1,14 @@
+/* html {
+	width: 1000px;
+	height: 100vw;
+} */
+
 body {
+	/* margin: 0 auto; */
 	margin: 0;
 	padding: 32px 0;
+	/* height: 100vw; */
+	/* width: 100vw; */
 	background-color: #2d2d2d;
 	display: flex;
 	flex-direction: column;
@@ -28,6 +36,7 @@ body {
 	height: 100%;
 	object-fit: fill;
 }
+
 .a4-landscape {
 	position: relative;
 	width: 297mm;
@@ -40,23 +49,29 @@ body {
 	background-color: #fff;
 	margin-bottom: 32px;
 }
+
 .a4-landscape img {
 	width: 100%;
 	height: 100%;
 	object-fit: fill;
 }
+
 .primary-btn {
 	background-color: #00ff9c;
 }
+
 .primary-btn:hover {
 	background-color: #00cc7a;
 }
+
 .secondary-btn {
 	background-color: #e5e5e5;
 }
+
 .secondary-btn:hover {
 	background-color: #cccccc;
 }
+
 .floating-btn-container {
 	position: fixed;
 	bottom: 20px;
@@ -68,6 +83,7 @@ body {
 	z-index: 1000;
 	margin-bottom: 8px;
 }
+
 .floating-btn {
 	color: #2d2d2d;
 	border: none;
@@ -89,6 +105,7 @@ body {
 	left: 0;
 	width: 100%;
 }
+
 .inputField {
 	position: absolute;
 	box-sizing: border-box;
@@ -97,40 +114,49 @@ body {
 	align-items: center;
 
 }
+
 .inputField.center {
 	transform: translateX(-50%);
 }
+
 .inputField.whiteBg {
 	background-color: #fff;
 	padding: 8px;
 }
-.inputField > table {
+
+.inputField>table {
 	width: 100%;
 	border-collapse: collapse;
 	margin: auto;
 	/* background-color: white; */
 	table-layout: fixed;
 }
-.inputField > table td {
+
+.inputField>table td {
 	border: 1px solid black;
 	text-align: center;
 	font-weight: normal;
 }
+
 .inputField.xl {
 	font-size: 32px;
 	letter-spacing: 0.2em
 }
+
 .inputField.lg {
 	font-size: 23px;
 	letter-spacing: 0.1em
 }
+
 .inputField.md {
 	font-size: 19px;
 	letter-spacing: 0.1em
 }
+
 .inputField.sm {
 	font-size: 15px;
 }
+
 .whereToSign {
 	width: 50%;
 	height: 40%;
@@ -142,6 +168,7 @@ body {
 	align-items: center;
 	transform: translate(-50%, -50%);
 }
+
 .whereToSign::before {
 	content: "";
 	position: absolute;
@@ -154,6 +181,7 @@ body {
 	border-radius: 5px;
 	animation: breathingFlash 2s infinite ease-in-out;
 }
+
 .whereToSign::after {
 	content: "列印後\A簽名處";
 	white-space: pre-line;
@@ -162,18 +190,23 @@ body {
 	padding: 2px;
 	font-size: 20px;
 }
+
 .whereToSign.aLine::after {
 	content: "列印後簽名處";
 }
+
 .whereToSign.sm::after {
 	font-size: 12px;
 }
+
 @keyframes breathingFlash {
+
 	0%,
 	100% {
 		opacity: 1;
 		transform: translate(-50%, -50%) scale(1.02);
 	}
+
 	50% {
 		opacity: 0.3;
 		transform: translate(-50%, -50%) scale(1);

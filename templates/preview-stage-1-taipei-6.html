@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.55">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.8"></script>
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.8"></script>
 	<style>
 		.a4-container {
 			width: 100%;
@@ -117,9 +117,13 @@
 				<tr>
 					<td rowspan="2" style="border-right:4px solid;"></td>
 					<td colspan="10" style="height:100px; border-top:4px solid;">{{.Name}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}}<br>年<br>{{.BirthMonth}}<br>月<br>{{.BirthDate}}<br>日</td>
-					<td class="address-input" style="border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"><div class="whereToSign" style="top:305px; left:627px; width:54px; height:135px;"></div></td>
+					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">
+						{{.BirthYear}}<br>年<br>{{.BirthMonth}}<br>月<br>{{.BirthDate}}<br>日</td>
+					<td class="address-input" style="border-top:4px solid; border-bottom:4px solid;" rowspan="2">
+						{{.Address}}</td>
+					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;">
+						<div class="whereToSign" style="top:305px; left:627px; width:54px; height:135px;"></div>
+					</td>
 					<td rowspan="2"></td>
 				</tr>
 				<tr>
@@ -136,7 +140,10 @@
 				</tr>
 			</table>
 
-			<div class="declaration">提議人之領銜人                                          (簽名或蓋章)<br><br>中    華    民    國                 年               月               日造</div>
+			<div class="declaration">提議人之領銜人 <span style="padding-right: 320px;"></span>(簽名或蓋章)<br><br>中 華 民 國 <span
+					style="padding-right: 24px;"></span>年<span style="padding-right: 24px;"></span>月<span
+					style="padding-right: 24px;"></span>日造
+			</div>
 
 			<div style="border-bottom: 2px dashed black; margin: 32px 0 16px 0;"></div>
 
@@ -172,14 +179,17 @@
 				<div class="consenter-form-container">
 					<div class="consenter-form-group">
 						<label>同意人</label>
-						<div class="consenter-input"><div class="whereToSign" style="top:-17px; left:50px; width:218px; height:33px;"></div></div>
+						<div class="consenter-input">
+							<div class="whereToSign" style="top:-17px; left:50px; width:218px; height:33px;"></div>
+						</div>
 					</div>
 					<div class="consenter-form-group">
 						<label>行動電話</label>
 						<div class="consenter-input mobile-number">{{.MobileNumber}}</div>
 					</div>
 				</div>
-				<div style="text-align:right; padding:0 164px 0 0"><input type="checkbox" name="sms-notification" value="sms-notification" checked>簡訊確認提議書已收訖</div>
+				<div style="text-align:right; padding:0 164px 0 0"><input type="checkbox" name="sms-notification"
+						value="sms-notification" checked>簡訊確認提議書已收訖</div>
 			</div>
 		</div>
 	</div>
