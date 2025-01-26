@@ -44,8 +44,6 @@
 
 	</div>
 	<div class="a4-portrait" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp');">
-		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position_2.png" alt=""> -->
-
 		<div class="whereToSign aLine" style=" left: 40%; top: 22%;  width: 26%; height: 6%;"></div>
 		<div class="inputField center md" style=" left: 87%; top:21.2%; ">
 			{{.MobileNumber}}
@@ -55,18 +53,6 @@
 
 </body>
 
-<script>
-	whereToSigns = document.getElementsByClassName('whereToSign')
-	document.getElementsByClassName('downloadBtn')[0].addEventListener('click', () => {
-		console.log(whereToSigns)
-		for (let i = 0; i < whereToSigns.length; i++) {
-			whereToSigns[i].style.opacity = 0;
-		}
-		setTimeout(() => {
-			downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')
-		}, 100)
-	})
 
-</script>
 
 </html>

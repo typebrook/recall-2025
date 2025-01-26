@@ -52,18 +52,4 @@
 
 </body>
 
-<script>
-	whereToSigns = document.getElementsByClassName('whereToSign')
-	document.getElementsByClassName('downloadBtn')[0].addEventListener('click', () => {
-		console.log(whereToSigns)
-		for (let i = 0; i < whereToSigns.length; i++) {
-			whereToSigns[i].style.opacity = 0;
-		}
-		setTimeout(() => {
-			downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')
-		}, 100)
-	})
-
-</script>
-
 </html>
