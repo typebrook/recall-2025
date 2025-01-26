@@ -5,6 +5,7 @@
 	<meta charset="utf-8" />
 	<title>第一階段罷免連署書 - {{.Topic}}</title>
 	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.8">
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
@@ -19,34 +20,38 @@
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
 	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp');">
-		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt=""> -->
-		<div class="inputField center lg" style=" left: 25.6%; top: 67%;    letter-spacing:0.85em">
-			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
-		</div>
-		<div class="inputField center xl" style=" left: 25.5%; top: 51.5%;  ">
+
+		<div class="inputField center xl" style=" left: 19%; top: 44%;  ">
 			{{.Name}}
 		</div>
-		<div class="inputField center lg" style=" left: 43.5%; top: 50%;">
+		<div class="inputField center lg" style=" left: 20.1%; top: 58.5%;    letter-spacing:0.68em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+
+		<div class="inputField center lg" style=" left: 39.2%; top: 46.8%; ">
 			{{.BirthYear}}
 		</div>
-		<div class="inputField center lg" style=" left: 43.5%; top: 59%;">
+		<div class="inputField center lg" style=" left: 39.2%; top: 52.6%; ">
 			{{.BirthMonth}}
 		</div>
-		<div class="inputField center lg" style=" left: 43.5%; top: 67.5%;">
+		<div class="inputField center lg" style=" left: 39.2%; top: 58.5%; ">
 			{{.BirthDate}}
 		</div>
-		<div class="inputField center whiteBg" style=" left: 63.5%; top: 46%;  width: 28.5%; height: 25%;">
+		<div class="inputField center md whiteBg" style=" left: 62%; top: 42.5%;  width: 35%; height: 22%;">
 			{{.Address}}
 		</div>
-		<div class="whereToSign" style=" left: 83.8%; top: 58.2%;  width: 10%; height: 22%;"></div>
+		<div class="whereToSign" style=" left: 86.2%; top: 54.5%;  width: 11%; height: 20%;"></div>
 
 	</div>
 	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp');">
-		<div class="whereToSign aLine" style=" left: 28%; top: 28%;  width: 25%; height: 8%;"></div>
-		<div class="inputField center xl" style=" left: 68%; top:27%; ">
+
+		<div class="whereToSign aLine" style=" left: 32%; top: 26%;  width: 22%; height: 8%;"></div>
+		<div class="inputField center xl" style=" left: 72%; top:23.5%; ">
 			{{.MobileNumber}}
 		</div>
+
 	</div>
+
 </body>
 
 <script>

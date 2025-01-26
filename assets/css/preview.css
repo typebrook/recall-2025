@@ -140,6 +140,7 @@ body {
 
 .inputField.whiteBg {
 	background-color: #fff;
+	padding: 8px;
 }
 
 
@@ -165,16 +166,16 @@ body {
 
 .inputField.lg {
 	font-size: 23px;
-	letter-spacing: 0.2em
+	letter-spacing: 0.1em
 }
 
 .inputField.md {
 	font-size: 19px;
-	letter-spacing: 0.2em
+	letter-spacing: 0.1em
 }
 
 .inputField.sm {
-	font-size: 16px;
+	font-size: 15px;
 }
 
 
