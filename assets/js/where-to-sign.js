@@ -69,12 +69,3 @@ window.addEventListener("scroll", () => {
     }
   });
 });
-
-
-
-
-
-
-
-
-

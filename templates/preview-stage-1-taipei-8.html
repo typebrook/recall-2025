@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.44">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.55">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
-  <script src="{{.BaseURL}}/assets/js/where-to-sign.js?v0.0.14" defer></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.8"></script>
 	<style>
 		.a4-container {
 			width: 100%;
@@ -99,14 +98,14 @@
 				</tr>
 				<tr>
 					<th colspan="10" style="height:45px;">國民身分證統一編號</th>
-					<th style="padding:0 8px;text-align:right;">臺北市                區                里                鄰<br>                路(街)                段               巷<br>                弄               號              樓之    </th>
+					<th style="padding:0 8px;text-align:center;">省（市） 縣（市） 鄉（鎮、市、區）<br>（里） 鄰 路（街） 段<br>巷 弄 號 樓之</th>
 				</tr>
 				<tr>
 					<td rowspan="2" style="border-right:4px solid;"></td>
 					<td colspan="10" style="height:80px; border-top:4px solid;">{{.Name}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
+					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}}<br>年<br>{{.BirthMonth}}<br>月<br>{{.BirthDate}}<br>日</td>
 					<td class="address-input" style="border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;" id="petitioner"></td>
+					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"><div class="whereToSign" style="top:274px; left:787px; width:193px; height:115px;"></div></td>
 					<td rowspan="2"></td>
 				</tr>
 				<tr>
@@ -138,7 +137,7 @@
 				<div class="consenter-container">
 					<div class="consenter-form-container">
 						<div class="consenter-form-group">
-							<label>同意人：</label><div class="consenter-input" id="consenter-name"></div>
+							<label>同意人：</label><div class="consenter-input"><div class="whereToSign" style="top:-24px; left:72px; width:242px; height:40px;"></div></div>
 						</div>
 						<div class="consenter-form-group" style="width:380px;">
 							<label>手機號碼：</label><div class="consenter-input mobile-number">{{.MobileNumber}}</div>

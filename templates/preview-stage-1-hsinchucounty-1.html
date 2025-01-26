@@ -7,7 +7,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.11"></script>
-  <script src="{{.BaseURL}}/assets/js/where-to-sign.js?v0.0.14" defer></script>
 </head>
 <style>
 	.idnumber-container {
@@ -85,13 +84,13 @@
 	</div>
 	<div id="where-to-sign"></div>
   <div class="a4-portrait" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp'); ">
-		<div class="input-field name-container">{{.Name}}</div>
-		<div class="input-field birthdate-container">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</div>
-		<div class="input-field address-container">{{.Address}}</div>
-		<div class="input-field mobile-container">{{.MobileNumber}}</div>
-		<div class="input-field petitioner-container" id="petitioner"></div>
-		<div class="input-field consenter-container" id="consenter-name"></div>
-		<div class="input-field idnumber-container">
+		<div class="inputField name-container">{{.Name}}</div>
+		<div class="inputField birthdate-container">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</div>
+		<div class="inputField address-container">{{.Address}}</div>
+		<div class="inputField mobile-container">{{.MobileNumber}}</div>
+		<div class="inputField petitioner-container"><div class="whereToSign" style="top:57px; left:49px; width:82px; height:100px;"></div></div>
+		<div class="inputField consenter-container"><div class="whereToSign" style="top:2px; left:56px; width:106px; height:58px;"></div></div>
+		<div class="inputField idnumber-container">
 			<table>
 				<tr>
 					<td>{{.IdNumber.D0}}</td>

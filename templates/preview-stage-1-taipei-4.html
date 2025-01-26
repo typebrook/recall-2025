@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.44">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.55">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
-  <script src="{{.BaseURL}}/assets/js/where-to-sign.js?v0.0.14" defer></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.8"></script>
 	<style>
 		.text-arrow {
 			font-size: 16px;
@@ -159,7 +158,7 @@
 					<div class="consenter-container">
 						<div class="consenter-form-container">
 							<div class="consenter-form-group">
-								<label>同意人：</label><div class="consenter-input" id="petitioner"></div>
+								<label>同意人：</label><div class="consenter-input"><div class="whereToSign" style="top:180px; left:150px; width:160px; height:33px;"></div></div>
 							</div>
 							<div class="consenter-form-group">
 								<label>行動電話：</label><div class="consenter-input mobile-number">{{.MobileNumber}}</div>
@@ -215,9 +214,9 @@
   			  </tr>
   			  <tr>
 						<th rowspan="2" style="width:6%;">編<br>號</th>
-						<th colspan="10" style="width:30%;">姓 名</th>
+						<th colspan="10" style="width:30%;">姓名</th>
 						<th rowspan="2" style="width:7%;">出生<br>日期</th>
-						<th rowspan="2" style="width:34%;">戶   籍   地   址</th>
+						<th rowspan="2" style="width:34%;">戶籍地址</th>
 						<th rowspan="2" style="width:17%;">簽名 (正楷親簽)<br>或蓋章</th>
 						<th rowspan="2" style="width:6%;">備<br>註</th>
   			  </tr>
@@ -229,7 +228,7 @@
 						<td colspan="10" style="height:50px; border-top:4px solid;">{{.Name}}</td>
 						<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
 						<td class="address-input" style=" border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
-						<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;" id="consenter-name"></td>
+						<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"><div class="whereToSign" style="top:513px; left:829px; width:149px; height:86px;"></div></td>
 						<td rowspan="2"></td>
 					</tr>
 					<tr>

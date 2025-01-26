@@ -7,6 +7,14 @@ async function downloadPDF(containerSelector, filename, redirectURL) {
 		return;
 	}
 
+	const whereToSigns = document.querySelectorAll('.whereToSign');
+	whereToSigns.forEach((element) => {
+		if (getComputedStyle(element).display !== 'none') {
+			element.style.display = 'none';
+		}
+	});
+	await new Promise((resolve) => setTimeout(resolve, 100));
+
 	const isLandscape = containerSelector === '.a4-landscape';
 	const orientation = isLandscape ? 'l' : 'p';
 

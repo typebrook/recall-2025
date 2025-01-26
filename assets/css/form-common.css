@@ -33,16 +33,8 @@ body {
 	margin-bottom: 32px;
 }
 
-
-
-
-
-
-
 /* *************************************
-
 	table
-
 **************************************** */
 
 table {
@@ -57,7 +49,6 @@ td {
 	border: 1px solid black;
 	text-align: center;
 	padding: 4px;
-	white-space: pre;
 	font-weight: normal;
 }
 
@@ -122,13 +113,6 @@ td {
 	transition: all 0.3s ease;
 }
 
-
-
-
-
-
-
-
 .address-input {
 	white-space: normal;
 	word-break: break-word;
@@ -137,13 +121,43 @@ td {
 .mobile-number {
 	font-size: 18px;
 }
-
-#where-to-sign {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+.whereToSign {
+	position: absolute;
 	pointer-events: none;
 	z-index: 9998;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  white-space: nowrap;
+  overflow: visible;
+}
+.whereToSign::before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 100%;
+	height: 100%;
+	background-color: #ff000011;
+	border: 2px dashed #ec1c00;
+	border-radius: 5px;
+	animation: breathingFlash 2s infinite ease-in-out;
+}
+.whereToSign::after {
+	content: "列印後簽名處";
+	color: #da1900;
+	text-align: center;
+	padding: 2px;
+	font-size: 20px;
+}
+@keyframes breathingFlash {
+	0%,
+	100% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1.02);
+	}
+	50% {
+		opacity: 0.3;
+		transform: translate(-50%, -50%) scale(1);
+	}
 }
