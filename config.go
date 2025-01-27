@@ -11,6 +11,24 @@ import (
 	"strings"
 )
 
+const (
+	AreaNameKeelung       = "基隆市"
+	AreaNameTaipei        = "臺北市"
+	AreaNameNewTaipei     = "新北市"
+	AreaNameTaoyuan       = "桃園市"
+	AreaNameHsinchuCity   = "新竹市"
+	AreaNameHsinchuCounty = "新竹縣"
+	AreaNameMiaoli        = "苗栗縣"
+	AreaNameTaichung      = "臺中市"
+	AreaNameChanghua      = "彰化縣"
+	AreaNameNantou        = "南投縣"
+	AreaNameYunlin        = "雲林縣"
+	AreaNameHualien       = "花蓮縣"
+	AreaNameTaitung       = "臺東縣"
+	AreaNameKinmen        = "金門縣"
+	AreaNameLienchiang    = "連江縣"
+)
+
 type Config struct {
 	AppEnv             string
 	AppHostname        string
@@ -144,24 +162,6 @@ type Zone struct {
 func (r Zone) GetTopic() string {
 	return r.CandidateName + " - " + r.ZoneName + " (" + r.Districts + ") "
 }
-
-const (
-	AreaNameKeelung       = "基隆市"
-	AreaNameTaipei        = "臺北市"
-	AreaNameNewTaipei     = "新北市"
-	AreaNameTaoyuan       = "桃園市"
-	AreaNameHsinchuCity   = "新竹市"
-	AreaNameHsinchuCounty = "新竹縣"
-	AreaNameMiaoli        = "苗栗縣"
-	AreaNameTaichung      = "臺中市"
-	AreaNameChanghua      = "彰化縣"
-	AreaNameNantou        = "南投縣"
-	AreaNameYunlin        = "雲林縣"
-	AreaNameHualien       = "花蓮縣"
-	AreaNameTaitung       = "臺東縣"
-	AreaNameKinmen        = "金門縣"
-	AreaNameLienchiang    = "連江縣"
-)
 
 func (r Config) ToAreas() []*Area {
 	list := map[string][]*Zone{}

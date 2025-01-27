@@ -9,21 +9,16 @@ async function downloadPDF(containerSelector, filename, redirectURL) {
   const mask = document.querySelector('.mask');
   mask.classList.add('active');
   try {
-    const whereToSigns = document.querySelectorAll('.whereToSign');
-    whereToSigns.forEach((element) => {
-      if (getComputedStyle(element).display !== 'none') {
-        element.style.display = 'none';
-      }
-    });
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
     const isLandscape = containerSelector === '.a4-landscape';
     const orientation = isLandscape ? 'l' : 'p';
     const pdf = new jsPDF(orientation, 'mm', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
 
     for (const [index, container] of containers.entries()) {
-      const canvas = await html2canvas(container, { scale: 2 });
+      const canvas = await html2canvas(container, {
+				scale: 2,
+				ignoreElements: (elem) => { return elem.classList.contains('whereToSign'); }
+			});
       const imgData = canvas.toDataURL('image/png');
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
       if (index > 0) {
