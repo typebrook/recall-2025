@@ -1,54 +1,44 @@
 async function downloadPDF(containerSelector, filename, redirectURL) {
-	const { jsPDF } = window.jspdf;
-	const containers = document.querySelectorAll(containerSelector);
+  const { jsPDF } = window.jspdf;
+  const containers = document.querySelectorAll(containerSelector);
+  if (containers.length === 0) {
+    console.error('No elements found with the given class name.');
+    return;
+  }
 
-	if (containers.length === 0) {
-		console.error('No elements found with the given class name.');
-		return;
-	}
+  const mask = document.querySelector('.mask');
+  mask.classList.add('active');
+  try {
+    const whereToSigns = document.querySelectorAll('.whereToSign');
+    whereToSigns.forEach((element) => {
+      if (getComputedStyle(element).display !== 'none') {
+        element.style.display = 'none';
+      }
+    });
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
-	const whereToSigns = document.querySelectorAll('.whereToSign');
-	whereToSigns.forEach((element) => {
-		if (getComputedStyle(element).display !== 'none') {
-			element.style.display = 'none';
-		}
-	});
-	await new Promise((resolve) => setTimeout(resolve, 100));
+    const isLandscape = containerSelector === '.a4-landscape';
+    const orientation = isLandscape ? 'l' : 'p';
+    const pdf = new jsPDF(orientation, 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
 
-	const isLandscape = containerSelector === '.a4-landscape';
-	const orientation = isLandscape ? 'l' : 'p';
+    for (const [index, container] of containers.entries()) {
+      const canvas = await html2canvas(container, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      if (index > 0) {
+        pdf.addPage();
+      }
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    }
 
-	const pdf = new jsPDF(orientation, 'mm', 'a4');
-	const pdfWidth = pdf.internal.pageSize.getWidth();
-	const pdfHeight = pdf.internal.pageSize.getHeight();
-	const scale = 3;
-
-	for (const [index, container] of containers.entries()) {
-		const canvas = await html2canvas(container, { scale });
-		const imgData = canvas.toDataURL('image/png');
-
-		const canvasWidth = canvas.width / scale;
-		const canvasHeight = canvas.height / scale;
-		const aspectRatio = canvasWidth / canvasHeight;
-
-		let renderWidth, renderHeight;
-		if (aspectRatio > pdfWidth / pdfHeight) {
-			renderWidth = pdfWidth;
-			renderHeight = renderWidth / aspectRatio;
-		} else {
-			renderHeight = pdfHeight;
-			renderWidth = renderHeight * aspectRatio;
-		}
-
-		if (index > 0) {
-			pdf.addPage();
-		}
-
-		pdf.addImage(imgData, 'PNG', (pdfWidth - renderWidth) / 2, (pdfHeight - renderHeight) / 2, renderWidth, renderHeight);
-	}
-
-	pdf.save(`${filename}.pdf`);
-	window.location.href = redirectURL;
+    pdf.save(`${filename}.pdf`);
+    window.location.href = redirectURL;
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+  } finally {
+    mask.classList.remove('active');
+  }
 }
 async function copyLink(url) {
 	navigator.clipboard.writeText(url)

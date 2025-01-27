@@ -4,10 +4,10 @@
 <head>
 	<meta charset="utf-8" />
 	<title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.55">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.56">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.8"></script>
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.16"></script>
 	<style>
 		.a4-container {
 			width: 100%;
@@ -49,7 +49,6 @@
 			width: 100%;
 			margin: 0 auto;
 			box-sizing: border-box;
-
 		}
 
 		.consenter-container {
@@ -89,6 +88,9 @@
 </head>
 
 <body>
+	<div class="mask">
+		<div class="spinner"></div>
+	</div>
 	<div class="floating-btn-container">
 		<button class="floating-btn primary-btn"
 			onclick="downloadPDF('.a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>

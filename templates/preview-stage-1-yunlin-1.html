@@ -1,35 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
 	<meta charset="utf-8" />
 	<title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.8">
-
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.9">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
-	<style>
-
-	</style>
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.16"></script>
 </head>
 
 <body>
+	<div class="mask">
+		<div class="spinner"></div>
+	</div>
 	<div class="floating-btn-container">
-		<button class="floating-btn primary-btn downloadBtn"
-			onclick="downloadPDF('.a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
-
+		<button class="floating-btn primary-btn" onclick="downloadPDF('.a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
 	<div class="a4-portrait" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp');">
-
-		<div class="inputField center xl" style=" left: 19.9%; top: 23.4%;  ">
+		<div class="inputField center xl" style=" left: 19.9%; top: 23.8%;  ">
 			{{.Name}}
 		</div>
 		<div class="inputField center " style=" left: 20.4%; top: 29.9%;    letter-spacing:0.65em">
 			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
 		</div>
-
 		<div class="inputField center " style=" left: 38.5%; top: 25.5%; ">
 			{{.BirthYear}}
 		</div>
@@ -43,18 +37,13 @@
 			{{.Address}}
 		</div>
 		<div class="whereToSign" style=" left: 86.35%; top: 28.25%;  width: 12%; height: 8%;"></div>
-
 	</div>
 	<div class="a4-portrait" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp');">
 		<div class="whereToSign aLine" style=" left: 40%; top: 22%;  width: 26%; height: 6%;"></div>
 		<div class="inputField center md" style=" left: 87%; top:21.2%; ">
 			{{.MobileNumber}}
 		</div>
-
 	</div>
-
 </body>
-
-
 
 </html>

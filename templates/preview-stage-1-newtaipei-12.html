@@ -4,20 +4,18 @@
 <head>
 	<meta charset="utf-8" />
 	<title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.8">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.9">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.6"></script>
-	<style>
-
-	</style>
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.16"></script>
 </head>
 
 <body>
+	<div class="mask">
+		<div class="spinner"></div>
+	</div>
 	<div class="floating-btn-container">
-		<button class="floating-btn primary-btn downloadBtn"
-			onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
-
+		<button class="floating-btn primary-btn downloadBtn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}');">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
 	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp');">
@@ -40,8 +38,7 @@
 		<div class="inputField center whiteBg" style=" left: 63.5%; top: 46%;  width: 28.5%; height: 25%;">
 			{{.Address}}
 		</div>
-		<div class="whereToSign" style=" left: 83.8%; top: 58.2%;  width: 10%; height: 22%;"></div>
-
+		<div class="whereToSign" style=" left: 84%; top: 58.2%;  width: 10%; height: 22%;"></div>
 	</div>
 	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp');">
 		<div class="whereToSign aLine" style=" left: 28%; top: 28%;  width: 25%; height: 8%;"></div>
@@ -50,7 +47,5 @@
 		</div>
 	</div>
 </body>
-
-
 
 </html>
