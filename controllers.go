@@ -301,7 +301,11 @@ func (ctrl Controller) GetAsset() gin.HandlerFunc {
 			return
 		}
 
-		c.Header("Cache-Control", "public, max-age=3600")
+		if ctrl.AppEnv == "production" {
+			c.Header("Cache-Control", "public, max-age=3600")
+		} else {
+			c.Header("Cache-Control", "no-cache")
+		}
 		c.File(filePath)
 	}
 }
