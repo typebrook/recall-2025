@@ -61,8 +61,9 @@ var arabicToChinese = map[string]string{
 }
 
 func sanitizeAddress(address string) string {
-	pattern := regexp.MustCompile(`(\d+)\s*(段|樓)`)
+	address = strings.ReplaceAll(address, "-", "之")
 
+	pattern := regexp.MustCompile(`(\d+)\s*(段|樓)`)
 	converted := pattern.ReplaceAllStringFunc(address, func(match string) string {
 		subMatch := pattern.FindStringSubmatch(match)
 		if len(subMatch) < 3 {
