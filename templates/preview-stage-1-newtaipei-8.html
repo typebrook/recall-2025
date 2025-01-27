@@ -27,7 +27,7 @@
 			{{.Name}}
 		</div>
 		<div class="inputField center" style=" left: 41.5%; top: 58%; ">
-			{{.BirthYear}}.{{.BirthMonth}}.{{.BirthDate}}
+			{{.BirthYear}}.{{printf "%02d" .BirthMonth}}.{{printf "%02d" .BirthDate}}
 		</div>
 		<div class="inputField center sm" style=" left: 61%; top: 55%;  width: 28%;">
 			{{.Address}}
