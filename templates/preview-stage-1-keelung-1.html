@@ -2,82 +2,12 @@
 <html lang="zh-Hant">
 
 <head>
-  <meta charset="utf-8"/>
-  <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.56">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.16"></script>
-	<style>
-		.table-container {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: 100px 40px 64px 40px;
-			font-size: 18px;
-			box-sizing: border-box;
-		}
-
-		.a4-container {
-			width: 100%;
-			height: 100%;
-			margin-top: -16px;
-			padding: 0 16px 0 16px;
-			box-sizing: border-box;
-		}
-
-		.consent-title {
-			letter-spacing: 11px;
-			font-size: 30px;
-			text-align: center;
-			padding: 100px 0 50px 0;
-		}
-
-		.consent-content {
-			line-height: 3;
-			padding: 16px 0 32px 32px;
-			font-size: 18px;
-		}
-
-		.consent-content ol {
-			list-style-type: cjk-ideographic;
-		}
-
-		.consenter-container {
-			width: 100%;
-			margin: 0 0 0 32px;
-			box-sizing: border-box;
-			position: relative;
-			font-size: 18px;
-		}
-
-		.consenter-form-container {
-			display: flex;
-			justify-content: flex-start;
-			align-items: center;
-			width: 100%;
-			box-sizing: border-box;
-			gap: 4px;
-		}
-
-		.consenter-form-group {
-			display: flex;
-			width: 35%;
-			box-sizing: border-box;
-		}
-
-		.consenter-form-group label {
-			flex: 0 0 auto;
-			white-space: nowrap;
-		}
-
-		.consenter-input {
-			display: flex;
-			align-items: center;
-			flex: 1;
-			text-align: center;
-		}
-	</style>
+	<meta charset="utf-8" />
+	<title>第一階段罷免連署書 - {{.Topic}}</title>
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.9">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.16"></script>
 </head>
 
 <body>
@@ -89,76 +19,33 @@
 			onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp');">
 
-	<div class="a4-landscape">
-		<div class="table-container">
-			<table>
-				<tr>
-					<th colspan="15" style="height:40px; font-size:24px;">基隆市選舉區 第 11 屆立法委員林沛祥罷免案提議人名冊</th>
-				</tr>
-				<tr>
-					<th rowspan="2" style="width:8%;">編<br>號</th>
-					<th colspan="10" style="width:25%; height:50px;">姓名</th>
-					<th rowspan="2" style="width:12%;">出生年月日</th>
-					<th style="width:29%;">戶籍地址</th>
-					<th rowspan="2" style="width:16%;">簽名或蓋章</th>
-					<th rowspan="2" style="width:6%;">備<br>註</th>
-				</tr>
-				<tr>
-					<th colspan="10" style="height:80px;">國民身分證<br>統一編號</th>
-					<th style="padding:4px 12px;text-align:center;">基隆市 區 里 鄰 路(街)<br> 段 巷 弄 號 樓之 </th>
-				</tr>
-				<tr>
-					<td rowspan="2" style="border-right:4px solid;"></td>
-					<td colspan="10" style="height:100px; border-top:4px solid;">{{.Name}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}}
-						年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
-					<td class="address-input" style="border-top:4px solid; border-bottom:4px solid;" rowspan="2">
-						{{.Address}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;">
-						<div class="whereToSign" style="top:324px; left:842px; width:152px; height:133px;"></div>
-					</td>
-					<td rowspan="2"></td>
-				</tr>
-				<tr>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D0}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D1}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D2}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D3}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D4}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D5}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D6}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D7}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D8}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D9}}</td>
-				</tr>
-			</table>
+		<div class="inputField center xl" style=" left: 25.2%; top: 47%;  ">
+			{{.Name}}
 		</div>
-		<div class="declaration" style="padding:0 32px 0 0;text-align:center;font-size:22px;">提議人之領銜人                                                      (簽名或蓋章)<br><br>中   華   民   國                   年                   月                   日造</div>
+		<div class="inputField center lg" style=" left: 26.1%; top: 61.5%;    letter-spacing:0.69em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center lg " style=" left: 43.5%; top: 45%; ">
+			{{.BirthYear}} 年
+		</div>
+		<div class="inputField center lg " style=" left: 43.5%; top: 50%; ">
+			{{printf "%02d" .BirthMonth}} 月
+		</div>
+		<div class="inputField center lg " style=" left: 43.5%; top: 55%; ">
+			{{printf "%02d" .BirthDate}} 日
+		</div>
+		<div class="inputField center  whiteBg" style=" left: 61.5%; top: 41.5%;  width: 26%; height: 24.5%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign" style=" left: 81.5%; top: 54%;  width: 11.5%; height: 20%;"></div>
 	</div>
-	<div class="a4-landscape">
-		<div class="a4-container">
-			<div class="consent-title">同意書</div>
-			<div class="consent-content">
-				<ol>
-					<li>相關個人資料只用於罷免基隆市選舉區第 11 屆立法委員林沛祥之用。</li>
-					<li>本人同意於中選會審查第一階段過後，接獲通知後簽署成為第二階段連署人。</li>
-				</ol>
-			</div>
-			<div class="consenter-container">
-				<div class="consenter-form-container">
-					<div class="consenter-form-group">
-						<label>同意人：</label>
-						<div class="consenter-input">
-							<div class="whereToSign aLine" style="width:280px; height:44px;"></div>
-						</div>
-					</div>
-					<div class="consenter-form-group">
-						<label>行動電話：</label>
-						<div class="consenter-input mobile-number">{{.MobileNumber}}</div>
-					</div>
-				</div>
-			</div>
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt=""> -->
+		<div class="whereToSign aLine" style=" left: 24%; top: 55%;  width: 22%; height: 10%;"></div>
+		<div class="inputField center lg" style=" left: 55%; top:53%; ">
+			{{.MobileNumber}}
 		</div>
 	</div>
 </body>
