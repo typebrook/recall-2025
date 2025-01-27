@@ -94,7 +94,7 @@ func LoadConfig() (*Config, error) {
 		"taichung-4": &Zone{"taichung-4", "臺中市第四選區", "廖偉翔", "西屯、南屯", "臺中市", true, 4},
 		"taichung-5": &Zone{"taichung-5", "臺中市第五選區", "黃健豪", "北屯、北區", "臺中市", true, 5},
 		"taichung-6": &Zone{"taichung-6", "臺中市第六選區", "羅廷瑋", "中、西、東、南", "臺中市", true, 6},
-		"taichung-8": &Zone{"taichung-8", "臺中市第八選區", "江啓臣", "豐原、石岡等 5 區", "臺中市", false, 8},
+		"taichung-8": &Zone{"taichung-8", "臺中市第八選區", "江啓臣", "豐原、石岡等 5 區", "臺中市", true, 8},
 
 		"changhua-3": &Zone{"changhua-3", "彰化縣第三選區", "謝衣鳯", "第五、第七、第八", "彰化縣", true, 3},
 
