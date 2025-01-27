@@ -1,167 +1,51 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
-  <meta charset="utf-8"/>
-  <title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.56">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.16"></script>
-	<style>
-		.a4-container {
-			width: 100%;
-			height: 100%;
-			margin-top: -16px;
-			padding: 0 16px 0 16px;
-			box-sizing: border-box;
-		}
-		.contact-info {
-			line-height: 2;
-			font-size: 18px;
-		}
-		.consent-content ol {
-			list-style-type: cjk-ideographic;
-			display: flex;
-			flex-direction: column;
-			gap: 10px;
-			line-height: 1.8;
-			margin-left: 10px;
-			font-size: 18px;
-		}
-		.consenter-container {
-			width: 100%;
-			margin: 170px 0 0 -20px;
-			box-sizing: border-box;
-			position: relative;
-		}
-		.consenter-form-container {
-			display: flex;
-			justify-content: flex-start;
-			width: 100%;
-			box-sizing: border-box;
-			gap: 18px;
-		}
-		.consenter-form-group {
-			display: flex;
-			align-items: center;
-			width: 36%;
-			box-sizing: border-box;
-		}
-		.consenter-form-group label {
-			flex: 0 0 auto;
-			white-space: nowrap;
-		}
-		.consenter-input {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			flex: 1;
-			height: 70px;
-			border: 1.5px solid;
-			text-align: center;
-		}
-		.sample-qr-container {
-			position: absolute;
-			right: -35px;
-			bottom: -26px;
-			width: 130px;
-			z-index: 999;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			font-size: 20px;
-			gap: 2px;
-		}
-		.sample-qr {
-			width: 130px;
-			height: 130px;
-		}
-		.text-arrow {
-			font-size: 16px;
-			font-weight: bold;
-		}
-	</style>
+	<meta charset="utf-8" />
+	<title>第一階段罷免連署書 - {{.Topic}}</title>
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.9">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.16"></script>
 </head>
+
 <body>
 	<div class="mask">
 		<div class="spinner"></div>
 	</div>
 	<div class="floating-btn-container">
-		<button class="floating-btn primary-btn" onclick="downloadPDF('.a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+		<button class="floating-btn primary-btn downloadBtn"
+			onclick="downloadPDF('.a4-portrait', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}');">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
-	<div id="where-to-sign"></div>
-  <div class="a4-portrait">
-		<div class="a4-container">
-  		<table>
-  		  <tr>
-  		    <th colspan="15" style="height:28px;">臺北市第三選區 中山、北松山 第 11 屆立法委員 王鴻薇 罷免案提議人名冊</th>
-  		  </tr>
-  		  <tr>
-  		    <th rowspan="2" style="width:6%;">編<br>號</th>
-  		    <th colspan="10" style="width:26%; height:30px;">姓名</th>
-  		    <th rowspan="2" style="width:10%;">出生<br>年月日</th>
-  		    <th style="width:42%;">戶籍地址</th>
-  		    <th rowspan="2" style="width:10%;">簽名<br>或<br>蓋章</th>
-  		    <th rowspan="2" style="width:6%;">備<br>註</th>
-  		  </tr>
-				<tr>
-  		    <th colspan="10">國民身分證<br>統一編號</th>
-					<th style="padding:0 8px; text-align:center;">臺北市 區 里(村) 鄰<br>路(街、道) 段 巷<br>弄 號 樓之</th>
-				</tr>
-				<tr>
-					<td rowspan="2" style="border-right:4px solid;"></td>
-					<td colspan="10" style="height:100px; border-top:4px solid;">{{.Name}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}} 年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
-					<td class="address-input" style="border-top:4px solid; border-bottom:4px solid;" rowspan="2">{{.Address}}</td>
-					<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;"><div class="whereToSign" style="top:202px; left:640px; width:56px; height:136px;"></div></td>
-	
-					<td rowspan="2"></td>
-				</tr>
-				<tr>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D0}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D1}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D2}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D3}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D4}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D5}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D6}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D7}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D8}}</td>
-					<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D9}}</td>
-				</tr>
-  		</table>
-		
-			<div class="declaration" style="padding:54px 100px 54px 0;">提議人之領銜人                                 (簽名或蓋章)<br><br>中    華    民    國             年             月            日造</div>
-
-			<div class="contact-info">
-				&#x26A0;&#xFE0F; 請以平信郵寄至台北市龍江路郵局第 27 號郵政信箱<br>
-				&#x26A0;&#xFE0F; 請務必填寫以下同意書<br>
-			</div>
-			<div class="consent-content">
-				<ol>
-					<li>本人同意提議書依據郵寄時間，將於第一階段提議連署數量達標後整理成冊，送中央選舉委員會，成為罷免立法委員王鴻薇案第一階段法定提議人。</li>
-					<li>本人同意於中央選舉委員會審查第一階段提議通過後，接到通知時，簽署成為罷免案之第二階段連署人。</li>
-					<li>相關個人資料只用於本次罷免案之用。</li>
-				</ol>
-			</div>
-			<div class="consenter-container">
-				<div class="consenter-form-container">
-					<div class="consenter-form-group">
-						<label>立書人：</label><div class="consenter-input"><div class="whereToSign" style="width:172px; height:58px"></div></div>
-					</div>
-					<div class="consenter-form-group" style="width:280px;">
-						<label>行動電話：</label><div class="consenter-input mobile-number">{{.MobileNumber}}</div>
-					</div>
-				</div>
-				<div class="sample-qr-container">
-					<label>填寫教學影片</label>
-					<span class="text-arrow">&#x2B07;</span>
-					<div class="sample-qr"><img style="width:100%; height:100%; object-fit:contain;" src="{{.BaseURL}}/assets/images/qr-{{.Stage}}-{{.Zone}}.png"></div>
-				</div>
-			</div>
+	<div class="a4-portrait " style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position_2.png" alt=""> -->
+		<div class="inputField center md" style=" left: 23.5%; top: 30%;    letter-spacing:0.48em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
 		</div>
-  </div>
+		<div class="inputField center lg" style=" left: 24%; top: 22%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center" style=" left: 38.8%; top: 22.5%;">
+			{{.BirthYear}}
+		</div>
+		<div class="inputField center" style=" left: 38.8%; top: 26%;">
+			{{.BirthMonth}}
+		</div>
+		<div class="inputField center" style=" left: 38.8%; top:29.5%;">
+			{{.BirthDate}}
+		</div>
+		<div class="inputField center whiteBg" style=" left: 61.5%; top: 17%;  width: 38.0%; height:15%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign sm" style=" left: 85.6%; top: 24.6%;  width: 6%; height: 14%;"></div>
+		<div class="whereToSign aLine" style=" left: 23.6%; top: 90.6%;  width: 22%; height: 5%;"></div>
+		<div class="inputField center lg" style=" left:60.6%; top: 89.6%; ">
+			{{.MobileNumber}}
+
+		</div>
+	</div>
 </body>
+
 </html>
