@@ -1,25 +1,14 @@
-/* html {
-	width: 1000px;
-	height: 100vw;
-} */
-
 body {
-	/* margin: 0 auto; */
 	margin: 0;
 	padding: 32px 0;
-	/* height: 100vw; */
-	/* width: 100vw; */
 	background-color: #2d2d2d;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 	box-sizing: border-box;
 	font-family: Arial, sans-serif;
 }
 
 .a4-portrait {
 	position: relative;
+	margin: 0 auto;
 	width: 210mm;
 	height: 297mm;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -39,6 +28,8 @@ body {
 
 .a4-landscape {
 	position: relative;
+	margin: 0 auto;
+
 	width: 297mm;
 	height: 210mm;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);

@@ -4,163 +4,10 @@
 <head>
 	<meta charset="utf-8" />
 	<title>第一階段罷免連署書 - {{.Topic}}</title>
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/form-common.css?v0.0.56">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.9">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.16"></script>
-	<style>
-		.text-arrow {
-			font-size: 16px;
-			font-weight: bold;
-		}
-
-		.a4-container {
-			width: 100%;
-			height: 100%;
-			padding: 16px 32px 0 32px;
-			box-sizing: border-box;
-		}
-
-		.section {
-			width: 100%;
-			display: flex;
-		}
-
-		.consent-container {
-			width: 50%;
-			padding: 16px 16px 0 32px;
-			box-sizing: border-box;
-		}
-
-		.consent-content {}
-
-		.consent-container ol {
-			list-style-type: cjk-ideographic;
-			margin-left: -8px;
-		}
-
-		.consenter-container {
-			display: flex;
-			width: 100%;
-			box-sizing: border-box;
-		}
-
-		.consenter-form-container {
-			display: flex;
-			justify-content: flex-start;
-			width: 100%;
-			box-sizing: border-box;
-			gap: 0;
-		}
-
-		.consenter-form-group {
-			display: flex;
-			justify-content: flex-start;
-			flex: 1;
-			box-sizing: border-box;
-			padding: 0 2px;
-		}
-
-		.consenter-form-group label {
-			flex: 0 0 auto;
-			margin-right: 0;
-		}
-
-		.consenter-input {
-			flex: 1;
-			border-bottom: 6px solid;
-			text-align: center;
-		}
-
-		.information-container {
-			width: 50%;
-			padding: 16px 0 0 0;
-			box-sizing: border-box;
-			position: relative;
-		}
-
-		.handover-container {
-			width: 80%;
-			border: 4px outset;
-			padding-left: 4px;
-		}
-
-		.handover-title {
-			text-align: center;
-			font-size: 24px;
-		}
-
-		.handover-content {
-			line-height: 1.8;
-		}
-
-		.sample-qr-container {
-			position: absolute;
-			right: 10px;
-			top: 4px;
-			width: 110px;
-			height: 100%;
-			z-index: 1000;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			flex-direction: column;
-			font-size: 11px;
-			gap: 4px;
-		}
-
-		.sample-qr {
-			width: 110px;
-			height: 110px;
-		}
-
-		.warning-container {
-			margin-top: 16px;
-		}
-
-		.warning-left-container {
-			width: 50%;
-			box-sizing: border-box;
-		}
-
-		.warning-right-container {
-			width: 50%;
-			padding: 16px 0 0 0;
-			box-sizing: border-box;
-		}
-
-		.warning-title-container {
-			display: inline-block;
-			border-bottom: 3px solid;
-			margin: auto auto auto 26px;
-			padding: 0 4px;
-		}
-
-		.warning-title {
-			background-color: #d6d6d6;
-			padding: 2px 8px;
-			border-radius: 6px;
-			font-size: 17px;
-		}
-
-		.warning-container ul {
-			list-style: none;
-			font-size: 14px;
-			padding: 0;
-			margin: 0;
-			display: flex;
-			flex-direction: column;
-			gap: 4px;
-		}
-
-		.warning-left-container ul {
-			margin: 6px 0 0 24px;
-		}
-
-		.warning-container ul li::before {
-			content: "※ ";
-		}
-	</style>
 </head>
 
 <body>
@@ -168,128 +15,35 @@
 		<div class="spinner"></div>
 	</div>
 	<div class="floating-btn-container">
-		<button class="floating-btn primary-btn"
-			onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+		<button class="floating-btn primary-btn downloadBtn"
+			onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}');">確認下載</button>
 		<a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
 	</div>
-	<div id="where-to-sign"></div>
-	<div class="a4-landscape">
-		<div class="a4-container">
-			<div class="section">
-				<div class="consent-container">
-					<div class="consent-content">
-						<div style="text-decoration:underline 2px; font-size:18px;">同 意 書</div>
-						<ol>
-							<li>提議人名冊及本同意書中填寫的所有資料，僅做為<br>預計 2025 年 2 月後啟動之立法委員李彥秀罷免案使用。</li>
-							<li>本人同意在中選會審查第一階段通過後，<br>願接獲手機簡訊通知，提醒連署第二階段連署書。</li>
-						</ol>
-					</div>
-					<div class="consenter-container">
-						<div class="consenter-form-container">
-							<div class="consenter-form-group">
-								<label>同意人：</label>
-								<div class="consenter-input">
-									<div class="whereToSign" style="top:185px; left:147px; width:160px; height:33px;">
-									</div>
-								</div>
-							</div>
-							<div class="consenter-form-group">
-								<label>行動電話：</label>
-								<div class="consenter-input mobile-number">{{.MobileNumber}}</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="information-container">
-					<div class="handover-container">
-						<div class="handover-title"> 【 繳交 】</div>
-						<div class="handover-content">
-							方法 1. 簽署站 <span class="text-arrow">➔</span> 交給身穿除銹背心的志工<br>
-							方法 2. 收件點 <span class="text-arrow">➔</span> 官方公告之店家代收<br>
-							方法 3. 郵寄至 <span class="text-arrow">➔</span> <b>內湖文德郵局 第 151-111 號信箱</b><br>
-							快收專線：<b>0916-172-156</b> 滿 3 張可收件，每日 10~20 點
-						</div>
-					</div>
-					<div class="sample-qr-container">
-						<div class="sample-qr"><img style="width:100%; height:100%; object-fit:contain;"
-								src="{{.BaseURL}}/assets/images/qr-{{.Stage}}-{{.Zone}}.png"></div>
-						<label>填寫範例</label>
-					</div>
-				</div>
-			</div>
-
-			<div class="section warning-container">
-				<div class="warning-left-container">
-					<div class="warning-title-container">
-						<div class="warning-title"><b>提筆就寫，等於白填！</b>不看注意事項的錯誤率高達 74%</div>
-					</div>
-					<ul>
-						<li>只填「粗框線」內的欄位，其他勿填。</li>
-						<li>請對照身份證地址，「<b>二段</b>」不能寫成「2段」，「<b>二樓</b>」不能寫成「2樓」</li>
-						<li>出生年份，請寫<b>民國年</b>；簽名欄，<b>簽名或蓋章擇一</b>。</li>
-					</ul>
-				</div>
-				<div class="warning-right-container">
-					<ul>
-						<li>資料與簽名<b>正楷工整</b>，勿潦草，<b>不能有任何簡體字與簡略筆劃</b>。</li>
-						<li>請將每一個字填在各別的「<b>格子內</b>」，勿超出任何粗細格線。</li>
-						<li>請用黑/藍色原子筆書寫。<b>不能塗改</b>，寫錯請換一張。</li>
-						<li>擁有南港或內湖戶籍<b>四個月</b>以上。軍公教人員第一階段不能簽提議。</li>
-					</ul>
-				</div>
-			</div>
-
-			<div style="border-bottom: 3px dotted black; margin: 8px 72px 0 32px;"></div>
-
-			<div style="padding:30px 30px;">
-				<table>
-					<tr>
-						<th colspan="15" style="height:32px; font-size:20px; font-weight:700;">臺北市第四選舉區內湖、南港區 第 11
-							屆立法委員李彥秀罷免案 提議人名冊</th>
-					</tr>
-					<tr>
-						<th rowspan="2" style="width:6%;">編<br>號</th>
-						<th colspan="10" style="width:30%;">姓名</th>
-						<th rowspan="2" style="width:7%;">出生<br>日期</th>
-						<th rowspan="2" style="width:34%;">戶籍地址</th>
-						<th rowspan="2" style="width:17%;">簽名 (正楷親簽)<br>或蓋章</th>
-						<th rowspan="2" style="width:6%;">備<br>註</th>
-					</tr>
-					<tr>
-						<th colspan="10" style="height:35px;">國民身分證統一編號</th>
-					</tr>
-					<tr>
-						<td rowspan="2" style="border-right:4px solid;"></td>
-						<td colspan="10" style="height:50px; border-top:4px solid;">{{.Name}}</td>
-						<td rowspan="2" style="border-top:4px solid; border-bottom:4px solid;">{{.BirthYear}}
-							年<br>{{.BirthMonth}} 月<br>{{.BirthDate}} 日</td>
-						<td class="address-input" style=" border-top:4px solid; border-bottom:4px solid;" rowspan="2">
-							{{.Address}}</td>
-						<td rowspan="2" style="border-top:4px solid; border-right:4px solid; border-bottom:4px solid;">
-							<div class="whereToSign" style="top:520px; left:828px; width:149px; height:86px;"></div>
-						</td>
-						<td rowspan="2"></td>
-					</tr>
-					<tr>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D0}}</td>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D1}}</td>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D2}}</td>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D3}}</td>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D4}}</td>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D5}}</td>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D6}}</td>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D7}}</td>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D8}}</td>
-						<td class="idnumber" style="border-bottom:4px solid;">{{.IdNumber.D9}}</td>
-					</tr>
-				</table>
-			</div>
-			<div class="declaration" style="padding:0 50px 0 0;text-align:right;">提議人之領銜人：<span
-					style="padding-right: 150px;"></span> <br><br>中華民國<span style="padding-right: 36px;"></span>年<span
-					style="padding-right: 36px;"></span>月<span style="padding-right: 36px;"></span>日<span
-					style="padding-right: 8px;"></span>造</div>
+	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp');">
+		<!-- <img class="printBackground" src="{{.BaseURL}}/assets/images/position.png" alt=""> -->
+		<div class="whereToSign aLine sm" style=" left: 20.4%; top: 25%;  width: 12%; height: 3.5%;"></div>
+		<div class="inputField center " style=" left: 42%; top: 25%;  ">
+			{{.MobileNumber}}
 		</div>
+		<div class="inputField center lg" style=" left: 26.5%; top: 75%;    letter-spacing:0.68em">
+			{{.IdNumber.D0}}{{.IdNumber.D1}}{{.IdNumber.D2}}{{.IdNumber.D3}}{{.IdNumber.D4}}{{.IdNumber.D5}}{{.IdNumber.D6}}{{.IdNumber.D7}}{{.IdNumber.D8}}{{.IdNumber.D9}}
+		</div>
+		<div class="inputField center xl" style=" left: 27%; top: 66.5%;  ">
+			{{.Name}}
+		</div>
+		<div class="inputField center md" style=" left:41%; top: 66.8%; ">
+			{{.BirthYear}}
+		</div>
+		<div class="inputField center md" style=" left:41%; top: 71.1%; ">
+			{{.BirthMonth}}
+		</div>
+		<div class="inputField center md" style=" left:41%; top: 75.4%; ">
+			{{.BirthDate}}
+		</div>
+		<div class="inputField center sm whiteBg" style=" left: 58.4%; top: 67%;  width: 27.8%; height: 12%;">
+			{{.Address}}
+		</div>
+		<div class="whereToSign" style=" left: 79.5%; top: 72.5%;  width: 12%; height: 12%;"></div>
 	</div>
 </body>
 
