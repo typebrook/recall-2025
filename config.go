@@ -40,6 +40,7 @@ type Config struct {
 	TurnstileSecretKey string
 	Zones              map[string]*Zone
 	Areas              []*Area
+	Filter             map[string]map[string]map[string]string
 }
 
 func LoadConfig() (*Config, error) {
@@ -127,10 +128,19 @@ func LoadConfig() (*Config, error) {
 
 		"kinmen-1": &Zone{"kinmen-1", "金門縣選區", "陳玉珍", "金門", "金門縣", true, 1},
 
-		//"lienchiang-1": &Zone{"lienchiang-1", "連江縣選區", "陳雪生", "連江", "連江縣", false, 1},
+		"lienchiang-1": &Zone{"lienchiang-1", "連江縣選區", "陳雪生", "連江", "連江縣", false, 1},
 	}
 
 	cfg.Areas = cfg.ToAreas()
+
+	data, err := os.ReadFile("assets/candidate-areas-mapping.json")
+	if err != nil {
+		return nil, err
+	}
+
+	if err := json.Unmarshal(data, &cfg.Filter); err != nil {
+		return nil, err
+	}
 
 	return cfg, nil
 }

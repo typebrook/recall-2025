@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
@@ -104,4 +106,12 @@ func convertLargeNumber(num string) string {
 		return result
 	}
 	return ""
+}
+
+func PrintStructWithJSON(strc interface{}) {
+	jsonData, err := json.MarshalIndent(strc, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(jsonData))
 }
