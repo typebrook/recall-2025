@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阻止失能暴衝的立院, 我們需要你！</title>
 	<meta name="description" content="不討論就表決，邊撤案邊修正，毀壞憲政體制的立院你還看得下去嗎？你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎? 身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css">
+	
 	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.148">
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.17"></script>
+
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.16"></script>
 </head>
 <body>
   <div class="banner">
@@ -15,8 +18,57 @@
     	<div class="content-text">不討論就表決，邊撤案邊修正，毀壞憲政體制的立院你還看得下去嗎？<br>你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎? 身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！</div>
 		</div>
   </div>
-  <div class="section candidates">
-    <h2>確認『戶籍所屬選區』找出你能罷免的立委</h2>
+  <div class="section candidates mt-md  mt-sm-xs">
+	<div class="zone-filters-container">
+		<h2>輸入戶籍地，<br>找出您有權罷免的立委</h2>
+		<div class="filters pb-sm">
+			<div class="row">
+				<div class="col-6 col-xs-12">
+					<select id="filter-city">
+						<option value="" disabled selected>縣市</option>
+						{{range $a := .Areas}}
+						<option value="{{$a.Name}}">{{$a.Name}}</option>
+						{{end}}
+					</select>
+				</div>
+				<div class="col-6 col-xs-12">
+					<select id="filter-zone">
+						<option value=""  disabled selected>行政區</option>
+						{{range $a := .Areas}}
+						<option value="{{$a.Name}}">{{$a.Name}}</option>
+						{{end}}
+					</select>
+				</div>
+				<div class="col-12">
+					<select id="filter-village">
+						<option value=""  disabled selected>鄉里名</option>
+						{{range $a := .Areas}}
+						<option value="{{$a.Name}}">{{$a.Name}}</option>
+						{{end}}
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="filtered-candidate-container">
+			<div class="candidate">
+				<div class="candidate-name">羅智強</div>
+				<div class="candidate-zone">台北第1選區 (大安/信義)</div>
+			</div>
+			<a href=".BaseURL/stage-1/$z.ZoneCode"><button class="btn-primary lg w100">連署罷免</button></a>
+		</div>
+		<div class="filtered-candidate-container safe">
+			<div class="candidate">
+				<div class="candidate-name">您選區的立委不在本次活動範圍</div>
+				<div class="candidate-zone">但我們也需要您的力量，幫忙分享資訊讓更多人參與!</div>
+			</div>
+			<a href=".BaseURL/stage-1/$z.ZoneCode"><button class="btn-black lg w100">幫忙分享資訊!</button></a>
+		</div>
+	</div>
+	
+
+	
+    <!-- <h2>確認『戶籍所屬選區』找出你能罷免的立委</h2> -->
+    <h2 class="mt-lg">全台罷免對象一覽</h2>
 		<ul>
 			{{range $a := .Areas }}
 			<li class="city-row">
@@ -33,7 +85,7 @@
 							</div>
 							<div class="candidate-action">
 								{{if $z.Deployed}}
-								<a href="{{$.BaseURL}}/stage-1/{{$z.ZoneCode}}"><button>連署罷免</button></a>
+								<a href="{{$.BaseURL}}/stage-1/{{$z.ZoneCode}}"><button class="btn-primary">連署罷免</button></a>
 								{{else}}
 								<div style="color:#aaaaaa;">趕工中</div>
 								{{end}}

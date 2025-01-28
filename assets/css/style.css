@@ -55,22 +55,38 @@ body {
 ******************************************/
 
 
+:root {
+	/* --pri-color: #eae587; */
+	--pri-color: #00FF9C;
+	--pri-color-hover:#00cc7a;
+	--sec-color: #2d2d2d
+	--ter-color: #f2f2ee;
+
+	--disable-color: #e5e5e5;
+	--bg-color: #F4F5F5;
+
+	--aug-color: #E5E5E5;
+	--text-color: #2D2D2D;
+	/* --warn-color: #EA0F0F; */
+}
+
 
 
 
 h2 {
+	width: 100%;
+	font-size: 20px;
+	font-weight: bold;
 	padding: 32px 0;
 	margin: 0 auto;
 	text-align: center;
 }
 
-h2 {
-	width: 100%;
-	font-size: 16px;
-	font-weight: bold;
+/* h2 {
+
 	text-align: center;
 }
-
+ */
 
 
 
@@ -96,6 +112,57 @@ h2 {
 	padding: 4px 0;
 }
 
+
+
+/* *************************************
+
+	Button
+
+**************************************** */
+
+button{
+	border: none;
+	border-radius: 100px;
+	padding: 8px 16px;
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: 600;
+	transition: 0.3s;
+}
+
+button.lg{
+	font-size: 17px;
+	padding: 12px 24px;
+}
+button.w100{
+	width: 100%;
+}
+
+button.btn-primary {
+	background-color: var(--pri-color);
+}
+button.btn-primary:hover {
+	background-color: var(--pri-color-hover);
+	opacity: 0.9;
+}
+button.btn-secondary {
+	color: #2d2d2d;
+	background-color: #e5e5e5;
+}
+
+button.btn-secondary:hover {
+	background-color: #cccccc;
+	opacity: 0.9;
+}
+
+button.btn-black {
+	background-color: #000;
+	color: #fff;
+}
+
+button.btn-black:hover {
+	opacity: 0.8;
+}
 
 
 /* *************************************
@@ -190,20 +257,6 @@ h2 {
 
 .candidate-action {
 	text-align: right;
-}
-
-.candidate-action a button {
-	background-color: #00ff9c;
-	border: none;
-	border-radius: 100px;
-	padding: 8px 16px;
-	cursor: pointer;
-	font-size: 14px;
-}
-
-.candidate-action a button:hover {
-	background-color: #00cc7a;
-	opacity: 0.9;
 }
 
 
@@ -314,6 +367,17 @@ h2 {
 	width: fit-content;
 }
 
+
+
+
+
+
+
+/* *************************************
+
+	form
+
+**************************************** */
 .fill-form .form-group {
 	display: flex;
 	flex-direction: column;
@@ -356,6 +420,15 @@ h2 {
 	text-align: left;
 }
 
+
+
+/* *************************************
+
+	popout
+
+**************************************** */
+
+
 #popout {
 	position: fixed;
 	bottom: 20px;
@@ -389,6 +462,9 @@ h2 {
 	cursor: pointer;
 }
 
+
+
+
 .goback-icon {
 	display: inline-block;
 	width: 24px;
@@ -398,6 +474,8 @@ h2 {
 	background-repeat: no-repeat;
 	background-position: center;
 }
+
+
 
 .copy-icon {
 	display: inline-block;
@@ -467,43 +545,6 @@ h2 {
 	padding: 16px;
 }
 
-.wide-btn-primary {
-	width: 100%;
-	border: none;
-	border-radius: 100px;
-	font-size: 16px;
-	color: #2d2d2d;
-	padding: 16px;
-	text-align: center;
-	background-color: #00ff9c;
-	cursor: pointer;
-	display: block;
-	margin: 0 auto 16px auto;
-}
-
-.wide-btn-primary:hover {
-	background-color: #00cc7a;
-	opacity: 0.9;
-}
-
-.wide-btn-secondary {
-	width: 100%;
-	border: none;
-	border-radius: 100px;
-	font-size: 16px;
-	color: #2d2d2d;
-	padding: 16px;
-	text-align: center;
-	background-color: #e5e5e5;
-	cursor: pointer;
-	display: block;
-	margin: 0 auto 16px auto;
-}
-
-.wide-btn-secondary:hover {
-	background-color: #cccccc;
-	opacity: 0.9;
-}
 
 .browser-warning-container {
 	display: none;
@@ -531,3 +572,83 @@ h2 {
 	line-height: 1.8;
 	color: #888888;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* *************************************
+
+	filter
+
+**************************************** */
+
+.filters{
+	margin: 8px;
+	border-bottom: 1px solid var(--aug-color);
+}
+.filters .row>div{
+	padding: 12px;
+}
+.filters select{
+	width: 100%;
+	height: 60px;
+	padding: 8px 12px;
+	font-size: 16px;
+	border: 1px solid var(--aug-color);
+	border-radius: 6px;
+	appearance: none; /* 移除原生樣式 */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+/* 自定義下拉箭頭 */
+.filters .row>div::after {
+    content: "keyboard_arrow_down";
+	font-family: 'Material Symbols Outlined';
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 18px;
+    color: #666;
+}
+
+
+
+
+/* *************************************
+
+	zone-filters
+
+**************************************** */
+
+
+.zone-filters-container{
+	background-color: var(--bg-color);
+	border-radius: 12px;
+	padding: 24px;
+}
+.filtered-candidate-container{
+	padding: 24px;
+}
+.filtered-candidate-container>.candidate{
+	background-color: #fff;
+	padding: 36px;
+	border-radius: 12px;
+	margin-bottom: 24px;
+}
+
+.filtered-candidate-container.safe>.candidate{
+	background-color: #ffffff00;
+}
+
