@@ -314,6 +314,7 @@
 			filteredZoneName.innerText = zoneCandidates[zoneCode].zoneName;
 			filteredGoto.setAttribute('href', stage1PathPrefix + "/" + zoneCode + "?addressPrefix=" + addressPrefix);
 			filteredCandidateContainer.style.display = "block";
+			filteredCandidateContainer.scrollIntoView({behavior: "smooth"});
 		}
 	</script>
 </body>
