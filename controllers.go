@@ -83,11 +83,20 @@ func (ctrl Controller) SearchZone() gin.HandlerFunc {
 				options[i] = k
 				i += 1
 			}
-			sort.Slice(options, func(i, j int) bool {
-				return options[i] < options[j]
-			})
 
-			c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{options, ""}})
+			if options[0] == "" {
+				if zoneCode, exists := wards[""]; !exists {
+					c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+				} else {
+					c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{[]string{}, zoneCode}})
+				}
+			} else {
+				sort.Slice(options, func(i, j int) bool {
+					return options[i] < options[j]
+				})
+
+				c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{options, ""}})
+			}
 			return
 		}
 
