@@ -39,7 +39,7 @@ body.white {
 	background-color: #fff
 }
 
-a > button{
+a:has(button){
 	text-decoration: none;
 	color: var(--text-color)
 }
