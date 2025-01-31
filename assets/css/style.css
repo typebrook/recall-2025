@@ -11,10 +11,6 @@
 	box-sizing: border-box;
 }
 
-a {
-	text-decoration: none;
-}
-
 ul {
 	list-style: none;
 	padding: 0;
@@ -67,6 +63,7 @@ body {
 
 	--aug-color: #E5E5E5;
 	--text-color: #2D2D2D;
+	--link-color: initial;
 	/* --warn-color: #EA0F0F; */
 }
 
@@ -606,21 +603,20 @@ button.btn-black:hover {
 	font-size: 16px;
 	border: 1px solid var(--aug-color);
 	border-radius: 6px;
-	appearance: none; /* 移除原生樣式 */
+	appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
 }
-/* 自定義下拉箭頭 */
 .filters .row>div::after {
-    content: "keyboard_arrow_down";
+	content: "keyboard_arrow_down";
 	font-family: 'Material Symbols Outlined';
-    position: absolute;
-    top: 50%;
-    right: 24px;
-    transform: translateY(-50%);
-    pointer-events: none;
-    font-size: 18px;
-    color: #666;
+	position: absolute;
+	top: 50%;
+	right: 24px;
+	transform: translateY(-50%);
+	pointer-events: none;
+	font-size: 18px;
+	color: #666;
 }
 
 
@@ -631,8 +627,6 @@ button.btn-black:hover {
 	zone-filters
 
 **************************************** */
-
-
 .zone-filters-container{
 	background-color: var(--bg-color);
 	border-radius: 12px;
@@ -643,12 +637,19 @@ button.btn-black:hover {
 }
 .filtered-candidate-container>.candidate{
 	background-color: #fff;
-	padding: 36px;
+	padding: 24px;
 	border-radius: 12px;
-	margin-bottom: 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
 .filtered-candidate-container.safe>.candidate{
 	background-color: #ffffff00;
 }
 
+.filtered-candidate-container button {
+  margin-top: 24px;
+  display: block;
+  width: 100%;
+}

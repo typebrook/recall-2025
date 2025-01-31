@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
+	"sort"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -23,10 +25,96 @@ func NewController(cfg *Config) *Controller {
 func (ctrl Controller) Home() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home.html", gin.H{
-			"BaseURL": ctrl.AppBaseURL.String(),
-			"Areas":   ctrl.Areas,
+			"BaseURL":        ctrl.AppBaseURL.String(),
+			"Areas":          ctrl.Areas,
+			"ZoneCandidates": template.JS(ctrl.ZoneCandidates),
 		})
 	}
+}
+
+func (ctrl Controller) SearchZone() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		qp := RequestQuerySearchZone{}
+		if err := c.ShouldBindQuery(&qp); err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, RespSearchZone{http.StatusText(http.StatusBadRequest), nil})
+			return
+		}
+
+		districts, exists := ctrl.AreaFilter[qp.Municipality]
+		if !exists {
+			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+			return
+		}
+
+		if qp.District == nil {
+			options := make([]string, len(districts))
+			i := 0
+			for k := range districts {
+				options[i] = k
+				i += 1
+			}
+
+			if options[0] == "" {
+				if zoneCode, exists := districts[""][""]; !exists {
+					c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+				} else {
+					c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{[]string{}, zoneCode}})
+				}
+			} else {
+				sort.Slice(options, func(i, j int) bool {
+					return options[i] < options[j]
+				})
+
+				c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{options, ""}})
+			}
+			return
+		}
+
+		wards, exists := districts[*qp.District]
+		if !exists {
+			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+			return
+		}
+
+		if qp.Ward == nil {
+			options := make([]string, len(wards))
+			i := 0
+			for k := range wards {
+				options[i] = k
+				i += 1
+			}
+			sort.Slice(options, func(i, j int) bool {
+				return options[i] < options[j]
+			})
+
+			c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{options, ""}})
+			return
+		}
+
+		zoneCode, exists := wards[*qp.Ward]
+		if !exists {
+			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+			return
+		}
+
+		c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{[]string{}, zoneCode}})
+	}
+}
+
+type RequestQuerySearchZone struct {
+	Municipality string  `form:"municipality"`
+	District     *string `form:"district"`
+	Ward         *string `form:"ward"`
+}
+
+type RespSearchZone struct {
+	Message string            `json:"message"`
+	Result  *ResultSearchZone `json:"result,omitempty"`
+}
+
+type ResultSearchZone struct {
+	Options  []string `json:"options"`
+	ZoneCode string   `json:"zoneCode"`
 }
 
 func (ctrl Controller) FillForm() gin.HandlerFunc {
