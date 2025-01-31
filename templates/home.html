@@ -262,7 +262,7 @@
 				sendAjaxRequest(municipalitiesSelect.value, null, null)
 					.then(data => {
 						if (data.result.zoneCode !== "") {
-							showFilteredCandidateContainer(data.result.zoneCode)
+							showFilteredCandidateContainer(data.result.zoneCode, municipalitiesSelect.value)
 						} else if (data.result.options.length > 0) {
 							populateOptions(districtsSelect, data.result.options);
 						}
@@ -277,7 +277,7 @@
 				sendAjaxRequest(municipalitiesSelect.value, districtsSelect.value, null)
 					.then(data => {
 						if (data.result.zoneCode !== "") {
-							showFilteredCandidateContainer(data.result.zoneCode)
+							showFilteredCandidateContainer(data.result.zoneCode, municipalitiesSelect.value, districtsSelect.value)
 						} else if (data.result.options.length > 0) {
 							populateOptions(wardsSelect, data.result.options);
 						}
@@ -290,7 +290,7 @@
 				sendAjaxRequest(municipalitiesSelect.value, districtsSelect.value, wardsSelect.value)
 					.then(data => {
 						if (data.result.zoneCode !== "") {
-							showFilteredCandidateContainer(data.result.zoneCode)
+							showFilteredCandidateContainer(data.result.zoneCode, municipalitiesSelect.value, districtsSelect.value, wardsSelect.value)
 						} else {
 							console.error("invalid ward");
 						}
@@ -299,10 +299,20 @@
 			});
 		});
 
-		function showFilteredCandidateContainer(zoneCode) {
+		function showFilteredCandidateContainer(zoneCode, municipality, district, ward) {
+			let addressPrefix = "";
+			if (municipality !== null && municipality !== undefined) {
+				addressPrefix += municipality;
+			}
+			if (district !== null && district !== undefined) {
+				addressPrefix += district;
+			}
+			if (ward !== null && ward !== undefined) {
+				addressPrefix += ward;
+			}
 			filteredCandidateName.innerText = zoneCandidates[zoneCode].candidateName;
 			filteredZoneName.innerText = zoneCandidates[zoneCode].zoneName;
-			filteredGoto.setAttribute('href', stage1PathPrefix + "/" + zoneCode)  
+			filteredGoto.setAttribute('href', stage1PathPrefix + "/" + zoneCode + "?addressPrefix=" + addressPrefix);
 			filteredCandidateContainer.style.display = "block";
 		}
 	</script>

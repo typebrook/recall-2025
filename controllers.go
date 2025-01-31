@@ -132,6 +132,11 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 			return
 		}
 
+		addressPrefix := c.Query("addressPrefix")
+		if addressPrefix == "" {
+			addressPrefix = z.AddressPrefix
+		}
+
 		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
 
 		c.HTML(http.StatusOK, "fill-form.html", gin.H{
@@ -142,7 +147,7 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 			"CandidateName":    z.CandidateName,
 			"Stage":            stage,
 			"BaseURL":          ctrl.AppBaseURL.String(),
-			"AddressPrefix":    z.AddressPrefix,
+			"AddressPrefix":    addressPrefix,
 			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
 			"MaxBirthDate":     twentyYearsAgo,
 		})
