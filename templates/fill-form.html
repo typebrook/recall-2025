@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>阻止失能暴衝的立院, 我們需要你！</title>
 	<meta name="description" content="{{.Topic}}">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.151">
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.154">
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.17"></script>
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -15,8 +15,7 @@
 			您使用的瀏覽器無法下載連署書
 		</div>
 		<div class="browser-warning-content">
-			您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。請於右上或右下功能按鈕，點選「以預設 (外部) 瀏覽器開啟」，<br>
-			或<a class="hyperlink-style" onclick="copyCurrentLink()">複製連結<div class="copy-icon"></div></a>後至其他瀏覽器開啟。
+			您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。請於右上或右下功能按鈕，點選「以預設 (外部) 瀏覽器開啟」，或<a class="hyperlink-style" onclick="copyCurrentLink()">複製連結<div class="copy-icon"></div></a>後至其他瀏覽器開啟。
 		</div>
 	</div>
   <div class="banner">
@@ -118,7 +117,7 @@
 			const isLine = userAgent.toLowerCase().includes("line");
 			const isMessenger = userAgent.toLowerCase().includes("fbav") || userAgent.toLowerCase().includes("messenger");
 			const isWhatsApp = userAgent.toLowerCase().includes("whatsapp");
-			const isThreads = userAgent.toLowerCase().includes("threads");
+			const isThreads = userAgent.toLowerCase().includes("barcelona");
 			const isWeChat = userAgent.toLowerCase().includes("micromessenger");
 
 			if (isLine || isMessenger || isWhatsApp || isThreads || isWeChat ) {
