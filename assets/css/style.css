@@ -544,17 +544,15 @@ button.btn-black:hover {
 
 
 .browser-warning-container {
+	display: none;
 	position: fixed;
 	bottom: 0;
 	left: 0;
 	width: 100%;
 	background-color: #fff8dc;
 	box-shadow: 0 -6px 15px rgba(0, 0, 0, 0.3), 0 -10px 25px rgba(0, 0, 0, 0.2);
-	justify-content: center;
-	align-items: center;
 	z-index: 1000;
 
-  display: flex;
   flex-direction: column; 
   justify-content: center; 
   align-items: center;
@@ -564,7 +562,7 @@ button.btn-black:hover {
 .browser-waring-title {
 	text-align: center;
 	font-weight: 700;
-	padding: 32px 0;
+	padding: 32px 0 16px 0;
 }
 
 .browser-warning-content {
