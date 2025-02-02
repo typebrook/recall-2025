@@ -69,7 +69,6 @@ body {
 
 
 
-
 h2 {
 	width: 100%;
 	font-size: 20px;
@@ -79,13 +78,13 @@ h2 {
 	text-align: center;
 }
 
-/* h2 {
 
-	text-align: center;
+h6 {
+	font-size: 12px;
+	color: #888888;
+	font-weight: 400;
+	letter-spacing: 0.05em;
 }
- */
-
-
 
 
 .primary {
@@ -160,6 +159,21 @@ button.btn-black {
 button.btn-black:hover {
 	opacity: 0.8;
 }
+
+
+
+.floating-btn-container {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background-color: #fff;
+	box-shadow: 0 -2px 0 #E5E5E5, 0 -2px 16px #0000000f;
+	margin: 0;
+	padding: 12px;
+	z-index: 1000;
+}
+
+
 
 
 /* *************************************

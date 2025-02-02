@@ -15,6 +15,9 @@
 {{ define "preview-head" }}
   <meta charset="utf-8" />
   <title>第一階段罷免連署書 - {{.Topic}}</title>
+	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.2">
+
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.157">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.10">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -23,10 +26,24 @@
 {{ end }}
 
 {{ define "preview-control-panel" }}
-  <div class="floating-btn-container">
-    <button class="floating-btn primary-btn" onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
-    <a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="floating-btn secondary-btn">返回重填</button></a>
+
+  <div class="floating-btn-container row flex-jus-c">
+    <div class="col-3 col-md-5 col-sm-12 mr-md mr-xs-0 text-xs-center ">
+      <h6>
+        請檢查「姓名」「身分證字號」「出生年月日」與「戶籍地址」皆與身分證上的文字完全相同
+      </h6>
+    </div>
+    <div class="col-4 col-md-6 col-sm-12 row flex-align-c ">
+      <div class="col-6">
+        <button class="btn-primary lg w100"
+          onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+      </div>
+      <div class="col-6">
+        <a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="btn-secondary lg  w100">返回重填</button></a>
+      </div>
+    </div>
   </div>
+
 {{ end }}
 
 {{ define "mask" }}
