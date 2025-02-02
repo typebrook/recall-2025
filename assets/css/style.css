@@ -59,7 +59,7 @@ body {
 	--ter-color: #f2f2ee;
 
 	--disable-color: #e5e5e5;
-	--bg-color: #F4F5F5;
+	--bg-color: #ffffff;
 
 	--aug-color: #E5E5E5;
 	--text-color: #2D2D2D;
@@ -184,6 +184,13 @@ button.btn-black:hover {
 	font-size: 16px;
 }
 
+.candidates {
+	padding: 32px 16px 32px 16px;
+}
+
+.candidates h2 {
+	font-size: 20px;
+}
 
 .candidates ul {
 	list-style: none;
@@ -266,7 +273,7 @@ button.btn-black:hover {
 **************************************** */
 
 .footer {
-	background-color: #F4F5F5;
+	background-color: #f4f5f5;
 	color: #888888;
 }
 
@@ -308,6 +315,10 @@ button.btn-black:hover {
 	align-items: center;
 	justify-content: center;
 	line-height: 1.8;
+}
+
+.faq {
+	padding: 32px 16px 64px 16px;
 }
 
 .faq ul {
@@ -593,8 +604,10 @@ button.btn-black:hover {
 **************************************** */
 
 .filters{
-	margin: 8px;
 	border-bottom: 1px solid var(--aug-color);
+}
+.filters h2 {
+ padding: 0 0 24px 0;
 }
 .filters .row>div{
 	padding: 12px;
@@ -631,9 +644,9 @@ button.btn-black:hover {
 
 **************************************** */
 .zone-filters-container{
-	background-color: var(--bg-color);
+	background-color: #f4f5f5;
+	padding: 32px 24px 32px 24px;
 	border-radius: 12px;
-	padding: 24px;
 }
 .filtered-candidate-container{
 	padding: 24px;
