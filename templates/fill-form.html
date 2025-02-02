@@ -25,7 +25,7 @@
   </div>
 	<div class="section fill-form">
 		<h2>請拿出國民身分證填寫以下資訊</h2>
-		<form action="{{.BaseURL}}/{{.Stage}}/{{.ZoneCode}}/preview" id="recall-form" method="post" onsubmit="combineBirthDate()">
+		<form action="{{.BaseURL}}/{{.Stage}}/{{.ZoneCode}}/preview" id="recall-form" method="post">
   	  <div class="form-group">
   	    <label for="name">姓名</label>
 				<div class="input-group">
@@ -35,7 +35,7 @@
   	  <div class="form-group">
   	    <label for="id-number">身分證字號</label>
 				<div class="input-group">
-  	    	<input type="text" id="id-number" name="id-number" pattern="^[A-Z][1-2]\d{8}$" required>
+  	    	<input type="text" id="id-number" name="id-number" required>
   	  	</div>
   	  </div>
   	  <div class="form-group birth-date">
@@ -154,20 +154,23 @@
 	</div>
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
 	<script>
-    const form = document.getElementById("recall-form");
-    const idInput = document.getElementById("id-number");
+		const submitButton = document.querySelector("button[type='submit']");
+		const idInput = document.getElementById("id-number");
+
 		idInput.addEventListener("input", () => {
 			idInput.setCustomValidity("");
 		});
 
-		form.addEventListener("submit", (event) => {
-      const idValue = idInput.value;
-      if (!isValidIdNumber(idValue)) {
-        idInput.setCustomValidity("請輸入合法的身分證字號");
-        idInput.reportValidity();
-        event.preventDefault();
-      }
-    });
+		submitButton.addEventListener("click", (event) => {
+			idInput.setCustomValidity("");
+			if (!isValidIdNumber(idInput.value)) {
+				idInput.setCustomValidity("請輸入合法的身分證字號");
+
+				idInput.focus();
+				setTimeout(() => idInput.reportValidity(), 600);
+			}
+		});
+
 
 		(function() {
 			const userAgent = navigator.userAgent || navigator.vendor || window.opera;

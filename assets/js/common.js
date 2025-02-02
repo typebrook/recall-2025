@@ -79,9 +79,10 @@ async function copyInnerText(containerSelector) {
 		});
 }
 function isValidIdNumber(idNumber) {
-	if (idNumber.length !== 10) {
+	if (!/^[A-Z][12]\d{8}$/.test(idNumber)) {
 		return false;
 	}
+
 
 	const letterMap = {
 		A: 10, B: 11, C: 12, D: 13, E: 14,
@@ -93,11 +94,12 @@ function isValidIdNumber(idNumber) {
 	};
 
 	const firstLetter = idNumber[0];
-	if (!letterMap[firstLetter]) {
+	const firstDigit = letterMap[firstLetter];
+
+	if (!firstDigit) {
 		return false;
 	}
 
-	const firstDigit = letterMap[firstLetter];
 	const digits = [
 		Math.floor(firstDigit / 10),
 		firstDigit % 10,
