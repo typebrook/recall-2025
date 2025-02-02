@@ -42,6 +42,7 @@ type Config struct {
 	Areas              []*Area
 	AreaFilter         map[string]map[string]map[string]string
 	ZoneCandidates     []byte
+	DisallowPaths      []string
 }
 
 func LoadConfig() (*Config, error) {
@@ -53,6 +54,7 @@ func LoadConfig() (*Config, error) {
 		AppTrustedProxies:  strings.Split(strings.ReplaceAll(os.Getenv("APP_TRUSTED_PROXIES"), " ", ""), ","),
 		TurnstileSiteKey:   os.Getenv("TURNSTILE_SITE_KEY"),
 		TurnstileSecretKey: os.Getenv("TURNSTILE_SECRET_KEY"),
+		DisallowPaths:      []string{"/health/", "/filter", "/assets/"},
 	}
 
 	var baseURL *url.URL

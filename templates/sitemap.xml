@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url>
+		<loc>{{.BaseURL}}</loc>
+		<lastmod>2025-02-02</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+	</url>
+	{{range $a := .Areas}}
+	{{range $z := $a.Zones}}
+	{{if $z.Deployed}}
+	<url>
+		<loc>{{.BaseURL}}/stage-1/{{$z.ZoneCode}}</loc>
+		<lastmod>2025-02-02</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+	</url>
+	<url>
+		<loc>{{.BaseURL}}/stage-1/{{$z.ZoneCode}}/thank-you</loc>
+		<lastmod>2025-02-02</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+	</url>
+	{{end}}
+	{{end}}
+	{{end}}
+</urlset>

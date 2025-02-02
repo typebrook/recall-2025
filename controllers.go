@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/xml"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -179,17 +180,11 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 
 		qp := RequestQueryPreview{}
 		if err := c.ShouldBindWith(&qp, binding.Form); err != nil {
-			fmt.Println(err)
 			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
-		redirectURL := ctrl.AppBaseURL.JoinPath("thank-you")
-		query := redirectURL.Query()
-		query.Add("stage", stage)
-		query.Add("zone", zone)
-		redirectURL.RawQuery = query.Encode()
-
+		redirectURL := ctrl.AppBaseURL.JoinPath(stage, zone, "thank-you")
 		data, err := qp.ToPreviewData(ctrl.Config, stage, zone, z.GetTopic(), redirectURL.String())
 		if err != nil {
 			c.HTML(http.StatusBadRequest, "4xx.html", ViewHttp4xxError{
@@ -302,6 +297,32 @@ type IdNumber struct {
 	D9 string
 }
 
+func (ctrl Controller) ThankYou() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		stage := c.Param("stage")
+		if stage != "stage-1" && stage != "stage-2" {
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return
+		}
+
+		zone := c.Param("zone")
+		z := ctrl.GetZone(zone)
+		if z == nil {
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return
+		}
+
+		topic := z.GetTopic()
+		recallFormURL := ctrl.AppBaseURL.JoinPath(stage, zone)
+
+		c.HTML(http.StatusOK, "thank-you.html", gin.H{
+			"BaseURL":       ctrl.AppBaseURL.String(),
+			"RecallFormURL": recallFormURL.String(),
+			"Topic":         topic,
+		})
+	}
+}
+
 func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		stage := c.Param("stage")
@@ -360,32 +381,60 @@ func (ctrl Controller) VerifyTurnstile() gin.HandlerFunc {
 	}
 }
 
-func (ctrl Controller) ThankYou() gin.HandlerFunc {
+func (ctrl Controller) RobotsTxt() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		recallFormURL := ctrl.AppBaseURL
-		stage := c.Query("stage")
-		if stage == "stage-1" || stage == "stage-2" {
-			recallFormURL = recallFormURL.JoinPath(stage)
-		} else {
-			recallFormURL = nil
+		tmpl, err := template.ParseFiles("templates/robots.txt")
+		if err != nil {
+			c.String(http.StatusInternalServerError, "Template Error")
+			return
 		}
 
-		topic := ""
-		zone := c.Query("zone")
-		z := ctrl.GetZone(zone)
-		if z != nil {
-			recallFormURL = recallFormURL.JoinPath(zone)
-			topic = z.GetTopic()
-		} else {
-			recallFormURL = nil
-		}
-
-		c.HTML(http.StatusOK, "thank-you.html", gin.H{
+		data := gin.H{
 			"BaseURL":       ctrl.AppBaseURL.String(),
-			"RecallFormURL": recallFormURL,
-			"Topic":         topic,
-		})
+			"DisallowPaths": ctrl.DisallowPaths,
+		}
+
+		c.Header("Content-Type", "text/plain; charset=utf-8")
+		if err := tmpl.Execute(c.Writer, data); err != nil {
+			c.String(http.StatusInternalServerError, "Render Error")
+		}
 	}
+}
+
+func (ctrl Controller) Sitemap() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		urls := []*SitemapURL{
+			&SitemapURL{ctrl.AppBaseURL.String(), "2025-02-02", "daily", "1.0"},
+		}
+
+		for _, z := range ctrl.Zones {
+			if z.Deployed {
+				urls = append(urls, &SitemapURL{ctrl.AppBaseURL.JoinPath("stage-1", z.ZoneCode).String(), "2025-02-02", "monthly", "0.8"})
+				urls = append(urls, &SitemapURL{ctrl.AppBaseURL.JoinPath("stage-1", z.ZoneCode, "thank-you").String(), "2025-02-02", "monthly", "0.8"})
+			}
+		}
+
+		sitemap := SitemapURLSet{
+			Xmlns:       "http://www.sitemaps.org/schemas/sitemap/0.9",
+			SitemapURLs: urls,
+		}
+
+		c.Header("Content-Type", "application/xml; charset=utf-8")
+		c.XML(http.StatusOK, sitemap)
+	}
+}
+
+type SitemapURL struct {
+	Loc        string `xml:"loc"`
+	LastMod    string `xml:"lastmod"`
+	ChangeFreq string `xml:"changefreq"`
+	Priority   string `xml:"priority"`
+}
+
+type SitemapURLSet struct {
+	XMLName     xml.Name      `xml:"urlset"`
+	Xmlns       string        `xml:"xmlns,attr"`
+	SitemapURLs []*SitemapURL `xml:"url"`
 }
 
 func (ctrl Controller) GetAsset() gin.HandlerFunc {

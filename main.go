@@ -22,9 +22,11 @@ func main() {
 	r.GET("/filter", c.SearchZone())
 	r.GET("/:stage/:zone", c.FillForm())
 	r.POST("/:stage/:zone/preview", c.VerifyTurnstile(), c.PreviewLocalForm())
+	r.GET("/:stage/:zone/thank-you", c.ThankYou())
 	r.GET("/preview/:stage/:zone", c.PreviewOriginalLocalForm())
+	r.GET("/robots.txt", c.RobotsTxt())
+	r.GET("/sitemap.xml", c.Sitemap())
 	r.GET("/assets/:type/:file", c.GetAsset())
-	r.GET("/thank-you", c.ThankYou())
 
 	r.Run(":" + cfg.AppPort)
 }
