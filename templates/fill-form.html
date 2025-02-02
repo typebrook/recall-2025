@@ -1,18 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{{ template "common-head" . }}
   <title>我要罷免{{.CandidateName}} - {{.ZoneName}}</title>
-	<meta property="og:locale" content="zh_TW">
-	<meta property="og:type" content="website">
-	<meta name="description" property="og:description" content="我是{{.ZoneName}}選民，我要罷免{{.CandidateName}}！">
-	<meta property="og:image" content="https://recall2025.ourtaiwan.tw/assets/images/og.png">
-	<meta property="og:url" content="https://recall2025.ourtaiwan.tw">
-	<link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
-	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.156">
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.17"></script>
-	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <meta name="description" property="og:description" content="我是{{.ZoneName}}選民，我要罷免{{.CandidateName}}！">
 </head>
 <body>
 	<div class="browser-warning-container" id="browser-warning-container">
