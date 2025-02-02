@@ -52,8 +52,6 @@
 				<button class="btn-black lg w100" onclick="copyCurrentLink()">幫忙分享資訊!</button>
 			</div>
 		</div>
-	
-    <!-- <h2>確認『戶籍所屬選區』找出你能罷免的立委</h2> -->
     <h2 class="mt-lg">全台罷免對象一覽</h2>
 		<ul>
 			{{range $a := .Areas }}
@@ -82,7 +80,7 @@
 				</div>
 			</li>
 			{{end}}
-		<ul>
+		</ul>
   </div>
 
   <div class="section faq">
@@ -147,8 +145,6 @@
 			</div>
 		</div>
 	</div>
-	</div>
-
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
 	<script>
 		const zoneCandidates = JSON.parse('{{.ZoneCandidates}}');
