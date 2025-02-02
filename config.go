@@ -334,10 +334,10 @@ func (r Config) VerifyTurnstileToken(token string) (bool, error) {
 type Zone struct {
 	ZoneCode string
 	ZoneCandidate
-	Districts     string
-	AddressPrefix string
-	Deployed      bool
-	sort          int
+	Districts string
+	Address   string
+	Deployed  bool
+	sort      int
 }
 
 type ZoneCandidate struct {
