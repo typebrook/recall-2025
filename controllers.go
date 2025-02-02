@@ -149,7 +149,6 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
 
 		c.HTML(http.StatusOK, "fill-form.html", gin.H{
-			"Topic":            z.GetTopic(),
 			"ZoneCode":         z.ZoneCode,
 			"ZoneName":         z.ZoneName,
 			"Districts":        z.Districts,
