@@ -39,7 +39,7 @@ body.white {
 	background-color: #fff
 }
 
-a:has(button){
+a:has(button) {
 	text-decoration: none;
 	color: var(--text-color)
 }
@@ -211,9 +211,11 @@ ul {
 	.col-md-8 {
 		width: 66.6666666%;
 	}
+
 	.col-md-5 {
 		width: 41.66666667%;
 	}
+
 	.col-md-6 {
 		width: 50%;
 	}
@@ -445,7 +447,8 @@ ul {
 .mr-xs {
 	margin-right: 8px !important;
 }
-.mr-xs-0  {
+
+.mr-xs-0 {
 	margin-right: 0 !important;
 }
 
@@ -681,6 +684,10 @@ ul {
 
 	.pb-sm-4px {
 		padding-bottom: 4px !important;
+	}
+
+	.text-sm-center {
+		text-align: center;
 	}
 }
 

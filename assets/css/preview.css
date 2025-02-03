@@ -212,3 +212,84 @@ body {
 		transform: rotate(360deg);
 	}
 }
+
+
+
+
+
+/* *************************************
+ *************************************
+
+	下載列的 RWD
+
+**************************************** 
+**************************************** */
+
+#downloadArea.md {
+	padding: 18px;
+}
+
+#downloadArea.md button {
+	font-size: 24px;
+	padding: 16px 24px;
+}
+
+#downloadArea.md h6 {
+	font-size: 17px;
+	margin: 0.5em;
+}
+
+#downloadArea.md>div {
+	width: 40%;
+}
+
+#downloadArea.md>div:last-child {
+	width: 60%;
+}
+
+
+
+#downloadArea.sm>div {
+	width: 100%;
+}
+
+#downloadArea.sm>div:last-child {
+	width: 100%;
+}
+
+#downloadArea.sm>div {
+	text-align: center;
+}
+
+#downloadArea.sm {
+	padding: 24px;
+}
+
+#downloadArea.sm button {
+	font-size: 28px;
+	padding: 20px 28px;
+}
+
+#downloadArea.sm h6 {
+	font-size: 28px;
+	padding: 20px 28px;
+	margin: 0.5em;
+}
+
+
+
+
+#downloadArea.xs {
+	padding: 36px;
+}
+
+#downloadArea.xs button {
+	font-size: 40px;
+	padding: 28px 20px;
+}
+
+#downloadArea.xs h6 {
+	font-size: 38px;
+	padding: 28px 32px;
+	margin: 0.5em;
+}

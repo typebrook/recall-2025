@@ -22,18 +22,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="{{.BaseURL}}/assets/js/common.js?v0.0.19"></script>
-
+<!-- <meta name="viewport" content=" initial-scale=2"> -->
 {{ end }}
 
 {{ define "preview-control-panel" }}
 
-<div class="floating-btn-container row flex-jus-c">
-  <div class="col-3 col-md-5 col-sm-12 mr-md mr-xs-0 text-xs-center ">
+<div id="downloadArea" class="floating-btn-container row flex-jus-c">
+  <div class="col-3 col-sm-12 mr-md mr-xs-0 text-xs-center">
     <h6>
       請檢查「姓名」「身分證字號」「出生年月日」與「戶籍地址」皆與身分證上的文字完全相同
     </h6>
   </div>
-  <div class="col-4 col-md-6 col-sm-12 row flex-align-c ">
+  <div class="col-4 col-sm-12 row flex-align-c ">
     <div class="col-6">
       <a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="btn-secondary lg w100">重新填寫</button></a>
     </div>
@@ -43,6 +43,32 @@
     </div>
   </div>
 </div>
+<script>
+
+
+  const downloadArea = document.getElementById("downloadArea")
+
+  // console.log(window.visualViewport.scale);
+
+  if (window.visualViewport.scale < 0.45) {
+    downloadArea.classList.add("xs")
+    console.log("xs")
+
+  }
+  if (window.visualViewport.scale < 0.65) {
+    downloadArea.classList.add("sm")
+    console.log("sm")
+
+  }
+  if (window.visualViewport.scale < 0.8) {
+    downloadArea.classList.add("md")
+    console.log("md")
+
+  }
+
+
+</script>
+
 
 {{ end }}
 
