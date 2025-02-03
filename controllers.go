@@ -338,11 +338,7 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 			return
 		}
 
-		redirectURL := ctrl.AppBaseURL.JoinPath("thank-you")
-		query := redirectURL.Query()
-		query.Add("stage", stage)
-		query.Add("zone", zone)
-		redirectURL.RawQuery = query.Encode()
+		redirectURL := ctrl.AppBaseURL.JoinPath(stage, zone, "thank-you")
 
 		tmpfile := "preview-" + stage + "-" + zone + ".html"
 		c.HTML(http.StatusOK, tmpfile, gin.H{

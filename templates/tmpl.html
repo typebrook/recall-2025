@@ -8,7 +8,7 @@
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.158">
 	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.2">
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.18"></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.19"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {{ end }}
 
@@ -22,7 +22,7 @@
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.18"></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.19"></script>
 {{ end }}
 
 {{ define "preview-control-panel" }}
@@ -38,8 +38,7 @@
         <a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="btn-secondary lg w100">重新填寫</button></a>
       </div>
       <div class="col-6">
-        <button class="btn-primary lg w100"
-          onclick="downloadPDF('.a4-landscape', '第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
+        <button class="btn-primary lg w100" onclick="downloadPDF('第一階段罷免連署書 - {{.Topic}}', '{{.RedirectURL}}')">確認下載</button>
       </div>
     </div>
   </div>

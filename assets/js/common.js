@@ -1,6 +1,6 @@
-async function downloadPDF(containerSelector, filename, redirectURL) {
+async function downloadPDF(filename, redirectURL) {
   const { jsPDF } = window.jspdf;
-  const containers = document.querySelectorAll(containerSelector);
+  const containers = document.querySelectorAll('.a4-portrait, .a4-landscape');
   if (containers.length === 0) {
     console.error('No elements found with the given class name.');
     return;
@@ -8,22 +8,30 @@ async function downloadPDF(containerSelector, filename, redirectURL) {
 
   const mask = document.querySelector('.mask');
   mask.classList.add('active');
-  try {
-    const isLandscape = containerSelector === '.a4-landscape';
-    const orientation = isLandscape ? 'l' : 'p';
-    const pdf = new jsPDF(orientation, 'mm', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
 
+  try {
+    let pdf;
+    
     for (const [index, container] of containers.entries()) {
+      const isLandscape = container.classList.contains('a4-landscape');
+      const orientation = isLandscape ? 'l' : 'p';
+
+      if (index === 0) {
+        pdf = new jsPDF({ orientation, unit: 'mm', format: 'a4' });
+      } else {
+        pdf.addPage('a4', orientation);
+      }
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+
       const canvas = await html2canvas(container, {
-				scale: 2,
-				ignoreElements: (elem) => { return elem.classList.contains('whereToSign'); }
-			});
+        scale: 2,
+        ignoreElements: (elem) => elem.classList.contains('whereToSign'),
+      });
+
       const imgData = canvas.toDataURL('image/png');
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-      if (index > 0) {
-        pdf.addPage();
-      }
+
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
     }
 
