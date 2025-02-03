@@ -14,9 +14,10 @@
 
 {{ define "preview-head" }}
   <meta charset="utf-8" />
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+
   <title>第一階段罷免連署書 - {{.Topic}}</title>
 	<link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.2">
-
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.158">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.11">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
@@ -26,7 +27,6 @@
 {{ end }}
 
 {{ define "preview-control-panel" }}
-
   <div class="floating-btn-container row flex-jus-c">
     <div class="col-3 col-md-5 col-sm-12 mr-md mr-xs-0 text-xs-center ">
       <h6>
@@ -43,7 +43,6 @@
       </div>
     </div>
   </div>
-
 {{ end }}
 
 {{ define "mask" }}
