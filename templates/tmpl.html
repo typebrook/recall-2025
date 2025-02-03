@@ -26,14 +26,13 @@
 {{ end }}
 
 {{ define "preview-control-panel" }}
-
-<div id="downloadArea" class="floating-btn-container row flex-jus-c">
+<div id="control-panel" class="floating-btn-container row flex-jus-c">
   <div class="col-3 col-sm-12 mr-md mr-xs-0 text-xs-center">
     <h6>
       請檢查「姓名」「身分證字號」「出生年月日」與「戶籍地址」皆與身分證上的文字完全相同
     </h6>
   </div>
-  <div class="col-4 col-sm-12 row flex-align-c ">
+  <div class="col-4 col-sm-12 row flex-align-c">
     <div class="col-6">
       <a href="{{.BaseURL}}/{{.Stage}}/{{.Zone}}"><button class="btn-secondary lg w100">重新填寫</button></a>
     </div>
@@ -43,33 +42,35 @@
     </div>
   </div>
 </div>
+
 <script>
+  const controlPanel = document.getElementById("control-panel")
 
-
-  const downloadArea = document.getElementById("downloadArea")
-
-  // console.log(window.visualViewport.scale);
-
-  if (window.visualViewport.scale < 0.45) {
-    downloadArea.classList.add("xs")
-    console.log("xs")
-
-  }
-  if (window.visualViewport.scale < 0.65) {
-    downloadArea.classList.add("sm")
-    console.log("sm")
-
-  }
-  if (window.visualViewport.scale < 0.8) {
-    downloadArea.classList.add("md")
-    console.log("md")
-
-  }
-
-
+	let resizeTimeout;
+	window.addEventListener("resize", function () {
+		clearTimeout(resizeTimeout);
+		resizeTimeout = setTimeout(() => {
+			controlPanel.classList.remove("xs", "sm", "md");
+			if (window.visualViewport.scale < 0.45) {
+				controlPanel.classList.add("xs", "sm", "md");
+			} else if (window.visualViewport.scale < 0.65) {
+				controlPanel.classList.add("sm", "md");
+			} else if (window.visualViewport.scale < 0.8) {
+				controlPanel.classList.add("md");
+			}
+		}, 300);
+	});
+	document.addEventListener("DOMContentLoaded", () => {
+		controlPanel.classList.remove("xs", "sm", "md");
+		if (window.visualViewport.scale < 0.45) {
+			controlPanel.classList.add("xs", "sm", "md")
+		} else if (window.visualViewport.scale < 0.65) {
+			controlPanel.classList.add("sm", "md")
+		} else if (window.visualViewport.scale < 0.8) {
+			controlPanel.classList.add("md")
+		}
+	});
 </script>
-
-
 {{ end }}
 
 {{ define "mask" }}
