@@ -23,9 +23,9 @@
 
 	<div class="section notification">
 		<div class="section step">
-			<h3>1.對照身分證，再次檢查連署書</h3>
+			<h3>1. 對照身分證，再次檢查連署書</h3>
 			<p>
-				請確認表單上的「姓名」「身分證字號」「出身年月日」與「住址」皆與您身分證上所謄寫的文字「完全相同」。
+				請確認表單上的「<strong>姓名</strong>」「<strong>身分證字號</strong>」「<strong>出身年月日</strong>」與「<strong>住址</strong>」皆與您身分證上所謄寫的文字「完全相同」。
 			</p>
 			<div class="section strong">
 				<strong>注意：</strong>
@@ -33,15 +33,15 @@
 					<li>國字和數字不得替換，也不可寫簡體或俗體字。（例：二段不可寫成2段、區不可寫成区）</li>
 				</ul>
 			</div>
-			<p><a href="#">發現寫錯？<u>重新填寫連署書</u></a></p>
+			<p><a href="{{.RecallFormURL}}">發現寫錯？<u>重新填寫連署書</u></a></p>
 		</div>
 
 
 		<div class="section step">
-			<h3>2.紙本列印連署書，親筆簽名</h3>
-			<button class="btn-primary  btn-black  mb-sm" onclick="console.log(123)">7-11超商雲端列印</button>
+			<h3>2. 紙本列印連署書，親筆簽名</h3>
+			<a href="https://print.ibon.com.tw/ibonprinter" target="_blank"><button class="btn-primary btn-black mb-sm">7-11超商雲端列印</button></a>
 			<p>
-				將下載的檔案紙本列印，僅在下載表單上的<strong>「簽名或蓋章」</strong>與<strong>「同意人」</strong>兩個欄位上以正楷簽名或蓋章
+				將下載的檔案紙本列印，僅在下載表單上的「<strong>簽名或蓋章</strong>」與「<strong>同意人</strong>」兩個欄位上以正楷簽名或蓋章
 			</p>
 			<div class="section strong">
 				<strong>注意：</strong>
@@ -52,34 +52,20 @@
 					<li>表單不得有任何塗改，如果寫錯請重新列印再次簽名</li>
 				</ul>
 			</div>
-			<p>為保險起見，您可以至
-				<a href="https://linktr.ee/apple004"><u>https://linktr.ee/apple004 </u></a>
-				找到您選區的罷免單填寫範本參考，再次確認填寫正確無誤。
-			</p>
+			<p>為保險起見，您可以至 <a href="https://bababa.tw/" target="_blank"><u>https://bababa.tw/</u></a> 找到您選區的罷免單填寫範本參考，再次確認填寫正確無誤。</p>
 		</div>
 
 		<div class="section step">
-			<h3>3.將連署書繳交至指定地點</h3>
+			<h3>3. 將連署書繳回至指定地點</h3>
 
 			<div class="section strong">
-				您的選區「{{.Topic}}」繳交方式為：
 				<ul class="point">
-					<li>送至簽署站 - 交給身穿除銹背心的志工</li>
-					<li>送至收件點 - 官方公告的店家代收</li>
-					<li>郵寄 - 寄至內湖文德郵局 第151-111號信箱</li>
-					<li>快收專線 - 0916172-156 滿3張可收件, 每日10~20點</li>
+					<li>按照您的選區之公民團體提供的方法將連署書繳回。</li>
+					<li>部分選區連署書上有描述繳回辦法，若連署書上沒有描述，請至 <a href="https://bababa.tw/" target="_blank"><u>https://bababa.tw/</u></a> 找到您選區的繳回辦法。</li>
 				</ul>
 			</div>
-			<p>
-				按照您的選區之公民團體提供的方法將連署書繳回，您所下載的連署書上大多有描述繳回辦法。若連署書上沒有描述，請至 
-				<a href="https://linktr.ee/apple004"><u>https://linktr.ee/apple004 </u></a>
-				找到您選區的繳回辦法。
-			</p>
 		</div>
 	</div>
-
-
-
 
 	<div class="section mb-lg">
 		<div class="post-action-container">
@@ -96,9 +82,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
 
 	<div class="section faq">
 		<h2>常見問題</h2>
@@ -150,8 +133,6 @@
 		</ul>
 	</div>
 
-
-
 	<div class="footer" id="footer">
 		<div class="section">
 			<h2>服務政策與聲明</h2>
@@ -183,7 +164,6 @@
 	</div>
 
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
-
 	<!-- <div class="dialog-mask"></div>
 	<div class="dialog">
 		<div class="content">
@@ -207,5 +187,22 @@
 		<div class="dialog-close icon-text lg">Close</div>
 	</div> -->
 </body>
-
+<script>
+	document.querySelectorAll('.faq-row .faq-header').forEach(header => {
+		header.addEventListener('click', event => {
+			const item = header.parentElement;
+			const isExpanded = item.classList.contains('expanded');
+			document.querySelectorAll('.faq-row.expanded').forEach(openItem => {
+				if (openItem !== item) {
+					openItem.classList.remove('expanded');
+					const arrow = openItem.querySelector('.arrow');
+					arrow.classList.remove('collapsed');
+				}
+			});
+			item.classList.toggle('expanded', !isExpanded);
+			const arrow = header.querySelector('.arrow');
+			arrow.classList.toggle('collapsed', !isExpanded);
+		});
+	});
+</script>
 </html>
