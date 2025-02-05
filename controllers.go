@@ -406,7 +406,7 @@ func (ctrl Controller) Sitemap() gin.HandlerFunc {
 		for _, z := range ctrl.Zones {
 			if z.Deployed {
 				urls = append(urls, &SitemapURL{ctrl.AppBaseURL.JoinPath("stage-1", z.ZoneCode).String(), "2025-02-02", "monthly", "0.8"})
-				urls = append(urls, &SitemapURL{ctrl.AppBaseURL.JoinPath("stage-1", z.ZoneCode, "thank-you").String(), "2025-02-02", "monthly", "0.8"})
+				urls = append(urls, &SitemapURL{ctrl.AppBaseURL.JoinPath("stage-1", z.ZoneCode, "thank-you").String(), "2025-02-05", "weekly", "0.8"})
 			}
 		}
 
