@@ -1,47 +1,47 @@
 async function downloadPDF(filename, redirectURL) {
-  const { jsPDF } = window.jspdf;
-  const containers = document.querySelectorAll('.a4-portrait, .a4-landscape');
-  if (containers.length === 0) {
-    console.error('No elements found with the given class name.');
-    return;
-  }
+	const { jsPDF } = window.jspdf;
+	const containers = document.querySelectorAll('.a4-portrait, .a4-landscape');
+	if (containers.length === 0) {
+		console.error('No elements found with the given class name.');
+		return;
+	}
 
-  const mask = document.querySelector('.mask');
-  mask.classList.add('active');
+	const mask = document.querySelector('.mask');
+	mask.classList.add('active');
 
-  try {
-    let pdf;
-    
-    for (const [index, container] of containers.entries()) {
-      const isLandscape = container.classList.contains('a4-landscape');
-      const orientation = isLandscape ? 'l' : 'p';
+	try {
+		let pdf;
 
-      if (index === 0) {
-        pdf = new jsPDF({ orientation, unit: 'mm', format: 'a4' });
-      } else {
-        pdf.addPage('a4', orientation);
-      }
+		for (const [index, container] of containers.entries()) {
+			const isLandscape = container.classList.contains('a4-landscape');
+			const orientation = isLandscape ? 'l' : 'p';
 
-      const pdfWidth = pdf.internal.pageSize.getWidth();
+			if (index === 0) {
+				pdf = new jsPDF({ orientation, unit: 'mm', format: 'a4' });
+			} else {
+				pdf.addPage('a4', orientation);
+			}
 
-      const canvas = await html2canvas(container, {
-        scale: 2,
-        ignoreElements: (elem) => elem.classList.contains('whereToSign'),
-      });
+			const pdfWidth = pdf.internal.pageSize.getWidth();
 
-      const imgData = canvas.toDataURL('image/webp', 1.0);
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+			const canvas = await html2canvas(container, {
+				scale: 1,
+				ignoreElements: (elem) => elem.classList.contains('whereToSign'),
+			});
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    }
+			const imgData = canvas.toDataURL('image/webp', 1.0);
+			const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    pdf.save(`${filename}.pdf`);
-    window.location.href = redirectURL;
-  } catch (error) {
-    console.error('Error generating PDF:', error);
-  } finally {
-    mask.classList.remove('active');
-  }
+			pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+		}
+
+		pdf.save(`${filename}.pdf`);
+		window.location.href = redirectURL;
+	} catch (error) {
+		console.error('Error generating PDF:', error);
+	} finally {
+		mask.classList.remove('active');
+	}
 }
 async function copyLink(url) {
 	navigator.clipboard.writeText(url)

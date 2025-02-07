@@ -3,6 +3,7 @@
 
 <head>
 	{{ template "preview-head" . }}
+	<meta name="viewport" content="initial-scale=0.33">
 </head>
 <style>
 	.idnumber-container {
@@ -83,7 +84,19 @@
 		bottom: 596px;
 		right: 235px;
 	}
+
+
+	.a4-portrait {
+		width: 630mm;
+		height: 891mm;
+	}
+
+	.a4-landscape {
+		width: 594mm;
+		height: 410mm;
+	}
 </style>
+
 <body>
 	{{ template "mask" }}
 	{{ template "preview-control-panel" . }}
@@ -92,7 +105,9 @@
 		<div class="inputField birthdate-container">
 			民<br>國<br>{{.BirthYear}}<br>年<br>{{.BirthMonth}}<br>月<br>{{.BirthDate}}<br>日</div>
 		<div class="inputField address-container">{{.Address}}</div>
-		<div class="inputField petitioner-container"><div class="whereToSign" style="top:114px; left:62px; width:106px; height:210px;"></div></div>
+		<div class="inputField petitioner-container">
+			<div class="whereToSign" style="top:114px; left:62px; width:106px; height:210px;"></div>
+		</div>
 		<div class="inputField idnumber-container">
 			<table>
 				<tr>
@@ -113,8 +128,13 @@
 	</div>
 	<div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp'); ">
 		<div class="inputField mobile-container">{{.MobileNumber}}</div>
-		<div class="inputField consenter-container"><div class="whereToSign" style="top:0; left:88px; width:160px; height:64px;"></div></div>
+		<div class="inputField consenter-container">
+			<div class="whereToSign" style="top:0; left:88px; width:160px; height:64px;"></div>
+		</div>
 	</div>
 </body>
+<script>
+	console.log(window.visualViewport.scale)
+</script>
 
 </html>

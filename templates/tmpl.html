@@ -45,30 +45,30 @@
 <script>
   const controlPanel = document.getElementById("downloadArea")
 
-	let resizeTimeout;
-	window.addEventListener("resize", function () {
-		clearTimeout(resizeTimeout);
-		resizeTimeout = setTimeout(() => {
-			controlPanel.classList.remove("xs", "sm", "md");
-			if (window.visualViewport.scale < 0.45) {
-				controlPanel.classList.add("xs", "sm", "md");
-			} else if (window.visualViewport.scale < 0.65) {
-				controlPanel.classList.add("sm", "md");
-			} else if (window.visualViewport.scale < 0.8) {
-				controlPanel.classList.add("md");
-			}
-		}, 300);
-	});
-	document.addEventListener("DOMContentLoaded", () => {
-		controlPanel.classList.remove("xs", "sm", "md");
-		if (window.visualViewport.scale < 0.45) {
-			controlPanel.classList.add("xs", "sm", "md")
-		} else if (window.visualViewport.scale < 0.65) {
-			controlPanel.classList.add("sm", "md")
-		} else if (window.visualViewport.scale < 0.8) {
-			controlPanel.classList.add("md")
-		}
-	});
+  let resizeTimeout;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      controlPanel.classList.remove("xs", "sm", "md");
+      if (window.visualViewport.scale < 0.45) {
+        controlPanel.classList.add("xs", "sm", "md");
+      } else if (window.visualViewport.scale < 0.65) {
+        controlPanel.classList.add("sm", "md");
+      } else if (window.visualViewport.scale < 0.8) {
+        controlPanel.classList.add("md");
+      }
+    }, 300);
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+    controlPanel.classList.remove("xs", "sm", "md");
+    if (window.visualViewport.scale < 0.45) {
+      controlPanel.classList.add("xs", "sm", "md")
+    } else if (window.visualViewport.scale < 0.65) {
+      controlPanel.classList.add("sm", "md")
+    } else if (window.visualViewport.scale < 0.8) {
+      controlPanel.classList.add("md")
+    }
+  });
 </script>
 {{ end }}
 
