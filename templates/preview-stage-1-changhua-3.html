@@ -125,8 +125,6 @@
 	{{ template "mask" }}
 	{{ template "preview-control-panel" . }}
 	<div class="a4-landscape" style=" ">
-		<!-- <div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp'); "> -->
-
 		<table style="left: 50.8%; top: 15.4%; width: 81.4%; height: 49.5%; ">
 			<tr style="height: 10.5%; ">
 				<th colspan="19" style="font-size: 22px; letter-spacing: 0;">彰化縣第三選舉區 第十一屆立法委員謝衣鳳罷免案 提議人名冊</th>
@@ -188,11 +186,37 @@
 
 	</div>
 	<div class="a4-landscape" style="">
-		<!-- <div class="a4-landscape" style="background-image:url('{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp'); "> -->
-		<img src="{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-2.webp" alt="" style="opacity: 0.2;">
-		<img src="{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}-1.webp" alt="" style="">
+		<img src="{{.BaseURL}}/assets/images/{{.Stage}}-{{.Zone}}.webp" alt=""
+			style="position: absolute; height: auto; top: 45.5%;left: 0;">
+		<div
+			style="width: 100%; text-align: left; position: absolute; top: 15%; left: 46.5%;font-size: 34px;font-weight: 400;">
+			同意書
+		</div>
+		<div
+			style="width: 80%; text-align: left; position: absolute; top: 22%; left: 10%;font-size: 23px;font-weight: 400;">
+			同意⼈：______________
+		</div>
+		<div
+			style="width: 80%; text-align: left; position: absolute; top: 22%; left: 56%;font-size: 23px;font-weight: 400;">
+			聯絡電話：_______________
+		</div>
 
+		<div
+			style="width: 80%; text-align: left; position: absolute; top: 30.5%; left: 10%;font-size: 19px;line-height: 2.5em;font-weight: 400;">
+			⼀.相關個⼈資料只⽤於謝衣鳯罷免案之⽤。<br>
+			⼆.本⼈同意於中選會審查第⼀階段通過後，接獲通知後簽署第⼆階段罷免連署⼈。
+		</div>
 
+		<div style="position: absolute; top: 47%; left: 10%;font-size: 20px;font-weight: 400;">
+			歡迎加入各種社群 罷免謝衣鳯 缺你不可 !
+		</div>
+
+		<div style="position: absolute; top: 78.5%; left: 10%;font-size: 32px;font-weight: 400; width: 80%;">
+			Line 社群<span style="padding-left: 10%;"></span>
+			臉書社團<span style="padding-left: 11.5%;"></span>
+			Instagram<span style="padding-left: 10%;"></span>
+			Threads
+		</div>
 		<div class="inputField mobile-container">{{.MobileNumber}}</div>
 		<div class="inputField consenter-container">
 			<div class="whereToSign" style="top:0; left:88px; width:160px; height:64px;"></div>
