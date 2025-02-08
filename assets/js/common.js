@@ -25,7 +25,7 @@ async function downloadPDF(filename, redirectURL) {
 			const pdfWidth = pdf.internal.pageSize.getWidth();
 
 			const canvas = await html2canvas(container, {
-				scale: 1,
+				scale: 2,
 				ignoreElements: (elem) => elem.classList.contains('whereToSign'),
 			});
 

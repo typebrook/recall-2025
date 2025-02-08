@@ -47,6 +47,7 @@
 
   let resizeTimeout;
   window.addEventListener("resize", function () {
+    console.log(window.visualViewport.scale)
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
       controlPanel.classList.remove("xs", "sm", "md");
