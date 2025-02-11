@@ -39,7 +39,7 @@ func LoadConfig() (*Config, error) {
 		AppTrustedProxies:  strings.Split(strings.ReplaceAll(os.Getenv("APP_TRUSTED_PROXIES"), " ", ""), ","),
 		TurnstileSiteKey:   os.Getenv("TURNSTILE_SITE_KEY"),
 		TurnstileSecretKey: os.Getenv("TURNSTILE_SECRET_KEY"),
-		DisallowPaths:      []string{"/health/", "/filter", "/assets/"},
+		DisallowPaths:      []string{"/health/", "/apis/", "/assets/"},
 		RecallTerm:         11,
 	}
 
