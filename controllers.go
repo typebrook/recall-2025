@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
-	"sort"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -27,135 +27,83 @@ func (ctrl Controller) Home() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "home.html", gin.H{
 			"BaseURL":        ctrl.AppBaseURL.String(),
+			"Municipalities": ctrl.Municipalities,
 			"Areas":          ctrl.Areas,
-			"ZoneCandidates": template.JS(ctrl.ZoneCandidates),
 		})
 	}
 }
 
-func (ctrl Controller) SearchZone() gin.HandlerFunc {
+func (ctrl Controller) SearchRecallConstituency() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		qp := RequestQuerySearchZone{}
+		qp := RequestQuerySearchRecallConstituency{}
 		if err := c.ShouldBindQuery(&qp); err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, RespSearchZone{http.StatusText(http.StatusBadRequest), nil})
+			c.AbortWithStatusJSON(http.StatusBadRequest, RespSearchRecallConstituency{http.StatusText(http.StatusBadRequest), nil})
 			return
 		}
 
-		districts, exists := ctrl.AreaFilter[qp.Municipality]
+		exists, divisions, legislators := ctrl.HasRecallLegislators(qp.MunicipalityId, qp.DistrictId, qp.WardId)
 		if !exists {
-			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
+			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchRecallConstituency{
+				Message: http.StatusText(http.StatusNotFound),
+				Result:  nil,
+			})
 			return
 		}
 
-		if qp.District == nil {
-			options := make([]string, len(districts))
-			i := 0
-			for k := range districts {
-				options[i] = k
-				i += 1
-			}
-
-			if options[0] == "" {
-				if zoneCode, exists := districts[""][""]; !exists {
-					c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
-				} else {
-					c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{[]string{}, zoneCode}})
-				}
-			} else {
-				sort.Slice(options, func(i, j int) bool {
-					return options[i] < options[j]
-				})
-
-				c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{options, ""}})
-			}
-			return
-		}
-
-		wards, exists := districts[*qp.District]
-		if !exists {
-			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
-			return
-		}
-
-		if qp.Ward == nil {
-			options := make([]string, len(wards))
-			i := 0
-			for k := range wards {
-				options[i] = k
-				i += 1
-			}
-
-			if options[0] == "" {
-				if zoneCode, exists := wards[""]; !exists {
-					c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
-				} else {
-					c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{[]string{}, zoneCode}})
-				}
-			} else {
-				sort.Slice(options, func(i, j int) bool {
-					return options[i] < options[j]
-				})
-
-				c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{options, ""}})
-			}
-			return
-		}
-
-		zoneCode, exists := wards[*qp.Ward]
-		if !exists {
-			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchZone{http.StatusText(http.StatusNotFound), nil})
-			return
-		}
-
-		c.JSON(http.StatusOK, RespSearchZone{http.StatusText(http.StatusOK), &ResultSearchZone{[]string{}, zoneCode}})
+		c.JSON(http.StatusOK, RespSearchRecallConstituency{
+			Message: http.StatusText(http.StatusOK),
+			Result: &ResultSearchRecallConstituency{
+				Divisions:   divisions,
+				Legislators: legislators,
+			},
+		})
 	}
 }
 
-type RequestQuerySearchZone struct {
-	Municipality string  `form:"municipality"`
-	District     *string `form:"district"`
-	Ward         *string `form:"ward"`
+type RequestQuerySearchRecallConstituency struct {
+	MunicipalityId uint64  `form:"municipality" binding:"required,numeric"`
+	DistrictId     *uint64 `form:"district" binding:"omitempty,numeric"`
+	WardId         *uint64 `form:"ward" binding:"omitempty,numeric"`
 }
 
-type RespSearchZone struct {
-	Message string            `json:"message"`
-	Result  *ResultSearchZone `json:"result,omitempty"`
+type RespSearchRecallConstituency struct {
+	Message string                          `json:"message"`
+	Result  *ResultSearchRecallConstituency `json:"result,omitempty"`
 }
 
-type ResultSearchZone struct {
-	Options  []string `json:"options"`
-	ZoneCode string   `json:"zoneCode"`
+type ResultSearchRecallConstituency struct {
+	Divisions   Divisions         `json:"divisions,omitempty"`
+	Legislators RecallLegislators `json:"legislators,omitempty"`
 }
 
 func (ctrl Controller) FillForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		stage := c.Param("stage")
-		if stage != "stage-1" && stage != "stage-2" {
+		up := RequestUriStageLegislator{}
+		if err := c.ShouldBindUri(&up); err != nil {
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
-		zone := c.Param("zone")
-		z := ctrl.GetZone(zone)
-		if z == nil {
+		l := ctrl.GetRecallLegislator(up.Name)
+		if l == nil {
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
 		address := c.Query("address")
 		if address == "" {
-			address = z.Address
+			address = l.MunicipalityName
 		}
 
 		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
 
+		previewURL := ctrl.AppBaseURL.JoinPath("stages", strconv.FormatUint(l.RecallStage, 10), l.PoliticianName, "preview")
+
 		c.HTML(http.StatusOK, "fill-form.html", gin.H{
-			"ZoneCode":         z.ZoneCode,
-			"ZoneName":         z.ZoneName,
-			"Districts":        z.Districts,
-			"CandidateName":    z.CandidateName,
-			"Stage":            stage,
 			"BaseURL":          ctrl.AppBaseURL.String(),
+			"ConstituencyName": l.ConstituencyName,
+			"PoliticianName":   l.PoliticianName,
+			"PreviewURL":       previewURL.String(),
 			"Address":          address,
 			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
 			"MaxBirthDate":     twentyYearsAgo,
@@ -163,17 +111,21 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 	}
 }
 
+type RequestUriStageLegislator struct {
+	Stage uint64 `uri:"stage" binding:"required,numeric,oneof=1 2"`
+	Name  string `uri:"name" binding:"required"`
+}
+
 func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		stage := c.Param("stage")
-		if stage != "stage-1" && stage != "stage-2" {
+		up := RequestUriStageLegislator{}
+		if err := c.ShouldBindUri(&up); err != nil {
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
-		zone := c.Param("zone")
-		z := ctrl.GetZone(zone)
-		if z == nil {
+		l := ctrl.GetRecallLegislator(up.Name)
+		if l == nil {
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
@@ -184,8 +136,7 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 			return
 		}
 
-		redirectURL := ctrl.AppBaseURL.JoinPath(stage, zone, "thank-you")
-		data, err := qp.ToPreviewData(ctrl.Config, stage, zone, z.GetTopic(), redirectURL.String())
+		data, err := qp.ToPreviewData(ctrl.Config, &up, l)
 		if err != nil {
 			c.HTML(http.StatusBadRequest, "4xx.html", ViewHttp4xxError{
 				HttpStatusCode: http.StatusBadRequest,
@@ -195,7 +146,7 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 			return
 		}
 
-		tmpfile := "preview-" + stage + "-" + zone + ".html"
+		tmpfile := fmt.Sprintf("preview-stage-%d-%s.html", l.RecallStage, l.PoliticianName)
 		c.HTML(http.StatusOK, tmpfile, data)
 	}
 }
@@ -208,7 +159,7 @@ type RequestQueryPreview struct {
 	MobileNumber string `form:"mobile-number" binidng:"required"`
 }
 
-func (r RequestQueryPreview) ToPreviewData(cfg *Config, stage, zone, topic, redirectURL string) (*PreviewData, error) {
+func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegislator, l *RecallLegislator) (*PreviewData, error) {
 	if !isValidIdNumber(r.IdNumber) {
 		return nil, fmt.Errorf("身份證輸入錯誤")
 	}
@@ -227,18 +178,25 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, stage, zone, topic, redi
 	birthYear, birthMonth, birthDate := t.Date()
 	birthYear = birthYear - 1911
 
+	stage := strconv.FormatUint(up.Stage, 10)
+	recallFormURL := cfg.AppBaseURL.JoinPath("stages", stage, up.Name)
+	redirectURL := cfg.AppBaseURL.JoinPath("stages", stage, up.Name, "thank-you")
+	imagePrefix := fmt.Sprintf("stage-%s-%s", stage, up.Name)
+
 	data := &PreviewData{
-		BaseURL:      cfg.AppBaseURL.String(),
-		Stage:        stage,
-		Zone:         zone,
-		Topic:        topic,
-		Name:         r.Name,
-		BirthYear:    birthYear,
-		BirthMonth:   int(birthMonth),
-		BirthDate:    birthDate,
-		Address:      sanitizeAddress(r.Address),
-		MobileNumber: r.MobileNumber,
-		RedirectURL:  redirectURL,
+		BaseURL:          cfg.AppBaseURL.String(),
+		RecallFormURL:    recallFormURL.String(),
+		RedirectURL:      redirectURL.String(),
+		PoliticianName:   up.Name,
+		ConstituencyName: l.ConstituencyName,
+		RecallStage:      up.Stage,
+		ImagePrefix:      imagePrefix,
+		Name:             r.Name,
+		BirthYear:        birthYear,
+		BirthMonth:       int(birthMonth),
+		BirthDate:        birthDate,
+		MobileNumber:     r.MobileNumber,
+		Address:          sanitizeAddress(r.Address),
 	}
 
 	for i := 0; i < len(r.IdNumber); i += 1 {
@@ -270,18 +228,20 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, stage, zone, topic, redi
 }
 
 type PreviewData struct {
-	BaseURL      string
-	Stage        string
-	Zone         string
-	Topic        string
-	Name         string
-	BirthYear    int
-	BirthMonth   int
-	BirthDate    int
-	Address      string
-	IdNumber     IdNumber
-	MobileNumber string
-	RedirectURL  string
+	BaseURL          string
+	RecallFormURL    string
+	RedirectURL      string
+	PoliticianName   string
+	ConstituencyName string
+	RecallStage      uint64
+	ImagePrefix      string
+	Name             string
+	IdNumber         IdNumber
+	BirthYear        int
+	BirthMonth       int
+	BirthDate        int
+	MobileNumber     string
+	Address          string
 }
 
 type IdNumber struct {
@@ -299,61 +259,62 @@ type IdNumber struct {
 
 func (ctrl Controller) ThankYou() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		stage := c.Param("stage")
-		if stage != "stage-1" && stage != "stage-2" {
+		up := RequestUriStageLegislator{}
+		if err := c.ShouldBindUri(&up); err != nil {
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
-		zone := c.Param("zone")
-		z := ctrl.GetZone(zone)
-		if z == nil {
+		l := ctrl.GetRecallLegislator(up.Name)
+		if l == nil {
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
-		topic := z.GetTopic()
-		recallFormURL := ctrl.AppBaseURL.JoinPath(stage, zone)
+		recallFormURL := ctrl.AppBaseURL.JoinPath("stages", strconv.FormatUint(up.Stage, 10), up.Name)
 
 		c.HTML(http.StatusOK, "thank-you.html", gin.H{
 			"BaseURL":       ctrl.AppBaseURL.String(),
 			"RecallFormURL": recallFormURL.String(),
-			"Topic":         topic,
 		})
 	}
 }
 
 func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		stage := c.Param("stage")
-		if stage != "stage-1" && stage != "stage-2" {
+		up := RequestUriStageLegislator{}
+		if err := c.ShouldBindUri(&up); err != nil {
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
-		zone := c.Param("zone")
-		z := ctrl.GetZone(zone)
-		if z == nil {
+		l := ctrl.GetRecallLegislator(up.Name)
+		if l == nil {
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
-		redirectURL := ctrl.AppBaseURL.JoinPath(stage, zone, "thank-you")
+		stage := strconv.FormatUint(up.Stage, 10)
+		recallFormURL := ctrl.AppBaseURL.JoinPath("stages", stage, up.Name)
+		redirectURL := ctrl.AppBaseURL.JoinPath("stages", stage, up.Name, "thank-you")
+		imagePrefix := fmt.Sprintf("stage-%s-%s", stage, up.Name)
 
-		tmpfile := "preview-" + stage + "-" + zone + ".html"
-		c.HTML(http.StatusOK, tmpfile, gin.H{
-			"BaseURL":      ctrl.AppBaseURL.String(),
-			"Stage":        stage,
-			"Zone":         zone,
-			"Topic":        z.GetTopic(),
-			"RedirectURL":  redirectURL.String(),
-			"Name":         "邱吉爾",
-			"BirthYear":    63,
-			"BirthMonth":   11,
-			"BirthDate":    30,
-			"Address":      "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
-			"IdNumber":     IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			"MobileNumber": "0987654321",
+		tmpfile := fmt.Sprintf("preview-stage-%s-%s.html", stage, up.Name)
+		c.HTML(http.StatusOK, tmpfile, &PreviewData{
+			BaseURL:          ctrl.AppBaseURL.String(),
+			RecallFormURL:    recallFormURL.String(),
+			RedirectURL:      redirectURL.String(),
+			PoliticianName:   up.Name,
+			ConstituencyName: l.ConstituencyName,
+			RecallStage:      up.Stage,
+			ImagePrefix:      imagePrefix,
+			Name:             "邱吉爾",
+			IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
+			BirthYear:        63,
+			BirthMonth:       11,
+			BirthDate:        30,
+			MobileNumber:     "0987654321",
+			Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
 		})
 	}
 }
@@ -403,10 +364,11 @@ func (ctrl Controller) Sitemap() gin.HandlerFunc {
 			&SitemapURL{ctrl.AppBaseURL.String(), "2025-02-02", "daily", "1.0"},
 		}
 
-		for _, z := range ctrl.Zones {
-			if z.Deployed {
-				urls = append(urls, &SitemapURL{ctrl.AppBaseURL.JoinPath("stage-1", z.ZoneCode).String(), "2025-02-02", "monthly", "0.8"})
-				urls = append(urls, &SitemapURL{ctrl.AppBaseURL.JoinPath("stage-1", z.ZoneCode, "thank-you").String(), "2025-02-05", "weekly", "0.8"})
+		for _, l := range ctrl.RecallLegislators {
+			legislatorURL := ctrl.AppBaseURL.JoinPath("stages", strconv.FormatUint(l.RecallStage, 10), l.PoliticianName)
+			if l.FormDeployed {
+				urls = append(urls, &SitemapURL{legislatorURL.String(), "2025-02-11", "weekly", "0.9"})
+				urls = append(urls, &SitemapURL{legislatorURL.JoinPath("thank-you").String(), "2025-02-11", "weekly", "0.8"})
 			}
 		}
 

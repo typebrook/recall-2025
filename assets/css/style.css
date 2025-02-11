@@ -136,10 +136,14 @@ ul.point li {
 
 
 .section.step {
-	background-color: #F4F5F5;
+	background-color: #f4f5f5;
 	padding: 24px;
 	border-radius: 6px;
 	margin: 18px 0;
+}
+
+.step a {
+	color: #2d2d2d;
 }
 
 .section.strong {
@@ -174,13 +178,18 @@ button {
 	padding: 8px 16px;
 	cursor: pointer;
 	font-size: 15px;
-	font-weight: 600;
+	font-weight: 500;
 	transition: 0.3s;
 }
 
 button.lg {
-	font-size: 17px;
-	padding: 12px 24px;
+	font-size: 16px;
+	padding: 10px 24px;
+}
+
+button.md {
+	font-size: 14px;
+	padding: 10px 24px;
 }
 
 button.w100 {
@@ -407,9 +416,15 @@ button.btn-black:hover {
 .candidate {
 	flex-grow: 1;
 	text-align: left;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
 .candidate-name {
+	display: flex;
+	align-items: center;
+	gap: 10px;
 	font-size: 16px;
 	font-weight: bold;
 	width: 100%;
@@ -459,6 +474,14 @@ button.btn-black:hover {
 	gap: 16px;
 }
 
+.footer strong {
+	color: #2d2d2d;
+}
+
+.footer a {
+	color: #2d2d2a;
+}
+
 .footer .sponsor-our-work {
 	padding: 8px;
 }
@@ -468,7 +491,8 @@ button.btn-black:hover {
 	margin: 32px;
 	padding: 16px 8px;
 	text-align: center;
-	color: #2D2D2D;
+	color: #2d2d2d;
+	border-radius: 8px;
 }
 
 .sponsor-info .bank-account {
@@ -480,6 +504,10 @@ button.btn-black:hover {
 
 .faq {
 	padding: 32px 16px 64px 16px;
+}
+
+.faq a {
+	color: #2d2d2d;
 }
 
 .faq ul {
@@ -626,9 +654,12 @@ button.btn-black:hover {
 }
 
 .hyperlink-style {
+	display: inline-flex;
+	align-items: center;
 	text-decoration: underline;
-	color: #0000EE;
 	cursor: pointer;
+	margin-left: 4px;
+	gap: 4px;
 }
 
 
@@ -647,10 +678,8 @@ button.btn-black:hover {
 
 
 .copy-icon {
-	display: inline-block;
 	width: 14px;
 	height: 16px;
-	padding-left: 8px;
 	background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 10" fill="none"><path d="M3.5 8C3.225 8 2.98958 7.90208 2.79375 7.70625C2.59792 7.51042 2.5 7.275 2.5 7V1C2.5 0.725 2.59792 0.489583 2.79375 0.29375C2.98958 0.0979167 3.225 0 3.5 0H8C8.275 0 8.51042 0.0979167 8.70625 0.29375C8.90208 0.489583 9 0.725 9 1V7C9 7.275 8.90208 7.51042 8.70625 7.70625C8.51042 7.90208 8.275 8 8 8H3.5ZM3.5 7H8V1H3.5V7ZM1.5 10C1.225 10 0.989583 9.90208 0.79375 9.70625C0.597917 9.51042 0.5 9.275 0.5 9V2H1.5V9H7V10H1.5Z" fill="%2300FF9C"/></svg>');
 	background-repeat: no-repeat;
 	background-position: center;
@@ -812,10 +841,13 @@ button.btn-black:hover {
 }
 
 .filtered-candidate-container {
+	display: flex;
+	flex-direction: column;
+	gap: 64px;
 	padding: 24px;
 }
 
-.filtered-candidate-container>.candidate {
+.filtered-candidate-container .candidate {
 	background-color: #fff;
 	padding: 24px;
 	border-radius: 12px;
@@ -824,7 +856,7 @@ button.btn-black:hover {
 	gap: 4px;
 }
 
-.filtered-candidate-container.safe>.candidate {
+.filtered-candidate-container.safe .candidate {
 	background-color: #ffffff00;
 }
 
@@ -832,4 +864,23 @@ button.btn-black:hover {
 	margin-top: 24px;
 	display: block;
 	width: 100%;
+}
+
+.tag-stage {
+	padding: 2px 8px 2px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 300;
+}
+.tag-stage.stage-1 {
+	background: #e5e5e5;
+	color: #2d2d2d;
+}
+.tag-stage.stage-2 {
+	background: #8ff8cf;
+	color: #2d2d2d;
+}
+.tag-stage.stage-3 {
+	background: #08d284;
+	color: #ffffff;
 }
