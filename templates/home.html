@@ -13,7 +13,7 @@
 		</div>
   </div>
   <div class="section candidates mt-md  mt-sm-xs">
-		<div class="zone-filters-container">
+		<div class="zone-filters-container" id="zone-filters-container">
 			<div class="filters pb-sm">
 				<h2>輸入戶籍地，<br>找出您有權罷免的立委</h2>
 				<div class="row">
@@ -68,7 +68,7 @@
 							</div>
 							<div class="candidate-action">
 								{{if $rl.FormDeployed}}
-								<a href="{{$.BaseURL}}/stages/{{$rl.RecallStage}}/{{urlencode $rl.PoliticianName}}"><button class="btn-primary md w100">連署罷免</button></a>
+								<a href="#zone-filters-container"><button class="btn-primary md w100">連署罷免</button></a>
 								{{else}}
 								<div style="color:#aaaaaa;">趕工中</div>
 								{{end}}
