@@ -209,17 +209,20 @@ func (rs RecallLegislators) HasLegislatorInMunicipality(municipalityId uint64) b
 }
 
 type RecallLegislator struct {
-	ConstituencyId   uint64 `json:"constituencyId"`
-	MunicipalityId   uint64 `json:"municipalityId"`
-	Term             uint64 `json:"term"`
-	MunicipalityName string `json:"municipalityName"`
-	ConstituencyNum  uint64 `json:"constituencyNum"`
-	PoliticianName   string `json:"politicianName"`
-	RecallStage      uint64 `json:"recallStage"`
-	RecallStatus     string `json:"recallStatus"`
-	FormDeployed     bool   `json:"formDeployed"`
-	ConstituencyName string `json:"constituencyName"`
-	FillFormURL      string `json:"fillFormURL"`
+	ConstituencyId   uint64  `json:"constituencyId"`
+	MunicipalityId   uint64  `json:"municipalityId"`
+	Term             uint64  `json:"term"`
+	MunicipalityName string  `json:"municipalityName"`
+	ConstituencyNum  uint64  `json:"constituencyNum"`
+	PoliticianName   string  `json:"politicianName"`
+	RecallStage      uint64  `json:"recallStage"`
+	RecallStatus     string  `json:"recallStatus"`
+	FormDeployed     bool    `json:"formDeployed"`
+	CalendarURL      string  `json:"calendarURL"`
+	VotingDate       *string `json:"votingDate"`
+	VotingEventURL   *string `json:"votingEventURL"`
+	ConstituencyName string  `json:"constituencyName"`
+	FillFormURL      string  `json:"fillFormURL"`
 }
 
 func (rs RecallLegislators) ToAreas() Areas {
