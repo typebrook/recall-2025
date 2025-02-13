@@ -238,6 +238,32 @@ button.btn-black:hover {
 }
 
 
+
+
+/* *************************************
+
+	tag-filter
+
+**************************************** */
+
+.tag-container {
+	margin: 24px 12px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.tag-filter {
+	padding: 6px 12px;
+	border-radius: 10px;
+	border: 1px solid #E5E5E5;
+	margin: 4px;
+	cursor: pointer;
+}
+
+.tag-filter.active {
+	background: var(--pri-color);
+}
+
 /* *************************************
 
 	dialog
@@ -329,6 +355,58 @@ button.btn-black:hover {
 
 
 
+
+/* *************************************
+
+	swiper
+
+**************************************** */
+
+
+.swiper {
+	margin: 24px auto;
+	width: 100%;
+	max-width: 400px;
+	padding-bottom: 30px;
+
+}
+
+.swiper-slide {
+
+	/* height: 116px; */
+	border-radius: 12px;
+	border: 1px solid #E5E5E5;
+	padding: 16px;
+}
+
+.swiper h4 {
+	font-size: 16px;
+	margin: 8px 0;
+}
+
+.swiper p {
+	margin: 8px 0;
+}
+
+.swiper span {
+	color: var(--pri-color-hover);
+}
+
+.swiper span.icon-text {
+	font-size: 20px;
+	padding-right: 6px;
+}
+
+.swiper-pagination-bullet {
+	background: #3c3c3c;
+	width: 6px;
+	height: 6px;
+	opacity: 0.3;
+}
+
+.swiper-pagination-bullet-active {
+	opacity: 1;
+}
 
 
 
@@ -844,7 +922,7 @@ button.btn-black:hover {
 	display: flex;
 	flex-direction: column;
 	gap: 64px;
-	padding: 24px;
+	padding: 20px;
 }
 
 .filtered-candidate-container .candidate {
@@ -866,20 +944,75 @@ button.btn-black:hover {
 	width: 100%;
 }
 
+
+
+.filtered-candidate-container .filter-stage-flow {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	max-width: 420px;
+	margin: auto;
+	margin-top: 20px;
+}
+
+.filtered-candidate-container .filter-stage {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	opacity: 0.3;
+}
+
+.filtered-candidate-container .filter-stage.active {
+	opacity: 1;
+}
+
+
+
+.filtered-candidate-container h4 {
+	color: #2D2D2D;
+	font-size: 16px;
+	margin: 8px 0;
+}
+
+
+.filtered-candidate-container p {
+	color: #2D2D2D;
+	font-size: 14px;
+	margin: 0;
+}
+
+.filtered-candidate-container .icon-text {
+	color: var(--pri-color);
+	font-size: 40px;
+	margin: -6px;
+}
+
+
+
+
+
+
+
+
+
 .tag-stage {
 	padding: 2px 8px 2px 8px;
 	border-radius: 4px;
 	font-size: 12px;
 	font-weight: 300;
 }
+
 .tag-stage.stage-1 {
 	background: #e5e5e5;
 	color: #2d2d2d;
 }
+
 .tag-stage.stage-2 {
 	background: #8ff8cf;
 	color: #2d2d2d;
 }
+
 .tag-stage.stage-3 {
 	background: #08d284;
 	color: #ffffff;
