@@ -230,7 +230,7 @@ func (rs RecallLegislators) ToAreas() Areas {
 	for _, r := range rs {
 		matched := false
 		for _, a := range areas {
-			if *a.MunicipalityId == r.MunicipalityId {
+			if a.MunicipalityId == r.MunicipalityId {
 				matched = true
 				a.RecallLegislators = append(a.RecallLegislators, r)
 				break
@@ -238,7 +238,7 @@ func (rs RecallLegislators) ToAreas() Areas {
 		}
 
 		if !matched {
-			areas = append(areas, &Area{&r.MunicipalityId, &r.MunicipalityName, RecallLegislators{r}})
+			areas = append(areas, &Area{r.MunicipalityId, &r.MunicipalityName, RecallLegislators{r}})
 		}
 	}
 
@@ -248,7 +248,7 @@ func (rs RecallLegislators) ToAreas() Areas {
 type Areas []*Area
 
 type Area struct {
-	MunicipalityId    *uint64
+	MunicipalityId    uint64
 	MunicipalityName  *string
 	RecallLegislators RecallLegislators
 }

@@ -5,7 +5,6 @@
 	src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v76/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY40KH8nGzv3fz_VFU22ZZLsYEpzC_1ver5Y0.woff2) format('woff2');
 }
 
-
 * {
 	position: relative;
 	box-sizing: border-box;
@@ -132,11 +131,11 @@ ul.point li {
 
 .section {
 	max-width: 640px;
+	width: 100%;
 	margin: 0 auto;
 	padding: 0 16px;
 	box-sizing: border-box;
 }
-
 
 .section.step {
 	background-color: #f4f5f5;
@@ -246,7 +245,8 @@ button.btn-black:hover {
 .municipality-tag-container {
   display: flex;
 	flex-wrap: wrap;
-  text-align: center;
+	justify-content: center;
+	align-items: center;
 	padding: 8px 0;
 	gap: 8px;
 }
@@ -354,11 +354,9 @@ button.btn-black:hover {
 
 
 
-/* *************************************
-
+/**************************************
 	swiper
-
-**************************************** */
+*****************************************/
 
 
 .swiper {
@@ -366,7 +364,6 @@ button.btn-black:hover {
 	width: 100%;
 	max-width: 400px;
 	padding-bottom: 30px;
-
 }
 
 .swiper-slide {
@@ -490,7 +487,11 @@ button.btn-black:hover {
 }
 
 .candidates {
-	padding: 32px 16px 32px 16px;
+	width: 90%;
+	background-color: #f4f5f5;
+	padding: 48px 24px 64px 24px;
+	border-radius: 12px;
+	margin: 16px auto;
 }
 
 .candidates h2 {
@@ -526,14 +527,12 @@ button.btn-black:hover {
 }
 
 
-/* *************************************
-
+/**************************************
 	footer 
-
-**************************************** */
-
+*****************************************/
 .footer {
 	background-color: #f4f5f5;
+	padding-top: 48px;
 	color: #888888;
 }
 
@@ -584,6 +583,11 @@ button.btn-black:hover {
 
 .faq {
 	padding: 32px 16px 64px 16px;
+	margin-bottom: 32px;
+}
+
+.faq h2 {
+	margin-bottom: 24px;
 }
 
 .faq ul {
@@ -941,16 +945,8 @@ button.btn-black:hover {
 
 
 /* *************************************
-
 	zone-filters
-
 **************************************** */
-.zone-filters-container {
-	background-color: #f4f5f5;
-	padding: 32px 24px 32px 24px;
-	border-radius: 12px;
-}
-
 .filtered-candidate-container {
 	display: flex;
 	flex-direction: column;
@@ -983,7 +979,14 @@ button.btn-black:hover {
 
 .candidate-container-row{
 	display: flex;
+	align-items: center;
 	padding: 16px 0;
+}
+
+.candidate-action {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
 
 .candidate-container p {
@@ -1062,8 +1065,9 @@ button.btn-black:hover {
 .municipalities {
 	display: flex;
 	flex-direction: column;
-	padding: 32px 16px;
+	padding: 0 16px 32px 16px;
 	gap: 24px;
+	margin-bottom: 32px;
 }
 
 .municipalities ul {
@@ -1079,6 +1083,19 @@ button.btn-black:hover {
 
 .municipalities li {
 	border-bottom: 1px solid #e5e5e5;
+}
+
+.municipalities .header {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.municipalities .header .description {
+	color: #888888;
+	font-size: 14px;
+	text-align: center;
 }
 
 .thank-you-header {
