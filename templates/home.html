@@ -5,7 +5,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
-	<title>阻止失能暴衝的立院, 我們需要你！</title>
+	<title>阻止失能暴衝的立院，我們需要你！</title>
 	<meta name="description" property="og:description"
 		content="不討論就表決，邊撤案邊修正，毀壞憲政體制的立院你還看得下去嗎？你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎？身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！">
 </head>
@@ -13,7 +13,7 @@
 <body>
 	<div class="banner">
 		<div class="section">
-			<h1 class="primary">阻止失能暴衝的立院, 我們需要你！</h1>
+			<h1 class="primary">阻止失能暴衝的立院，<br>我們需要你！</h1>
 			<div class="content-text">不討論就表決，邊撤案邊修正，毀壞憲政體制的立院你還看得下去嗎？<br>你知道立法院過去兩個會期強推了多少危害國安、違憲、危害臺灣民主體制、危害民生經濟的法案嗎?
 				身為民主社會的公民，我們應行使罷免權，讓不適任的立委下台！</div>
 		</div>
@@ -45,8 +45,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="filtered-candidate-container" id="filtered-candidate-container">
-
+			<div class="filtered-candidate-container" id="filtered-candidate-container" style="display:none;">
 			</div>
 			<div class="filtered-candidate-container safe" id="share-container" style="display:none;">
 				<div class="candidate-container">
@@ -61,90 +60,57 @@
 		<div class="swiper">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide">
-					<h4><span class="icon-text"> campaign</span>提醒：連署兩階段，<span>連署書要簽2次</span></h4>
-					<p>
-						第1階段連署 <span>⮕</span> 第2階段連署 <span>⮕</span> 第3階段投票
-						第一階段通過且第二階段開跑後，別忘了回來簽二階連署書喔!
-					</p>
+					<h4><span class="icon-text">campaign</span>提醒：連署兩階段，<span>連署書要簽 2 次</span></h4>
+					<p>第一階段連署 <span>⮕</span> 第二階段連署 <span>⮕</span> 第三階段投票。第二階段開跑後，別忘了回來簽二階連署書喔！</p>
 				</div>
 				<div class="swiper-slide">
-					<h4><span class="icon-text"> campaign</span>預告：部分選區第一階段送件，本網站將提供<span>第二階段連署書</span>製作</h4>
-					<p>
-						確認該選區通過第一階段後，本網站將提供第二階段用連署書，方便大家連署
-					</p>
+					<h4><span class="icon-text">campaign</span>預告：本網站將提供<span>第二階段連署書</span>製作</h4>
+					<p>確認該選區通過第一階段後，本網站將提供第二階段用連署書，方便大家連署。</p>
 				</div>
 				<div class="swiper-slide">
-					<h4><span class="icon-text"> campaign</span>急！這些選區<span>第一階段尚未達標...</span></h4>
-					<p>
-						彰化謝衣鳳、彰化謝衣鳳、彰化謝衣鳳、彰化謝衣鳳、還有誰幫我補一下，第一階段尚未達標，請選民幫忙連署！
-					</p>
+					<h4><span class="icon-text">campaign</span>急！這些選區<span>第一階段尚未達標<span>：</h4>
+					<p>基隆市林沛祥、苗栗縣陳超明、苗栗縣邱鎮軍、金門縣陳玉珍等，第一階段尚未達標，請選民幫忙連署！</p>
 				</div>
 			</div>
 			<div class="swiper-pagination"></div>
 		</div>
 
-		<h2 class="mt-lg">全台罷免對象一覽</h2>
-		<div class="tag-container">
-			{{range $a := .Areas }}
-			<div class="tag-filter" data-city="{{$a.MunicipalityName}}">{{$a.MunicipalityName}}</div>
-			{{end}}
+		<div class="section municipalities">
+			<h2 class="mt-lg">全台罷免對象一覽</h2>
+			<div class="municipality-tag-container">
+				{{- range $a := .Areas }}
+				<div class="municipality-tag" data-city="{{$a.MunicipalityId}}" onclick="toggleCityList('{{$a.MunicipalityId}}');">{{$a.MunicipalityName}}</div>
+				{{- end}}
+			</div>
+			{{- range $a := .Areas }}
+			<ul data-city="{{$a.MunicipalityId}}">
+				{{- range $rl := $a.RecallLegislators}}
+				<li>
+					<div class="candidate-container-row">
+						<div class="candidate">
+							<div class="candidate-name">{{$rl.PoliticianName}}<div class="tag-stage stage-{{.RecallStage}}">{{.RecallStage}} 階</div>
+							</div>
+							<div class="candidate-zone">{{$rl.ConstituencyName}}</div>
+						</div>
+						<div class="candidate-action">
+							{{- if $rl.FormDeployed}}
+							<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100">連署罷免</button></a>
+							{{- else}}
+							<div style="color:#aaaaaa;">趕工中</div>
+							{{- end}}
+						</div>
+					</div>
+				</li>
+				{{- end}}
+			</ul>
+			{{- end}}
 		</div>
-		<ul>
-			{{range $a := .Areas }}
-			<li class="city-row" data-city="{{$a.MunicipalityName}}">
-				<div class="city-header">
-					<div class="city-name">{{$a.MunicipalityName}}</div>
-					<div class="arrow">▶</div>
-				</div>
-				<div class="city-content">
-					<ul>
-						{{range $rl := $a.RecallLegislators}}
-						<li>
-							<div class="candidate">
-								<div class="candidate-name">{{$rl.PoliticianName}}<div
-										class="tag-stage stage-{{.RecallStage}}">{{.RecallStage}} 階</div>
-								</div>
-								<div class="candidate-zone">{{$rl.ConstituencyName}}</div>
-							</div>
-							<div class="candidate-action">
-								{{if $rl.FormDeployed}}
-								<a href="#constituency-filter"><button class="btn-primary md w100">連署罷免</button></a>
-								{{else}}
-								<div style="color:#aaaaaa;">趕工中</div>
-								{{end}}
-							</div>
-						</li>
-						{{end}}
-					</ul>
-				</div>
-			</li>
-			{{end}}
-		</ul>
-	</div>
 
 	{{ template "faq" }}
 	{{ template "footer" }}
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
 	<script>
 		const baseURL = '{{.BaseURL}}';
-
-		document.querySelectorAll('.city-row .city-header').forEach(header => {
-			header.addEventListener('click', () => {
-				const item = header.parentElement;
-				const isExpanded = item.classList.contains('expanded');
-				document.querySelectorAll('.city-row.expanded').forEach(openItem => {
-					if (openItem !== item) {
-						openItem.classList.remove('expanded');
-						const arrow = openItem.querySelector('.arrow');
-						arrow.classList.remove('collapsed');
-					}
-				});
-				item.classList.toggle('expanded', !isExpanded);
-				const arrow = header.querySelector('.arrow');
-				arrow.classList.toggle('collapsed', !isExpanded);
-			});
-		});
-
 		const filteredCandidateContainer = document.getElementById('filtered-candidate-container');
 		const shareContainer = document.getElementById('share-container');
 
@@ -268,34 +234,32 @@
 				legislators.forEach(legislator => {
 					const candidateContainer = document.createElement("div");
 					candidateContainer.classList.add("candidate-container");
+					
+					let recallStages = [1, 2, 3].map(stage => `
+						<h4 class="recall-stage ${stage === legislator.recallStage ? 'active' : ''}">
+							<span>第 ${stage} 階段</span>${stage === 3 ? "罷免投票" : "連署罷免"}
+						</h4>
+						${stage < 3 ? '<span class="icon-step-arrow"></span>' : ''}
+					`).join('');
+
 					candidateContainer.innerHTML = `
 						<div class="candidate">
-							<div class="candidate-name">${legislator.politicianName}<div class="tag-stage stage-${legislator.recallStage}">${legislator.recallStage} 階</div></div>
+							<div class="candidate-name">${legislator.politicianName}</div>
 							<div class="candidate-zone">${legislator.constituencyName}</div>
 						</div>
-						<div class="filter-stage-flow">
-							<div class="filter-stage active">
-								<p>第1階段</p>
-								<h4>連署罷免</h4>
+						<div class="recall-stage-container">
+							<div class="recall-stage-flow">
+								${recallStages}
 							</div>
-							<div class="icon-text"> arrow_right</div>
-							<div class="filter-stage">
-								<p>第2階段</p>
-								<h4>連署罷免</h4>
-							</div>
-							<div class="icon-text"> arrow_right</div>
-
-							<div class="filter-stage">
-								<p>第3階段</p>
-								<h4>罷免投票</h4>
+							<div class="candidate-action">
+								<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>
 							</div>
 						</div>
-						<div class="candidate-action">
-							<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>
-						</div>`;
+						<p>罷免需經兩個階段連署，兩個階段都通過後才進行選民投票決定罷免結果。請大家務必三個階段都完整參與！</p>
+					`;
 					filteredCandidateContainer.appendChild(candidateContainer);
 				});
-
+				filteredCandidateContainer.style.display = "flex";
 				filteredCandidateContainer.scrollIntoView({ behavior: "smooth" });
 			}
 		}
@@ -305,50 +269,43 @@
 			shareContainer.scrollIntoView({ behavior: "smooth" });
 		}
 
-
-		// -------------------------------
-		// Swiper container
-		// -------------------------------
-
 		new Swiper('.swiper', {
-			slidesPerView: 1.2,  // 可見卡片數量
-			spaceBetween: 10,    // 間距
+			slidesPerView: 1.2,
+			spaceBetween: 10,
 			pagination: { el: ".swiper-pagination", clickable: true },
+			autoplay: {
+				delay: 3000,
+				disableOnInteraction: false
+			},
+			loop: true
 		});
 
+		const municipalityLists = document.querySelectorAll(".municipalities ul");
+		const municipalityTags = document.querySelectorAll(".municipality-tag");
 
-		// -------------------------------
-		// filter city tag
-		// -------------------------------
-		const selectedCities = new Set();
-		const tags = document.querySelectorAll(".tag-filter");
-		const cityRows = document.querySelectorAll(".city-row");
+		function toggleCityList(cityId) {
+			const targetUl = document.querySelector(`ul[data-city="${cityId}"]`);
+			const targetTag = document.querySelector(`.municipality-tag[data-city="${cityId}"]`);
 
-		tags.forEach(tag => {
-			tag.addEventListener("click", function () {
-				const city = this.getAttribute("data-city");
-
-				if (this.classList.contains("active")) {
-					this.classList.remove("active");
-					selectedCities.delete(city);
-				} else {
-					this.classList.add("active");
-					selectedCities.add(city);
-				}
-				updateFilter();
-			});
-		});
-
-		function updateFilter() {
-			if (selectedCities.size === 0) {
-				cityRows.forEach(row => row.style.display = "block");
-			} else {
-				cityRows.forEach(row => {
-					const city = row.getAttribute("data-city");
-					row.style.display = selectedCities.has(city) ? "block" : "none";
-				});
+			if (targetUl && targetUl.style.display === "flex") {
+				return;
 			}
+
+			municipalityLists.forEach(ul => (ul.style.display = "none"));
+
+			municipalityTags.forEach(tag => tag.classList.remove("active"));
+
+			if (targetUl) {
+				targetUl.style.display = "flex";
+			}
+
+			if (targetTag) {
+				targetTag.classList.add("active");
+			}
+
+			targetUl.scrollIntoView({ behavior: "smooth" });
 		}
+
 	</script>
 </body>
 

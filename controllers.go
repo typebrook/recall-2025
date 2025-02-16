@@ -107,6 +107,7 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 			"Address":          address,
 			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
 			"MaxBirthDate":     twentyYearsAgo,
+			"RecallStage":      l.RecallStage,
 		})
 	}
 }

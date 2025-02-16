@@ -1,7 +1,7 @@
 User-agent: *
 
-{{range .DisallowPaths}}
+{{- range .DisallowPaths}}
 Disallow: {{ . }}
-{{end}}
+{{- end}}
 
 Sitemap: {{.BaseURL}}/sitemap.xml
