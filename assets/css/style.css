@@ -661,8 +661,7 @@ button.btn-black:hover {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
-	max-width: 400px;
-	width: 100%;
+	width: 90%;
 	padding: 16px;
 	justify-content: center;
 	align-items: center;
@@ -680,7 +679,7 @@ button.btn-black:hover {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	max-width: 400px;
+	width: 90%;
 	padding: 16px;
 	gap: 40px;
 }

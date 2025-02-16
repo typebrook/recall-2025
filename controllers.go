@@ -180,13 +180,12 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 	birthYear = birthYear - 1911
 
 	stage := strconv.FormatUint(up.Stage, 10)
-	recallFormURL := cfg.AppBaseURL.JoinPath("stages", stage, up.Name)
 	redirectURL := cfg.AppBaseURL.JoinPath("stages", stage, up.Name, "thank-you")
 	imagePrefix := fmt.Sprintf("stage-%s-%s", stage, up.Name)
 
 	data := &PreviewData{
 		BaseURL:          cfg.AppBaseURL.String(),
-		RecallFormURL:    recallFormURL.String(),
+		FillFormURL:      l.FillFormURL,
 		RedirectURL:      redirectURL.String(),
 		PoliticianName:   up.Name,
 		ConstituencyName: l.ConstituencyName,
@@ -230,7 +229,7 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 
 type PreviewData struct {
 	BaseURL          string
-	RecallFormURL    string
+	FillFormURL      string
 	RedirectURL      string
 	PoliticianName   string
 	ConstituencyName string
@@ -272,11 +271,10 @@ func (ctrl Controller) ThankYou() gin.HandlerFunc {
 			return
 		}
 
-		recallFormURL := ctrl.AppBaseURL.JoinPath("stages", strconv.FormatUint(up.Stage, 10), up.Name)
-
 		c.HTML(http.StatusOK, "thank-you.html", gin.H{
-			"BaseURL":       ctrl.AppBaseURL.String(),
-			"RecallFormURL": recallFormURL.String(),
+			"BaseURL":     ctrl.AppBaseURL.String(),
+			"FillFormURL": l.FillFormURL,
+			"CalendarURL": l.CalendarURL,
 		})
 	}
 }
@@ -296,14 +294,13 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 		}
 
 		stage := strconv.FormatUint(up.Stage, 10)
-		recallFormURL := ctrl.AppBaseURL.JoinPath("stages", stage, up.Name)
 		redirectURL := ctrl.AppBaseURL.JoinPath("stages", stage, up.Name, "thank-you")
 		imagePrefix := fmt.Sprintf("stage-%s-%s", stage, up.Name)
 
 		tmpfile := fmt.Sprintf("preview-stage-%s-%s.html", stage, up.Name)
 		c.HTML(http.StatusOK, tmpfile, &PreviewData{
 			BaseURL:          ctrl.AppBaseURL.String(),
-			RecallFormURL:    recallFormURL.String(),
+			FillFormURL:      l.FillFormURL,
 			RedirectURL:      redirectURL.String(),
 			PoliticianName:   up.Name,
 			ConstituencyName: l.ConstituencyName,
