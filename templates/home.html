@@ -69,7 +69,7 @@
 			</div>
 			<div class="swiper-slide">
 				<h4><span class="icon-text">campaign</span>急！這些選區<span>第一階段連署尚未達標</span>：</h4>
-				<p>苗栗縣陳超明、苗栗縣邱鎮軍、金門縣陳玉珍等，第一階段尚未達標，請選民幫忙連署！</p>
+				<p>苗栗縣陳超明、苗栗縣邱鎮軍、金門縣陳玉珍、連江縣陳雪生等，第一階段尚未達標，請選民幫忙連署！</p>
 			</div>
 		</div>
 		<div class="swiper-pagination"></div>
@@ -101,7 +101,11 @@
 					</div>
 					<div class="candidate-action">
 						{{- if lt $rl.RecallStage 3}}
-						<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100">連署罷免</button></a>
+							{{- if $rl.FormDeployed}}
+							<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100">連署罷免</button></a>
+							{{- else}}
+							<button class="btn-primary md w100" disabled>趕工中</button>
+							{{- end}}
 						{{- end}}
 						<a href="{{$rl.CalendarURL}}" target="_blank"><button class="btn-secondary md w100">+ 投票行事曆</button></a>
 					</div>
@@ -258,7 +262,9 @@
 								${recallStages}
 							</div>
 							<div class="candidate-action">
-								<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>
+								${legislator.formDeployed
+									? `<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>`
+									: `<button class="btn-primary lg w100" disabled>趕工中</button>`}
 							</div>
 						</div>
 						<p>罷免需經兩個階段連署，兩個階段都通過後才進行選民投票決定罷免結果。請大家務必三個階段都完整參與！</p>
