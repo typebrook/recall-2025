@@ -25,11 +25,11 @@
 				<div class="col-6 col-xs-12">
 					<select id="filter-municipalities">
 						<option value="" disabled selected>縣市</option>
-						{{range $m := .Municipalities}}
-						{{if gt $m.Id 0}}
+						{{- range $m := .Municipalities}}
+						{{- if gt $m.Id 0}}
 						<option value="{{$m.Id}}">{{$m.Name}}</option>
-						{{end}}
-						{{end}}
+						{{- end}}
+						{{- end}}
 					</select>
 				</div>
 				<div class="col-6 col-xs-12">
