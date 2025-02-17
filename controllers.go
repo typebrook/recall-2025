@@ -275,6 +275,7 @@ func (ctrl Controller) ThankYou() gin.HandlerFunc {
 			"BaseURL":     ctrl.AppBaseURL.String(),
 			"FillFormURL": l.FillFormURL,
 			"CalendarURL": l.CalendarURL,
+			"CsoURL":      l.CsoURL,
 		})
 	}
 }
