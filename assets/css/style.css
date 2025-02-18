@@ -985,7 +985,12 @@ button.btn-black:hover {
 .candidate-action {
 	display: flex;
 	flex-direction: column;
+	text-align: center;
 	gap: 8px;
+}
+
+.candidate-action span {
+	opacity: 0.4;
 }
 
 .candidate-container p {

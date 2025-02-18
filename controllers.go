@@ -80,13 +80,18 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		up := RequestUriStageLegislator{}
 		if err := c.ShouldBindUri(&up); err != nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
 		l := ctrl.GetRecallLegislator(up.Name)
 		if l == nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return
+		}
+
+		if code := l.GetRedirectStatusCode(up.Stage); code != http.StatusOK {
+			c.Redirect(code, ctrl.AppBaseURL.String())
 			return
 		}
 
@@ -113,7 +118,7 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 }
 
 type RequestUriStageLegislator struct {
-	Stage uint64 `uri:"stage" binding:"required,numeric,oneof=1 2"`
+	Stage uint64 `uri:"stage" binding:"required,numeric,oneof=1 2 3 4"`
 	Name  string `uri:"name" binding:"required"`
 }
 
@@ -121,13 +126,18 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		up := RequestUriStageLegislator{}
 		if err := c.ShouldBindUri(&up); err != nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
 		l := ctrl.GetRecallLegislator(up.Name)
 		if l == nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return
+		}
+
+		if code := l.GetRedirectStatusCode(up.Stage); code != http.StatusOK {
+			c.Redirect(code, ctrl.AppBaseURL.String())
 			return
 		}
 
@@ -261,13 +271,18 @@ func (ctrl Controller) ThankYou() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		up := RequestUriStageLegislator{}
 		if err := c.ShouldBindUri(&up); err != nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
 		l := ctrl.GetRecallLegislator(up.Name)
 		if l == nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return
+		}
+
+		if code := l.GetRedirectStatusCode(up.Stage); code != http.StatusOK {
+			c.Redirect(code, ctrl.AppBaseURL.String())
 			return
 		}
 
@@ -284,13 +299,18 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		up := RequestUriStageLegislator{}
 		if err := c.ShouldBindUri(&up); err != nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
 			return
 		}
 
 		l := ctrl.GetRecallLegislator(up.Name)
 		if l == nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
+			return
+		}
+
+		if code := l.GetRedirectStatusCode(up.Stage); code != http.StatusOK {
+			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
 
@@ -424,7 +444,7 @@ type RequestURIAsset struct {
 
 func (ctrl Controller) NotFound() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "抱歉，我們無法找到您要的頁面。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+		c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
 	}
 }
 

@@ -12,6 +12,12 @@ import (
 	"strings"
 )
 
+const (
+	RecallStatusOngoing = "ONGOING"
+	RecallStatusSuccess = "SUCCESS"
+	RecallStatusFailed  = "FAILED"
+)
+
 type Config struct {
 	AppEnv             string
 	AppHostname        string
@@ -226,6 +232,19 @@ type RecallLegislator struct {
 	ByElectionEventURL *string `json:"byElectionEventURL"`
 	ConstituencyName   string  `json:"constituencyName"`
 	FillFormURL        string  `json:"fillFormURL"`
+}
+
+func (r RecallLegislator) GetRedirectStatusCode(stage uint64) int {
+	switch {
+	case r.RecallStatus != RecallStatusOngoing:
+		return http.StatusMovedPermanently
+	case r.RecallStage > stage:
+		return http.StatusMovedPermanently
+	case r.RecallStage < stage:
+		return http.StatusFound
+	}
+
+	return http.StatusOK
 }
 
 func (rs RecallLegislators) ToAreas() Areas {
