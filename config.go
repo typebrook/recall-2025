@@ -222,6 +222,7 @@ type RecallLegislator struct {
 	CalendarURL        string  `json:"calendarURL"`
 	VotingDate         *string `json:"votingDate"`
 	VotingEventURL     *string `json:"votingEventURL"`
+	ByElectionDate     *string `json:"byElectionDate"`
 	ByElectionEventURL *string `json:"byElectionEventURL"`
 	ConstituencyName   string  `json:"constituencyName"`
 	FillFormURL        string  `json:"fillFormURL"`
