@@ -33,6 +33,17 @@ a {
   background-position: center;
 }
 
+.icon-link {
+	display: inline-block;
+  width: 20px;
+  height: 10px;
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='10' viewBox='0 0 20 10' fill='white' xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath d='M9 10H5C3.61667 10 2.4375 9.5125 1.4625 8.5375C0.4875 7.5625 0 6.38333 0 5C0 3.61667 0.4875 2.4375 1.4625 1.4625C2.4375 0.4875 3.61667 0 5 0H9V2H5C4.16667 2 3.45833 2.29167 2.875 2.875C2.29167 3.45833 2 4.16667 2 5C2 5.83333 2.29167 6.54167 2.875 7.125C3.45833 7.70833 4.16667 8 5 8H9V10ZM6 6V4H14V6H6ZM11 10V8H15C15.8333 8 16.5417 7.70833 17.125 7.125C17.7083 6.54167 18 5.83333 18 5C18 4.16667 17.7083 3.45833 17.125 2.875C16.5417 2.29167 15.8333 2 15 2H11V0H15C16.3833 0 17.5625 0.4875 18.5375 1.4625C19.5125 2.4375 20 3.61667 20 5C20 6.38333 19.5125 7.5625 18.5375 8.5375C17.5625 9.5125 16.3833 10 15 10H11Z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+	margin-right: 8px;
+}
+
 html,
 body {
 	width: 100%;
@@ -183,7 +194,7 @@ button.lg {
 	padding: 10px 24px;
 }
 
-button.md {
+.md {
 	font-size: 14px;
 	padding: 10px 24px;
 }
@@ -367,8 +378,6 @@ button.btn-black:hover {
 }
 
 .swiper-slide {
-
-	/* height: 116px; */
 	border-radius: 12px;
 	border: 1px solid #E5E5E5;
 	padding: 16px;
@@ -377,6 +386,17 @@ button.btn-black:hover {
 .swiper h4 {
 	font-size: 16px;
 	margin: 8px 0;
+}
+
+.icon-notify {
+  display: inline-block;
+  width: 20px; 
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='16' viewBox='0 0 20 16' fill='none' xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath d='M15.9615 8.74996V7.24996H19.577V8.74996H15.9615ZM17.1037 15.4807L14.2115 13.3115L15.123 12.1155L18.0152 14.2845L17.1037 15.4807ZM15.0845 3.84621L14.173 2.64996L17.0652 0.480713L17.977 1.67696L15.0845 3.84621ZM3.24997 14.4807V10.577H2.23072C1.73206 10.577 1.30614 10.4003 0.952974 10.047C0.59964 9.6938 0.422974 9.26788 0.422974 8.76921V7.23071C0.422974 6.73205 0.59964 6.30613 0.952974 5.95296C1.30614 5.59963 1.73206 5.42296 2.23072 5.42296H6.09622L10.577 2.74996V13.25L6.09622 10.577H4.74997V14.4807H3.24997ZM9.07697 10.5847V5.41521L6.51147 6.92296H2.23072C2.15389 6.92296 2.08339 6.95505 2.01922 7.01921C1.95506 7.08338 1.92297 7.15388 1.92297 7.23071V8.76921C1.92297 8.84605 1.95506 8.91655 2.01922 8.98071C2.08339 9.04488 2.15389 9.07696 2.23072 9.07696H6.51147L9.07697 10.5847ZM11.9615 11.1192V4.88071C12.3538 5.23588 12.6698 5.6833 12.9095 6.22296C13.1493 6.7628 13.2692 7.35513 13.2692 7.99996C13.2692 8.6448 13.1493 9.23713 12.9095 9.77696C12.6698 10.3166 12.3538 10.764 11.9615 11.1192Z' fill='%2308D284'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+	margin-right: 8px;
 }
 
 .swiper p {
@@ -928,20 +948,19 @@ button.btn-black:hover {
 	-moz-appearance: none;
 }
 
-.filters .row>div::after {
-	content: "keyboard_arrow_down";
-	font-family: 'Material Symbols Outlined';
+.filters .row > div::after {
+	content: "";
+  width: 10px;
+  height: 5px;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='5' viewBox='0 0 10 5' fill='none' xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath d='M5.31787 4.81787C5.07373 5.06201 4.67725 5.06201 4.43311 4.81787L0.683105 1.06787C0.438965 0.82373 0.438965 0.427246 0.683105 0.183105C0.927246 -0.0610351 1.32373 -0.0610351 1.56787 0.183105L4.87647 3.4917L8.18506 0.185059C8.4292 -0.0590821 8.82568 -0.0590821 9.06982 0.185059C9.31396 0.429199 9.31396 0.825683 9.06982 1.06982L5.31982 4.81982L5.31787 4.81787Z' fill='%232D2D2D'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 	position: absolute;
 	top: 50%;
-	right: 24px;
+	right: 32px;
 	transform: translateY(-50%);
-	pointer-events: none;
-	font-size: 18px;
-	color: #666;
 }
-
-
-
 
 /* *************************************
 	zone-filters
@@ -989,7 +1008,7 @@ button.btn-black:hover {
 	gap: 8px;
 }
 
-.candidate-action span {
+.candidate-action .working-on {
 	opacity: 0.4;
 }
 
@@ -1013,6 +1032,12 @@ button.btn-black:hover {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.candidate-container .recall-stage-failed-flow {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
 }
 
 .candidate-container .recall-stage {
@@ -1078,7 +1103,6 @@ button.btn-black:hover {
 	display: none;
 	flex-direction: column;
 	gap: 24px;
-	padding: 0 16px;
 }
 
 .municipalities ul button {
@@ -1087,6 +1111,7 @@ button.btn-black:hover {
 
 .municipalities li {
 	border-bottom: 1px solid #e5e5e5;
+	padding: 0 16px;
 }
 
 .municipalities .header {
@@ -1109,4 +1134,21 @@ button.btn-black:hover {
 .thank-you-header .header-description {
 	font-weight: 700;
 	font-size: 16px;
+}
+
+.flow-failed {
+	flex-direction: column;
+}
+
+.recall-failed .candidate-container-row {
+	opacity: 0.4;
+}
+
+.pep-talk {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 32px 64px auto 64px;
+	gap: 16px;
 }

@@ -52,7 +52,7 @@
 					<div class="candidate-name">您的選區不在本次活動範圍</div>
 					<div class="candidate-zone">但我們也需要您的力量，幫忙分享資訊讓更多人參與！</div>
 				</div>
-				<button class="btn-black lg w100" onclick="copyCurrentLink()">幫忙分享資訊！</button>
+				<button class="btn-black lg w100" onclick="copyCurrentLink()"><i class="icon-link"></i>幫忙分享資訊！</button>
 			</div>
 		</div>
 	</div>
@@ -60,15 +60,15 @@
 	<div class="section swiper">
 		<div class="swiper-wrapper">
 			<div class="swiper-slide">
-				<h4><span class="icon-text">campaign</span>提醒：連署兩階段，<span>連署書要簽 2 次</span></h4>
+				<h4><i class="icon-notify"></i>提醒：連署兩階段，<span>連署書要簽 2 次</span></h4>
 				<p>第一階段連署 <span>⮕</span> 第二階段連署 <span>⮕</span> 第三階段投票。第二階段開跑後，別忘了回來簽二階連署書喔！</p>
 			</div>
 			<div class="swiper-slide">
-				<h4><span class="icon-text">campaign</span>預告：本網站將提供<span>第二階段連署書</span>製作</h4>
+				<h4><i class="icon-notify"></i>預告：本網站將提供<span>第二階段連署書</span>製作</h4>
 				<p>確認該選區通過第一階段後，本網站將提供第二階段用連署書，方便大家連署。</p>
 			</div>
 			<div class="swiper-slide">
-				<h4><span class="icon-text">campaign</span>急！這些選區<span>第一階段連署尚未達標</span>：</h4>
+				<h4><i class="icon-notify"></i>急！這些選區<span>第一階段連署尚未達標</span>：</h4>
 				<p>苗栗縣陳超明、苗栗縣邱鎮軍、金門縣陳玉珍、連江縣陳雪生等，第一階段尚未達標，請選民幫忙連署！</p>
 			</div>
 		</div>
@@ -79,7 +79,7 @@
 		<div class="header">
 			<h2 class="mt-lg">全臺罷免活動一覽</h2>
 			<div class="description">
-				本團隊將於各選區二階段通過、投票時間確定後，將罷免的投票時間寫入行事曆。若罷免成功進入補選，我們也會以相同的方式將補選時間寫入。除填寫連署書外，也請加入罷免投票行事曆，以免錯過後續最重要的投票階段！
+			填寫連署書外，也請加入罷免投票行事曆，<br>以免錯過後續最重要的投票階段！
 			</div>
 		</div>
 		<div class="municipality-tag-container">
@@ -92,7 +92,7 @@
 		{{- range $a := .Areas }}
 		<ul data-city="{{$a.MunicipalityId}}" style="{{if eq $a.MunicipalityId 1}}display:flex;{{end}}">
 			{{- range $rl := $a.RecallLegislators}}
-			<li>
+			<li class="{{- if eq $rl.RecallStatus "FAILED"}}recall-failed{{- end}}">
 				<div class="candidate-container-row">
 					<div class="candidate">
 						<div class="candidate-name">{{$rl.PoliticianName}}<div class="tag-stage stage-{{.RecallStage}}">{{.RecallStage}} 階</div>
@@ -100,20 +100,28 @@
 						<div class="candidate-zone">{{$rl.ConstituencyName}}</div>
 					</div>
 					<div class="candidate-action">
-						{{- if lt $rl.RecallStage 3}}
-							{{- if $rl.FormDeployed}}
-							<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100">連署罷免</button></a>
-							{{- else}}
-							<span>趕工中</span>
+						{{- if eq $rl.RecallStatus "FAILED"}}
+							<span class="md">連署未通過</span>
+						{{- else}}
+							{{- if lt $rl.RecallStage 3}}
+								{{- if $rl.FormDeployed}}
+								<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100">連署罷免</button></a>
+								{{- else}}
+								<span class="working-on">趕工中</span>
+								{{- end}}
 							{{- end}}
+							<a href="{{$rl.CalendarURL}}" target="_blank"><button class="btn-secondary md w100">+ 投票行事曆</button></a>
 						{{- end}}
-						<a href="{{$rl.CalendarURL}}" target="_blank"><button class="btn-secondary md w100">+ 投票行事曆</button></a>
 					</div>
 				</div>
 			</li>
 			{{- end}}
 		</ul>
 		{{- end}}
+		<div class="pep-talk" style="display:none;">
+			<div><i class="icon-notify"></i><strong>您的選區連署未通過嗎？</strong>別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！</div>
+			<button class="btn-black lg" onclick="copyCurrentLink()"><i class="icon-link"></i>分享</button>
+		</div>
 	</div>
 
 	{{ template "faq" }}
@@ -123,6 +131,7 @@
 		const baseURL = '{{.BaseURL}}';
 		const filteredCandidateContainer = document.getElementById('filtered-candidate-container');
 		const shareContainer = document.getElementById('share-container');
+		const pepTalk = document.querySelector(`.pep-talk`);
 
 		async function sendAjaxRequest(municipality, district, ward) {
 			let params = new URLSearchParams();
@@ -158,6 +167,10 @@
 			const municipalitiesSelect = document.getElementById("filter-municipalities");
 			const districtsSelect = document.getElementById("filter-districts");
 			const wardsSelect = document.getElementById("filter-wards");
+			const initMunicipalityHasFailed = (document.querySelector(".municipalities ul li.recall-failed") !== null) ? true : false;
+			if (initMunicipalityHasFailed) {
+				pepTalk.style.display = "flex";
+			}
 
 			const resetSelect = (select) => {
 				const defaultOption = select.querySelector('option[value=""]');
@@ -245,30 +258,54 @@
 					const candidateContainer = document.createElement("div");
 					candidateContainer.classList.add("candidate-container");
 					
-					let recallStages = [1, 2, 3].map(stage => `
-						<h4 class="recall-stage ${stage === legislator.recallStage ? 'active' : ''}">
+					let candidateAction = "",
+						recallStages = "",
+						recallFailedClass = "";
+
+					switch (legislator.recallStatus) {
+					case "FAILED":
+						recallFailedClass = "recall-failed";
+						recallStages = `<div class="recall-stage-failed-flow">
+							<h4>您選區的立委連署未通過...</h4>
+							別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！
+						</div>`;
+						candidateAction = `<button class="btn-black lg w100" onclick="copyCurrentLink()"><i class="icon-link"></i>幫忙分享資訊！</button>`;
+						break;
+
+					default:
+						recallStages = [1, 2, 3].map(stage => `
+							<h4 class="recall-stage ${stage === legislator.recallStage ? 'active' : ''}">
 							<span>第 ${stage} 階段</span>${stage === 3 ? "罷免投票" : "連署罷免"}
-						</h4>
-						${stage < 3 ? '<span class="icon-step-arrow"></span>' : ''}
-					`).join('');
+							</h4>
+							${stage < 3 ? '<span class="icon-step-arrow"></span>' : ''}
+						`).join('');
+
+						recallStages = `<div class="recall-stage-flow">${recallStages}</div>`;
+
+						if (legislator.recallStage === 1 || legislator.recallStage === 2) {
+							if (legislator.formDeployed) {
+								candidateAction = `<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>`;
+							} else {
+								candidateAction = `<span>趕工中</span>`
+							}
+						} else {
+							candidateAction = `<a href="${legislator.calendarURL}" target="_blank"><button class="btn-primary lg w100">加入 Google 日曆提醒投票</button></a>`;
+						}
+						break;
+					}
 
 					candidateContainer.innerHTML = `
-						<div class="candidate">
+						<div class="candidate ${recallFailedClass}">
 							<div class="candidate-name">${legislator.politicianName}</div>
 							<div class="candidate-zone">${legislator.constituencyName}</div>
 						</div>
 						<div class="recall-stage-container">
-							<div class="recall-stage-flow">
-								${recallStages}
-							</div>
+							${recallStages}
 							<div class="candidate-action">
-								${legislator.formDeployed
-									? `<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>`
-									: `<span>趕工中</span>`}
+								${candidateAction}
 							</div>
 						</div>
-						<p>罷免需經兩個階段連署，兩個階段都通過後才進行選民投票決定罷免結果。請大家務必三個階段都完整參與！</p>
-					`;
+						${legislator.recallStatus === "ONGOING" ? "<p>罷免需經兩個階段連署，兩個階段都通過後才進行選民投票決定罷免結果。請大家務必三個階段都完整參與！</p>" : ''}`;
 					filteredCandidateContainer.appendChild(candidateContainer);
 				});
 				filteredCandidateContainer.style.display = "flex";
@@ -298,6 +335,7 @@
 		function toggleCityList(cityId) {
 			const targetUl = document.querySelector(`ul[data-city="${cityId}"]`);
 			const targetTag = document.querySelector(`.municipality-tag[data-city="${cityId}"]`);
+			const hasFailed = (targetUl.querySelector(`li.recall-failed`) !== null) ? true : false;
 
 			if (targetUl && targetUl.style.display === "flex") {
 				return;
@@ -313,6 +351,12 @@
 
 			if (targetTag) {
 				targetTag.classList.add("active");
+			}
+
+			if (hasFailed) {
+				pepTalk.style.display = "flex";
+			} else {
+				pepTalk.style.display = "none";
 			}
 
 			targetUl.scrollIntoView({ behavior: "smooth" });
