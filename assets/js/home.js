@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const municipalitiesSelect = document.getElementById("filter-municipalities");
 	const districtsSelect = document.getElementById("filter-districts");
 	const wardsSelect = document.getElementById("filter-wards");
-	const initMunicipalityHasFailed = (document.querySelector(".municipalities ul li.recall-failed") !== null) ? true : false;
+	const initMunicipalityHasFailed = (document.querySelector(`.municipalities ul[data-city="1"] li.recall-failed`) !== null) ? true : false;
 	if (initMunicipalityHasFailed) {
 		pepTalk.style.display = "flex";
 	}
