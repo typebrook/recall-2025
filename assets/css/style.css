@@ -604,6 +604,7 @@ button.btn-black:hover {
 .faq {
 	padding: 32px 16px 64px 16px;
 	margin-bottom: 32px;
+	color: #2d2d2d;
 }
 
 .faq h2 {
@@ -617,7 +618,6 @@ button.btn-black:hover {
 }
 
 .faq .faq-row {
-	border-bottom: 1px solid #E5E5E5;
 	overflow: hidden;
 	transition: all 0.3s ease;
 }
@@ -628,6 +628,7 @@ button.btn-black:hover {
 	align-items: center;
 	cursor: pointer;
 	padding: 16px;
+	border-bottom: 1px solid #e5e5e5;
 }
 
 .faq .arrow {
@@ -642,9 +643,11 @@ button.btn-black:hover {
 
 .faq .answer {
 	display: none;
-	padding: 16px;
-	opacity: 0;
+	padding: 24px;
+	border-radius: 12px;
 	transition: opacity 0.3s ease;
+	background-color: #f4f5f5;
+	margin: 24px 16px 32px 16px;
 }
 
 .answer li {
