@@ -1140,6 +1140,7 @@ button.btn-black:hover {
 	flex-direction: column;
 }
 
+.candidate.recall-failed,
 .recall-failed .candidate-container-row {
 	opacity: 0.4;
 }
