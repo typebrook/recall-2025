@@ -189,7 +189,7 @@ button {
 	transition: 0.3s;
 }
 
-button.lg {
+.lg {
 	font-size: 16px;
 	padding: 10px 24px;
 }
@@ -197,6 +197,22 @@ button.lg {
 .md {
 	font-size: 14px;
 	padding: 10px 24px;
+}
+
+.fw400 {
+	font-weight: 400;
+}
+
+.fw500 {
+	font-weight: 500;
+}
+
+.fw600 {
+	font-weight: 600;
+}
+
+.disabled {
+	opacity: 0.4;
 }
 
 button.w100 {
@@ -1001,10 +1017,6 @@ button.btn-black:hover {
 	gap: 8px;
 }
 
-.candidate-action .working-on {
-	opacity: 0.4;
-}
-
 .candidate-container p {
 	color: #888888;
 	font-size: 14px;
@@ -1038,7 +1050,7 @@ button.btn-black:hover {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	opacity: 0.3;
+	opacity: 0.4;
 	margin: 0 0;
 }
 

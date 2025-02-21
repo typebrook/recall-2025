@@ -98,15 +98,15 @@
 					</div>
 					<div class="candidate-action">
 						{{- if eq $rl.RecallStatus "ABORTED"}}
-							<span class="md">連署未送件</span>
+							<span class="lg fw400">連署未送件</span>
 						{{- else if eq $rl.RecallStatus "FAILED"}}
-							<span class="md">連署未通過</span>
+							<span class="lg fw400">連署未通過</span>
 						{{- else}}
 							{{- if lt $rl.RecallStage 3}}
 								{{- if $rl.FormDeployed}}
 								<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100">連署罷免</button></a>
 								{{- else}}
-								<span class="working-on">趕工中</span>
+								<span class="disabled fw400">趕工中</span>
 								{{- end}}
 							{{- end}}
 							<button class="btn-secondary md w100" data-url="{{$rl.CalendarURL}}" onclick="showSubscribeDialog(event);">+ 罷免行事曆</button>

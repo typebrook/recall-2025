@@ -175,7 +175,7 @@ function showFilteredCandidateContainer(legislators, address) {
 						if (legislator.formDeployed) {
 							candidateAction = `<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>`;
 						} else {
-							candidateAction = `<span>趕工中</span>`
+							candidateAction = `<span class="disabled fw400">趕工中</span>`
 						}
 					} else {
 						candidateAction = `<a href="${legislator.calendarURL}" target="_blank"><button class="btn-primary lg w100">加入 Google 日曆提醒投票</button></a>`;
