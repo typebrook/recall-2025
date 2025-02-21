@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.2" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.3" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>阻止失能暴衝的立院，我們需要你！</title>
@@ -89,7 +89,7 @@
 		{{- range $a := .Areas }}
 		<ul data-city="{{$a.MunicipalityId}}" style="{{if eq $a.MunicipalityId 1}}display:flex;{{end}}">
 			{{- range $rl := $a.RecallLegislators}}
-			<li class="{{- if eq $rl.RecallStatus "FAILED"}}recall-failed{{- end}}">
+			<li class="{{- if eq $rl.RecallStatus "ABORTED"}}recall-failed{{- else if eq $rl.RecallStatus "FAILED"}}recall-failed{{- end}}">
 				<div class="candidate-container-row">
 					<div class="candidate">
 						<div class="candidate-name">{{$rl.PoliticianName}}<div class="tag-stage stage-{{.RecallStage}}">{{.RecallStage}} 階</div>
@@ -97,12 +97,10 @@
 						<div class="candidate-zone">{{$rl.ConstituencyName}}</div>
 					</div>
 					<div class="candidate-action">
-						{{- if eq $rl.RecallStatus "FAILED"}}
-							{{- if eq $rl.RecallStage 1 }}
+						{{- if eq $rl.RecallStatus "ABORTED"}}
 							<span class="md">連署未送件</span>
-							{{- else }}
+						{{- else if eq $rl.RecallStatus "FAILED"}}
 							<span class="md">連署未通過</span>
-							{{- end }}
 						{{- else}}
 							{{- if lt $rl.RecallStage 3}}
 								{{- if $rl.FormDeployed}}
@@ -111,7 +109,7 @@
 								<span class="working-on">趕工中</span>
 								{{- end}}
 							{{- end}}
-							<a href="{{$rl.CalendarURL}}" target="_blank"><button class="btn-secondary md w100">+ 投票行事曆</button></a>
+							<button class="btn-secondary md w100" data-url="{{$rl.CalendarURL}}" onclick="showSubscribeDialog(event);">+ 罷免行事曆</button>
 						{{- end}}
 					</div>
 				</div>
@@ -126,6 +124,7 @@
 	</div>
 	{{ template "faq" }}
 	{{ template "footer" }}
+	{{ template "dialog" }}
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
 	<script>
 		const baseURL = '{{.BaseURL}}';

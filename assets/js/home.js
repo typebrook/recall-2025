@@ -119,6 +119,17 @@ document.addEventListener("DOMContentLoaded", () => {
 				console.error(error);
 			});
 	});
+	
+	dialogMask.addEventListener("click", function(event) {
+		if (event.target === dialogClose || dialogClose.contains(event.target)) {
+			dialogMask.style.display = "none";
+			return;
+		}
+
+		if (!dialog.contains(event.target)) {
+			dialogMask.style.display = "none";
+		}
+	});
 });
 
 function showFilteredCandidateContainer(legislators, address) {
@@ -132,19 +143,21 @@ function showFilteredCandidateContainer(legislators, address) {
 				recallFailedClass = "";
 
 			switch (legislator.recallStatus) {
+				case "ABORTED":
+					recallFailedClass = "recall-failed";
+					recallStages = `<div class="recall-stage-failed-flow">
+						<h4>您選區的連署未能及時送件...</h4>
+						別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！
+					</div>`;
+					candidateAction = `<button class="btn-black lg w100" onclick="copyCurrentLink()"><i class="icon-link"></i>幫忙分享資訊！</button>`;
+					break;
+
 				case "FAILED":
 					recallFailedClass = "recall-failed";
-					if (legislator.recallStage === 1) {
-						recallStages = `<div class="recall-stage-failed-flow">
-							<h4>您選區的連署未能及時送件...</h4>
-							別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！
-						</div>`;
-					} else {
-						recallStages = `<div class="recall-stage-failed-flow">
-							<h4>您選區的連署未通過...</h4>
-							別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！
-						</div>`;
-					}
+					recallStages = `<div class="recall-stage-failed-flow">
+						<h4>您選區的連署未通過...</h4>
+						別灰心，我們還是需要您的力量，支持其他選區進行中的罷免活動，幫忙分享資訊！
+					</div>`;
 					candidateAction = `<button class="btn-black lg w100" onclick="copyCurrentLink()"><i class="icon-link"></i>幫忙分享資訊！</button>`;
 					break;
 
@@ -236,4 +249,18 @@ function toggleCityList(cityId) {
 	}
 
 	targetUl.scrollIntoView({ behavior: "smooth" });
+}
+
+function showSubscribeDialog(event) {
+	const elem = event.target;
+	const calendarURL = elem.getAttribute("data-url");
+	const li = elem.closest("li");
+	const lagislatorName = li.querySelector("li .candidate-name").firstChild.textContent;
+	const constituencyName = li.querySelector("li .candidate-zone").innerHTML;
+	dialog.querySelector("h3").innerHTML = `罷免行事曆<br>${constituencyName} - ${lagislatorName}`;
+	dialog.querySelector(".content").innerHTML = `<p>若順利通過兩階段連署、且投票時間公布後，我們將更新具體時程到 Google 行事曆上。請持續關注行事曆更新，勿忘投票！</p>
+			<div class="dialog-action">
+				<a href="${calendarURL}" target="_blank"><button class="btn-primary lg w100">訂閱罷免投票行事曆</button></a>
+			</div>`;
+	dialogMask.style.display = "block";
 }

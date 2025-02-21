@@ -273,12 +273,9 @@ button.btn-black:hover {
 	background: var(--pri-color);
 }
 
-/* *************************************
-
+/**************************************
 	dialog
-
-**************************************** */
-
+*****************************************/
 .dialog {
 	position: fixed;
 	width: 400px;
@@ -288,11 +285,10 @@ button.btn-black:hover {
 	background-color: #fff;
 	border-radius: 16px;
 	box-shadow: 0 4px 16px #0000001f;
-	z-index: 10000;
+	z-index: 999;
 }
 
 @media (max-width: 480px) {
-
 	.dialog {
 		width: 100%;
 		top: auto;
@@ -302,68 +298,62 @@ button.btn-black:hover {
 	}
 }
 
-
-
-.dialog .dialog-close {
-	padding: 4px;
-	font-size: 22px;
-	font-weight: 800;
-	position: absolute;
-	right: 12px;
-	top: 12px;
-	cursor: pointer;
-	opacity: 0.5;
-	transition: 0.3s;
+.dialog-control-panel {
+	display: flex;
+	justify-content: end;
+	align-items: center;
 }
 
+.dialog-close {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	padding: 12px 12px;
+	margin: 12px 12px 12px 0;
+}
+
+.icon-close {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M14 1.41L12.59 0L7 5.59L1.41 0L0 1.41L5.59 7L0 12.59L1.41 14L7 8.41L12.59 14L14 12.59L8.41 7L14 1.41Z" fill="%232D2D2D"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .dialog .dialog-close:hover {
 	opacity: 1;
 }
-
 .dialog h3 {
 	text-align: center;
+	margin: 8px auto 16px auto;
 }
-
-.dialog h3 {
-	text-align: center;
-}
-
-
-
 .dialog .content {
-	padding: 24px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	padding: 0 24px 8px 24px;
 }
-
+.dialog .content p {
+	padding: 0 16px;
+}
 .dialog .dialog-action {
-	padding: 24px 32px;
 	border-top: 1px solid var(--aug-color);
+	padding: 24px 24px;
+	width: 100%;
 }
-
-.qrcode {
-	width: 148px;
-	height: 148px;
-	background-color: #F4F5F5;
-	padding: 4px;
-	margin: 8px;
-}
-
 .dialog-mask {
+	display: none;
 	width: 100%;
 	height: 100%;
 	position: fixed;
 	top: 0;
 	left: 0;
 	background-color: #00000039;
-	z-index: 9999;
+	z-index: 998;
 }
-
-
-
-
 
 /**************************************
 	swiper

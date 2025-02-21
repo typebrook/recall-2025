@@ -7,7 +7,7 @@
   <meta property="og:url" content="https://recall2025.ourtaiwan.tw">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.3">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.3">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.4">
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.20"></script>
 {{- end }}
 
@@ -77,6 +77,24 @@
   <div class="spinner"></div>
 </div>
 {{- end }}
+
+{{- define "dialog"}}
+<div class="dialog-mask">
+	<div class="dialog">
+		<div class="dialog-control-panel">
+			<div class="dialog-close"><i class="icon-close"></i></div>
+		</div>
+		<h3></h3>
+		<div class="content">
+		</div>
+	</div>
+</div>
+<script>
+	const dialogMask = document.querySelector(".dialog-mask");
+	const dialog = dialogMask.querySelector(".dialog");
+	const dialogClose = dialog.querySelector(".dialog-close");
+</script>
+{{- end}}
 
 {{- define "faq" }}
   <div class="section faq">
