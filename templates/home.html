@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.4" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.5" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>阻止失能暴衝的立院，我們需要你！</title>
@@ -61,7 +61,7 @@
 				<p>第一階段連署 <span>⮕</span> 第二階段連署 <span>⮕</span> 第三階段投票。第二階段開跑後，別忘了回來簽二階連署書喔！</p>
 			</div>
 			<div class="swiper-slide">
-				<h4><i class="icon-notify"></i>預告：本網站將提供<span>第二階段連署書</span>製作</h4>
+				<h4><i class="icon-notify"></i>預告：本網站將於中選會公佈第二階段格式後，提供<span>第二階段連署書</span>製作</h4>
 				<p>確認該選區通過第一階段後，本網站將提供第二階段用連署書，方便大家連署。</p>
 			</div>
 			<div class="swiper-slide">
@@ -82,7 +82,7 @@
 		<div class="municipality-tag-container">
 			{{- range $a := .Areas }}
 			<div class="municipality-tag {{if eq $a.MunicipalityId 1}}active{{end}}" data-city="{{$a.MunicipalityId}}" onclick="toggleCityList('{{$a.MunicipalityId}}');">
-				{{$a.MunicipalityName}}
+				<i class="icon-checked {{if eq $a.MunicipalityId 1}}active{{end}}"></i>{{$a.MunicipalityName}}
 			</div>
 			{{- end}}
 		</div>
@@ -104,9 +104,9 @@
 						{{- else}}
 							{{- if lt $rl.RecallStage 3}}
 								{{- if $rl.FormDeployed}}
-								<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100">連署罷免</button></a>
+								<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md fw700">連署罷免</button></a>
 								{{- else}}
-								<span class="disabled fw400">趕工中</span>
+								<div class="btn-primary md disabled">{{$rl.RecallStage}} 階準備中</div>
 								{{- end}}
 							{{- end}}
 							<button class="btn-secondary md w100" data-url="{{$rl.CalendarURL}}" onclick="showSubscribeDialog(event);">+ 罷免行事曆</button>

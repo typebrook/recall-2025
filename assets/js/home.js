@@ -173,9 +173,9 @@ function showFilteredCandidateContainer(legislators, address) {
 
 					if (legislator.recallStage === 1 || legislator.recallStage === 2) {
 						if (legislator.formDeployed) {
-							candidateAction = `<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg w100">連署罷免</button></a>`;
+							candidateAction = `<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg fw700">連署罷免</button></a>`;
 						} else {
-							candidateAction = `<span class="disabled fw400">趕工中</span>`
+							candidateAction = `<div class="btn-primary lg fw700 disabled">${legislator.recallStage} 階準備中</div>`
 						}
 					} else {
 						candidateAction = `<a href="${legislator.calendarURL}" target="_blank"><button class="btn-primary lg w100">加入 Google 日曆提醒投票</button></a>`;
@@ -194,7 +194,7 @@ function showFilteredCandidateContainer(legislators, address) {
 						${candidateAction}
 					</div>
 				</div>
-				${legislator.recallStatus === "ONGOING" ? "<p>罷免需經兩個階段連署，兩個階段都通過後才進行選民投票決定罷免結果。請大家務必三個階段都完整參與！</p>" : ''}`;
+				${legislator.recallStatus === "ONGOING" ? "<p>罷免需經兩個階段連署，兩階段都通過後才進行投票決定罷免結果。請大家務必三個階段都完整參與！</p>" : ''}`;
 			filteredCandidateContainer.appendChild(candidateContainer);
 		});
 		filteredCandidateContainer.style.display = "flex";
@@ -208,8 +208,8 @@ function showShareContainer() {
 }
 
 new Swiper('.swiper', {
-	slidesPerView: 1.2,
-	spaceBetween: 10,
+	slidesPerView: 1.05,
+	spaceBetween: 16,
 	pagination: { el: ".swiper-pagination", clickable: true },
 	autoplay: {
 		delay: 3000,
@@ -232,7 +232,10 @@ function toggleCityList(cityId) {
 
 	municipalityLists.forEach(ul => (ul.style.display = "none"));
 
-	municipalityTags.forEach(tag => tag.classList.remove("active"));
+	municipalityTags.forEach(tag => {
+		tag.classList.remove("active");
+		tag.firstElementChild.classList.remove("active");
+	});
 
 	if (targetUl) {
 		targetUl.style.display = "flex";
@@ -240,6 +243,7 @@ function toggleCityList(cityId) {
 
 	if (targetTag) {
 		targetTag.classList.add("active");
+		targetTag.firstElementChild.classList.add("active");
 	}
 
 	if (hasFailed) {

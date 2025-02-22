@@ -7,7 +7,7 @@
   <meta property="og:url" content="https://recall2025.ourtaiwan.tw">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.3">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.5">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.6">
   <script src="{{.BaseURL}}/assets/js/common.js?v0.0.20"></script>
 {{- end }}
 
@@ -15,7 +15,7 @@
   <meta charset="utf-8" />
   <title>第 {{.RecallStage}} 階段罷免連署書 - {{.PoliticianName}} - {{.ConstituencyName}}</title>
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.3">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.0.161">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.6">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.12">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -35,8 +35,7 @@
       <a href="{{.FillFormURL}}"><button class="btn-secondary lg w100">重新填寫</button></a>
     </div>
     <div class="col-6">
-      <button class="btn-primary lg w100"
-        onclick="downloadPDF('第 {{.RecallStage}} 階段連署書 - {{.PoliticianName}}', '{{.RedirectURL}}')">確認下載</button>
+      <button class="btn-primary lg w100" onclick="downloadPDF('第 {{.RecallStage}} 階段連署書 - {{.PoliticianName}}', '{{.RedirectURL}}')">確認下載</button>
     </div>
   </div>
 </div>
@@ -102,7 +101,7 @@
 		<ul>
 			<li class="faq-row">
 				<div class="faq-header">
-					<div class="question">電腦打字印出後親簽的連署書，合規嗎？</div><div class="arrow">▶</div>
+					<div class="question">電腦打字印出後親簽的連署書，合規嗎？</div><i class="icon-arrow"></i>
 				</div>
 				<div class="answer">
 					選罷法並沒有規定所有連署書上的應記載項目均只能手寫。<br><br>依民法第 3 條第 1 項規定：「依法律之規定，有使用文字之必要者，得不由本人自寫，但必須親自簽名。」<br><br>依公職人員罷免案提議人及連署人名冊查對作業須知第參、二、(六)、3點：「提議人名冊之繕寫方式並未設限，於具備法定要件之前提下，提議人名冊經提議人簽名或蓋章者，即屬有效。」<br><br>因此只要選區正確、身分證資料正確，使用本網站填寫相關資料，列印下來後親自簽名，是符合規定的。<br><br>暸解詳細法規請至<a href="https://law.cec.gov.tw/LawContent.aspx?id=GL000319" target="_blank">中選會網站</a>
@@ -110,7 +109,7 @@
 			</li>
 			<li class="faq-row">
 				<div class="faq-header">
-					<div class="question">製作並下載連署書後，接下來怎麼做？</div><div class="arrow">▶</div>
+					<div class="question">製作並下載連署書後，接下來怎麼做？</div><i class="icon-arrow"></i>
 				</div>
 				<div class="answer">
 					<ol>
@@ -122,7 +121,7 @@
 			</li>
 			<li class="faq-row">
 				<div class="faq-header">
-					<div class="question">輸出的連署書跑版，怎麼辦？</div><div class="arrow">▶</div>
+					<div class="question">輸出的連署書跑版，怎麼辦？</div><i class="icon-arrow"></i>
 				</div>
 				<div class="answer">
 					請嘗試使用其他裝置或瀏覽器，如仍有問題，請聯繫<a href="mailto:imtaiwanese18741130@gmail.com">imtaiwanese18741130@gmail.com</a>
@@ -130,7 +129,7 @@
 			</li>
 			<li class="faq-row">
 				<div class="faq-header">
-					<div class="question">我想支持網站製作團隊，可以怎麼做？</div><div class="arrow">▶</div>
+					<div class="question">我想支持網站製作團隊，可以怎麼做？</div><i class="icon-arrow"></i>
 				</div>
 				<div class="answer">
 					<ol>
@@ -150,12 +149,12 @@
 				document.querySelectorAll('.faq-row.expanded').forEach(openItem => {
 					if (openItem !== item) {
 						openItem.classList.remove('expanded');
-						const arrow = openItem.querySelector('.arrow');
+						const arrow = openItem.querySelector('.icon-arrow');
 						arrow.classList.remove('collapsed');
 					}
 				});
 				item.classList.toggle('expanded', !isExpanded);
-				const arrow = header.querySelector('.arrow');
+				const arrow = header.querySelector('.icon-arrow');
 				arrow.classList.toggle('collapsed', !isExpanded);
 			});
 		});

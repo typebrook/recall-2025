@@ -196,7 +196,7 @@ button {
 
 .md {
 	font-size: 14px;
-	padding: 10px 24px;
+	padding: 8px 16px;
 }
 
 .fw400 {
@@ -211,8 +211,17 @@ button {
 	font-weight: 600;
 }
 
+.fw700 {
+	font-weight: 700;
+}
+
 .disabled {
 	opacity: 0.4;
+}
+
+div.btn-primary {
+	background-color: var(--pri-color);
+	border-radius: 100px;
 }
 
 button.w100 {
@@ -230,7 +239,7 @@ button.btn-primary:hover {
 
 button.btn-secondary {
 	color: #2d2d2d;
-	background-color: #e5e5e5;
+	background-color: #f4f5f5;
 }
 
 button.btn-secondary:hover {
@@ -283,6 +292,23 @@ button.btn-black:hover {
 	border: 1px solid #E5E5E5;
 	padding: 6px 12px;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+}
+
+.icon-checked {
+	display: none;
+  width: 14px;
+  height: 11px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="11" viewBox="0 0 14 11" fill="none"><path d="M4.75012 8.1275L1.62262 5L0.557617 6.05751L4.75012 10.25L13.7501 1.25L12.6926 0.192505L4.75012 8.1275Z" fill="%232D2D2D"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+	margin-right: 8px;
+}
+
+.icon-checked.active {
+  display: inline-block;
 }
 
 .municipality-tag.active {
@@ -385,11 +411,12 @@ button.btn-black:hover {
 
 .swiper-slide {
 	border-radius: 12px;
-	border: 1px solid #E5E5E5;
+	border: 1px solid #e5e5e5;
 	padding: 16px;
 }
 
 .swiper h4 {
+	font-weight: 700;
 	font-size: 16px;
 	margin: 8px 0;
 }
@@ -515,9 +542,9 @@ button.btn-black:hover {
 .candidates {
 	width: 90%;
 	background-color: #f4f5f5;
-	padding: 48px 24px 64px 24px;
+	padding: 32px 24px 32px 24px;
 	border-radius: 12px;
-	margin: 16px auto;
+	margin: 32px auto;
 }
 
 .candidates h2 {
@@ -637,14 +664,18 @@ button.btn-black:hover {
 	border-bottom: 1px solid #e5e5e5;
 }
 
-.faq .arrow {
-	text-align: right;
-	font-size: 16px;
-	transition: transform 0.3s ease;
+.icon-arrow {
+  display: inline-block;
+  width: 10px;
+  height: 5px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5" fill="none"><path d="M5 5L0 0H10L5 5Z" fill="%232D2D2D"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.faq .arrow.collapsed {
-	transform: rotate(90deg);
+.icon-arrow.collapsed {
+	transform: rotate(180deg);
 }
 
 .faq .answer {
@@ -653,7 +684,8 @@ button.btn-black:hover {
 	border-radius: 12px;
 	transition: opacity 0.3s ease;
 	background-color: #f4f5f5;
-	margin: 24px 16px 32px 16px;
+	margin: 24px 16px 24px 16px;
+	font-size: 14px;
 }
 
 .answer li {
@@ -1019,7 +1051,7 @@ button.btn-black:hover {
 
 .candidate-container p {
 	color: #888888;
-	font-size: 14px;
+	font-size: 12px;
 	text-align: center;
 	margin: 0;
 }
