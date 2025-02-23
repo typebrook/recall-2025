@@ -608,6 +608,7 @@ button.btn-black:hover {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+	font-size: 14px;
 }
 
 .footer strong {
@@ -616,6 +617,7 @@ button.btn-black:hover {
 
 .footer .sponsor-our-work {
 	padding: 8px;
+	font-size: 14px;
 }
 
 .sponsor-our-work .sponsor-info {
