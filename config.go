@@ -226,6 +226,7 @@ type RecallLegislator struct {
 	FormDeployed       bool    `json:"formDeployed"`
 	CsoURL             string  `json:"csoURL"`
 	CalendarURL        string  `json:"calendarURL"`
+	CalendarMaintainer *string `json:"calendarMaintainer"`
 	VotingDate         *string `json:"votingDate"`
 	VotingEventURL     *string `json:"votingEventURL"`
 	ByElectionDate     *string `json:"byElectionDate"`
