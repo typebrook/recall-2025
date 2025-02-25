@@ -1227,6 +1227,7 @@ button.btn-black:hover {
 }
 
 .authorization-letter p {
+	font-size: 14px;
 	margin: 0;
 }
 
@@ -1245,12 +1246,12 @@ button.btn-black:hover {
 }
 
 .authorization-section h2 {
-	font-size: 18px;
+	font-size: 16px;
 	text-align: start;
 }
 
 .authorization-content {
-	font-size: 16px;
+	font-size: 14px;
 	color: #888888;
 }
 
@@ -1271,7 +1272,7 @@ button.btn-black:hover {
 }
 
 .team-taiwandreamer {
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 400;
 	color: #427f56;
 }
