@@ -388,14 +388,15 @@ func (ctrl Controller) RobotsTxt() gin.HandlerFunc {
 func (ctrl Controller) Sitemap() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		urls := []*SitemapURL{
-			&SitemapURL{ctrl.AppBaseURL.String(), "2025-02-12", "daily", "1.0"},
+			&SitemapURL{ctrl.AppBaseURL.String(), "2025-02-26", "daily", "1.0"},
+			&SitemapURL{ctrl.AppBaseURL.JoinPath("authorization-letter").String(), "2025-02-26", "yearly", "1.0"},
 		}
 
 		for _, l := range ctrl.RecallLegislators {
 			legislatorURL := ctrl.AppBaseURL.JoinPath("stages", strconv.FormatUint(l.RecallStage, 10), l.PoliticianName)
-			if l.FormDeployed {
-				urls = append(urls, &SitemapURL{legislatorURL.String(), "2025-02-12", "weekly", "0.9"})
-				urls = append(urls, &SitemapURL{legislatorURL.JoinPath("thank-you").String(), "2025-02-12", "weekly", "0.8"})
+			if l.FormDeployed && l.RecallStatus == "ONGOING" {
+				urls = append(urls, &SitemapURL{legislatorURL.String(), "2025-03-03", "weekly", "0.9"})
+				urls = append(urls, &SitemapURL{legislatorURL.JoinPath("thank-you").String(), "2025-03-03", "weekly", "0.8"})
 			}
 		}
 
