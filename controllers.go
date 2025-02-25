@@ -33,6 +33,14 @@ func (ctrl Controller) Home() gin.HandlerFunc {
 	}
 }
 
+func (ctrl Controller) AuthorizationLetter() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "authorization-letter.html", gin.H{
+			"BaseURL": ctrl.AppBaseURL.String(),
+		})
+	}
+}
+
 func (ctrl Controller) SearchRecallConstituency() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		qp := RequestQuerySearchRecallConstituency{}

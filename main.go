@@ -25,6 +25,7 @@ func main() {
 	r.NoRoute(c.NotFound())
 	r.GET("/health/v1/ping", c.Ping())
 	r.GET("/", c.Home())
+	r.GET("/authorization-letter", c.AuthorizationLetter())
 	r.GET("/apis/constituencies", c.SearchRecallConstituency())
 	r.GET("/stages/:stage/:name", c.FillForm())
 	r.POST("/stages/:stage/:name/preview", c.VerifyTurnstile(), c.PreviewLocalForm())

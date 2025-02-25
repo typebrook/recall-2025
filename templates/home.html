@@ -104,9 +104,9 @@
 						{{- else}}
 							{{- if lt $rl.RecallStage 3}}
 								{{- if $rl.FormDeployed}}
-								<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md fw700">連署罷免</button></a>
+								<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100 fw700">連署罷免</button></a>
 								{{- else}}
-								<div class="btn-primary md disabled">{{$rl.RecallStage}} 階準備中</div>
+								<div class="btn-primary md w100 disabled">{{$rl.RecallStage}} 階準備中</div>
 								{{- end}}
 							{{- end}}
 							<button class="btn-secondary md w100" data-url="{{$rl.CalendarURL}}" onclick="showSubscribeDialog(event);">+ 罷免行事曆</button>
@@ -123,7 +123,7 @@
 		</div>
 	</div>
 	{{ template "faq" }}
-	{{ template "footer" }}
+	{{ template "footer" . }}
 	{{ template "dialog" }}
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
 	<script>

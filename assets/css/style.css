@@ -57,8 +57,9 @@ body {
 	background-color: #ffffff;
 }
 
-
-
+.alpha-list {
+	list-style-type: lower-alpha;
+}
 
 /*****************************************
 ******************************************
@@ -104,7 +105,6 @@ h3 {
 }
 
 
-
 h6 {
 	font-size: 12px;
 	color: var(--text-color);
@@ -146,6 +146,18 @@ ul.point li {
 	margin: 0 auto;
 	padding: 0 16px;
 	box-sizing: border-box;
+}
+
+.banner .section.nav {
+	display: flex;
+	padding: 32px 0 0 28px;
+	align-items: start;
+}
+
+.section.nav {
+	display: flex;
+	padding: 32px 0 0 28px;
+	align-items: start;
 }
 
 .section.step {
@@ -458,24 +470,15 @@ button.btn-black:hover {
 
 
 
-/* *************************************
-
+/**************************************
 	Content
-
-**************************************** */
-
+*****************************************/
 .banner {
 	background-color: #2d2d2d;
 	text-align: center;
 	background-size: cover;
 	background-position: center center;
 	background-repeat: no-repeat;
-}
-
-.banner .section.nav {
-	display: flex;
-	padding: 32px 0 0 0;
-	align-items: start;
 }
 
 .banner .section {
@@ -705,12 +708,21 @@ button.btn-black:hover {
 	text-align: left;
 	text-decoration: none;
 	width: fit-content;
-	margin: 0 0 0 32px;
+	margin-right: 16px;
 }
 
-/* *************************************
+.authorization-goback {
+	display: flex;
+	align-items: center;
+	text-align: left;
+	text-decoration: none;
+	width: fit-content;
+	margin-right: 16px;
+}
+
+/**************************************
 	form
-**************************************** */
+*****************************************/
 .fill-form {
 	display: flex;
 	flex-direction: column;
@@ -834,10 +846,7 @@ button.btn-black:hover {
 	gap: 4px;
 }
 
-
-
-
-.goback-icon {
+.icon-goback {
 	display: inline-block;
 	width: 24px;
 	height: 24px;
@@ -845,9 +854,8 @@ button.btn-black:hover {
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
+	margin-right: 16px;
 }
-
-
 
 .copy-icon {
 	width: 14px;
@@ -1191,4 +1199,89 @@ button.btn-black:hover {
 	align-items: center;
 	margin: 32px 64px auto 64px;
 	gap: 16px;
+}
+
+.header-authorization-letter {
+	text-align: center;
+	font-size: 24px;
+	padding: 24px 16px;
+}
+
+.authorization-letter {
+	background-color: #f4f5f5;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: start;
+	gap: 24px;
+	border-radius: 12px;
+	width: 90%;
+	margin: 16px auto 64px auto;
+}
+
+.authorization-letter a {
+	color: #888888;
+	display: inline-block;
+	word-break: break-all;
+	max-width: 100%;
+}
+
+.authorization-letter p {
+	margin: 0;
+}
+
+.section.authorization-letter {
+	padding: 24px;
+}
+
+.authorization-section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: start;
+	gap: 8px;
+	width: 100%;
+  overflow-wrap: break-word;
+}
+
+.authorization-section h2 {
+	font-size: 18px;
+	text-align: start;
+}
+
+.authorization-content {
+	font-size: 16px;
+	color: #888888;
+}
+
+.authorization-signature {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	padding: 24px;
+	width: 100%;
+}
+
+.signature-team {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	gap: 2px;
+}
+
+.team-taiwandreamer {
+	font-size: 14px;
+	font-weight: 400;
+	color: #427f56;
+}
+
+.icon-cross {
+  display: inline-block;
+  width: 9px;
+  height: 10px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="9" height="10" viewBox="0 0 9 10" fill="none"><path d="M0.766317 9.06693L0.432983 8.73359L4.16632 5.00026L0.432983 1.26693L0.766317 0.933594L4.49965 4.66693L8.23298 0.933594L8.56632 1.26693L4.83298 5.00026L8.56632 8.73359L8.23298 9.06693L4.49965 5.33359L0.766317 9.06693Z" fill="%23888888"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
