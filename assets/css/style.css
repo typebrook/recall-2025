@@ -153,31 +153,6 @@ ul.point li {
 	align-items: start;
 }
 
-.section.step {
-	background-color: #f4f5f5;
-	padding: 24px;
-	border-radius: 6px;
-	margin: 18px 0;
-}
-
-.section.strong {
-	background-color: #fff;
-	border-radius: 8px;
-	overflow: hidden;
-	padding: 16px 32px;
-	font-size: 16px;
-}
-
-.section.strong::before {
-	content: "";
-	background-color: var(--pri-color);
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 8px;
-	height: 100%;
-}
-
 /* *************************************
 
 	Button
@@ -1309,3 +1284,37 @@ button.btn-black:hover {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.notification {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 32px;
+	margin: 48px auto 32px auto;
+}
+
+.notification-step {
+	background-color: #f4f5f5;
+	padding: 24px;
+	border-radius: 12px;
+}
+
+.notification-step .strong {
+	background-color: #fff;
+	border-radius: 8px;
+	overflow: hidden;
+	padding: 16px 32px;
+	font-size: 16px;
+}
+
+.notification-step .strong::before {
+	content: "";
+	background-color: var(--pri-color);
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 8px;
+	height: 100%;
+}
+
