@@ -215,24 +215,24 @@ func (rs RecallLegislators) HasLegislatorInMunicipality(municipalityId uint64) b
 }
 
 type RecallLegislator struct {
-	ConstituencyId     uint64  `json:"constituencyId"`
-	MunicipalityId     uint64  `json:"municipalityId"`
-	Term               uint64  `json:"term"`
-	MunicipalityName   string  `json:"municipalityName"`
-	ConstituencyNum    uint64  `json:"constituencyNum"`
-	PoliticianName     string  `json:"politicianName"`
-	RecallStage        uint64  `json:"recallStage"`
-	RecallStatus       string  `json:"recallStatus"`
-	FormDeployed       bool    `json:"formDeployed"`
-	CsoURL             string  `json:"csoURL"`
-	CalendarURL        string  `json:"calendarURL"`
-	CalendarMaintainer *string `json:"calendarMaintainer"`
-	VotingDate         *string `json:"votingDate"`
-	VotingEventURL     *string `json:"votingEventURL"`
-	ByElectionDate     *string `json:"byElectionDate"`
-	ByElectionEventURL *string `json:"byElectionEventURL"`
-	ConstituencyName   string  `json:"constituencyName"`
-	FillFormURL        string  `json:"fillFormURL"`
+	ConstituencyId        uint64  `json:"constituencyId"`
+	MunicipalityId        uint64  `json:"municipalityId"`
+	Term                  uint64  `json:"term"`
+	MunicipalityName      string  `json:"municipalityName"`
+	ConstituencyNum       uint64  `json:"constituencyNum"`
+	PoliticianName        string  `json:"politicianName"`
+	RecallStage           uint64  `json:"recallStage"`
+	RecallStatus          string  `json:"recallStatus"`
+	FormDeployed          bool    `json:"formDeployed"`
+	CsoURL                string  `json:"csoURL"`
+	CalendarURL           string  `json:"calendarURL"`
+	HasCalendarMaintainer bool    `json:"hasCalendarMaintainer"`
+	VotingDate            *string `json:"votingDate"`
+	VotingEventURL        *string `json:"votingEventURL"`
+	ByElectionDate        *string `json:"byElectionDate"`
+	ByElectionEventURL    *string `json:"byElectionEventURL"`
+	ConstituencyName      string  `json:"constituencyName"`
+	FillFormURL           string  `json:"fillFormURL"`
 }
 
 func (r RecallLegislator) GetRedirectStatusCode(stage uint64) int {

@@ -255,16 +255,22 @@ function toggleCityList(cityId) {
 	targetUl.scrollIntoView({ behavior: "smooth" });
 }
 
-function showSubscribeDialog(event) {
+function showSubscribeDialog(event, hasMaintainer) {
 	const elem = event.target;
 	const calendarURL = elem.getAttribute("data-url");
 	const li = elem.closest("li");
 	const lagislatorName = li.querySelector("li .candidate-name").firstChild.textContent;
 	const constituencyName = li.querySelector("li .candidate-zone").innerHTML;
 	dialog.querySelector("h3").innerHTML = `罷免行事曆<br>${constituencyName} - ${lagislatorName}`;
-	dialog.querySelector(".content").innerHTML = `<p>若順利通過兩階段連署、且投票時間公布後，我們將更新具體時程到 Google 行事曆上。請持續關注行事曆更新，勿忘投票！</p>
-			<div class="dialog-action">
-				<a href="${calendarURL}" target="_blank"><button class="btn-primary lg w100">訂閱罷免投票行事曆</button></a>
-			</div>`;
+	dialog.querySelector(".content").innerHTML = `
+		<div class="dialog-calendar-status">
+			${hasMaintainer
+				? '<i class="icon-is-active active"></i>行事曆狀態：罷免團體已接管'
+				: '<i class="icon-is-active inactive"></i>行事曆狀態：等待罷免團體接管'}
+		</div>
+		<p>行事曆內容由該選區罷免團體接管後，陸續更新罷免最新活動。請新增行事曆並持續關注，不錯過罷免重要時程！</p>
+		<div class="dialog-action">
+			<a href="${calendarURL}" target="_blank"><button class="btn-primary lg w100">前往新增行事曆</button></a>
+		</div>`;
 	dialogMask.style.display = "block";
 }
