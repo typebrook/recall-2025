@@ -377,6 +377,9 @@ button.btn-black:hover {
 	font-weight: 400;
 	color: #888888;
 	padding: 0 0 16px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .icon-is-active {
   display: inline-block;
