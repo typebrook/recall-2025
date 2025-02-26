@@ -1298,6 +1298,11 @@ button.btn-black:hover {
 	background-color: #f4f5f5;
 	padding: 24px;
 	border-radius: 12px;
+	width: 100%;
+}
+
+.notification-step h3{
+	margin-top: 0px;
 }
 
 .notification-step .strong {
