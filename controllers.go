@@ -114,13 +114,11 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 
 		c.HTML(http.StatusOK, "fill-form.html", gin.H{
 			"BaseURL":          ctrl.AppBaseURL.String(),
-			"ConstituencyName": l.ConstituencyName,
-			"PoliticianName":   l.PoliticianName,
 			"PreviewURL":       previewURL.String(),
 			"Address":          address,
 			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
 			"MaxBirthDate":     twentyYearsAgo,
-			"RecallStage":      l.RecallStage,
+			"Legislator":       l,
 		})
 	}
 }

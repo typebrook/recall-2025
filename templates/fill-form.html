@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	{{ template "common-head" . }}
-  <title>我要罷免{{.PoliticianName}} - {{.ConstituencyName}}</title>
+  <title>我要罷免{{.Legislator.PoliticianName}} - {{.Legislator.ConstituencyName}}</title>
   <meta name="description" property="og:description" content="我是{{.ConstituencyName}}選民，我要罷免{{.PoliticianName}}！">
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async></script>
 </head>
@@ -20,13 +20,13 @@
 			<a class="goback" href="{{.BaseURL}}"><div class="icon-goback"></div><div style="color:#ffffff;">罷免其他立委</div></a>
 		</div>
 		<div class="section">
-    	<h1 class="fill-form-topic">我是{{.ConstituencyName}}選民<br>我要罷免<span class="primary">『{{.PoliticianName}}』</span></h1>
+    	<h1 class="fill-form-topic">我是{{.Legislator.ConstituencyName}}選民<br>我要罷免<span class="primary">『{{.Legislator.PoliticianName}}』</span></h1>
 			<div class="recall-stage-flow">
-				<h4 class="recall-stage {{if eq .RecallStage 1}}active{{end}}"><span>第 1 階段</span>連署罷免</h4>
+				<h4 class="recall-stage {{if eq .Legislator.RecallStage 1}}active{{end}}"><span>第 1 階段</span>連署罷免</h4>
 				<span class="icon-step-arrow"></span>
-				<h4 class="recall-stage {{if eq .RecallStage 2}}active{{end}}"><span>第 2 階段</span>連署罷免</h4>
+				<h4 class="recall-stage {{if eq .Legislator.RecallStage 2}}active{{end}}"><span>第 2 階段</span>連署罷免</h4>
 				<span class="icon-step-arrow"></span>
-				<h4 class="recall-stage {{if eq .RecallStage 3}}active{{end}}"><span>第 3 階段</span>罷免投票</h4>
+				<h4 class="recall-stage {{if eq .Legislator.RecallStage 3}}active{{end}}"><span>第 3 階段</span>罷免投票</h4>
 			</div>
 		</div>
   </div>
@@ -55,6 +55,7 @@
 				</div>
 				<div class="form-comment">系統將自動轉換西元出生年月日至民國。<b>提醒手機用戶！先於月曆上挑好您出生的「月」與「日」，最後點擊月曆左上角的年份，可直接挑選您的出生年。</b></div>
   	  </div>
+			{{- if eq .Legislator.RecallStage 1}}
   	  <div class="form-group">
   	    <label for="mobile-number">手機號碼</label>
 				<div class="input-group">
@@ -62,6 +63,7 @@
   	  	</div>
 				<div class="form-comment">僅用於輸出在連署書上，若公民團體檢查時發現填寫有誤、或時至第二階段連署時方便與您聯繫。<b>本網站不保留您的手機號碼</b>。若您的選區連署書上無手機號碼欄位，則不會輸出。</div>
   	  </div>
+			{{- end}}
   	  <div class="form-group">
   	    <label for="address">戶籍地址</label>
 				<div class="input-group">
@@ -90,7 +92,11 @@
 			</div>
   	  <div class="form-group">
 				<div class="input-group">
-  	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;">製作第 {{.RecallStage}} 階段連署書</button>
+					{{- if .Legislator.FormDeployed}}
+  	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;">製作第 {{.Legislator.RecallStage}} 階段連署書</button>
+					{{- else}}
+  	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;" disabled>{{.Legislator.RecallStage}} 階準備中</button>
+					{{- end}}
   	  	</div>
   	  </div>
 			<div class="form-group">
