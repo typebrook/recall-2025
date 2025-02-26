@@ -173,9 +173,9 @@ function showFilteredCandidateContainer(legislators, address) {
 
 					if (legislator.recallStage === 1 || legislator.recallStage === 2) {
 						if (legislator.formDeployed) {
-							candidateAction = `<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg fw700">連署罷免</button></a>`;
+							candidateAction = `<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg">連署罷免</button></a>`;
 						} else {
-							candidateAction = `<div class="btn-primary lg fw700 disabled">${legislator.recallStage} 階準備中</div>`
+							candidateAction = `<button class="btn-primary lg" disabled>${legislator.recallStage} 階準備中</button>`
 						}
 					} else {
 						candidateAction = `<a href="${legislator.calendarURL}" target="_blank"><button class="btn-primary lg w100">加入 Google 日曆提醒投票</button></a>`;

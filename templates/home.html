@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.7" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.8" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>阻止失能暴衝的立院，我們需要你！</title>
@@ -106,7 +106,7 @@
 								{{- if $rl.FormDeployed}}
 								<a href="{{$rl.FillFormURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100 fw700">連署罷免</button></a>
 								{{- else}}
-								<div class="btn-primary md w100 disabled">{{$rl.RecallStage}} 階準備中</div>
+								<button class="btn-primary md w100" disabled>{{$rl.RecallStage}} 階準備中</button>
 								{{- end}}
 							{{- end}}
 							<button class="btn-secondary md w100" data-url="{{$rl.CalendarURL}}" onclick="showSubscribeDialog(event, {{if $rl.HasCalendarMaintainer}}true{{else}}false{{end}});">

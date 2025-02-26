@@ -194,6 +194,11 @@ button {
 	transition: 0.3s;
 }
 
+button:disabled {
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
 .lg {
 	font-size: 16px;
 	padding: 10px 24px;
@@ -218,15 +223,6 @@ button {
 
 .fw700 {
 	font-weight: 700;
-}
-
-.disabled {
-	opacity: 0.4;
-}
-
-div.btn-primary {
-	background-color: var(--pri-color);
-	border-radius: 100px;
 }
 
 button.w100 {
@@ -1075,6 +1071,11 @@ button.btn-black:hover {
 	gap: 8px;
 }
 
+.filtered-candidate-container .candidate-action button {
+	font-size: 16px;
+	font-weight: 700;
+}
+
 .candidate-container p {
 	color: #888888;
 	font-size: 12px;
@@ -1168,8 +1169,9 @@ button.btn-black:hover {
 	gap: 24px;
 }
 
-.municipalities ul button {
-	font-weight: 300;
+.municipalities .candidate-action button {
+	font-size: 14px;
+	font-weight: 500;
 }
 
 .municipalities li {
