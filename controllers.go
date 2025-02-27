@@ -218,7 +218,7 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 	birthYear = birthYear - 1911
 
 	stage := strconv.FormatUint(up.Stage, 10)
-	redirectURL := l.GetParticipateURL(ctrl.AppBaseURL).JoinPath("thank-you")
+	redirectURL := l.GetParticipateURL(cfg.AppBaseURL).JoinPath("thank-you")
 	imagePrefix := fmt.Sprintf("stage-%s-%s", stage, up.Name)
 
 	data := &PreviewData{
