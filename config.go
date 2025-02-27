@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"os"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -191,7 +190,7 @@ func ReadConfigRecallLegislators(baseURL *url.URL) (RecallLegislators, map[uint6
 
 	rlmap := map[uint64]RecallLegislators{}
 	for _, r := range rows {
-		r.FillFormURL = baseURL.JoinPath("stages", strconv.FormatUint(r.RecallStage, 10), r.PoliticianName).String()
+		r.ParticipateURL = baseURL.JoinPath("legislators", r.PoliticianName).String()
 		if _, exists := rlmap[r.ConstituencyId]; !exists {
 			rlmap[r.ConstituencyId] = RecallLegislators{}
 		}
@@ -232,20 +231,30 @@ type RecallLegislator struct {
 	ByElectionDate        *string `json:"byElectionDate"`
 	ByElectionEventURL    *string `json:"byElectionEventURL"`
 	ConstituencyName      string  `json:"constituencyName"`
-	FillFormURL           string  `json:"fillFormURL"`
+	ParticipateURL        string  `json:"participateURL"`
 }
 
-func (r RecallLegislator) GetRedirectStatusCode(stage uint64) int {
-	switch {
-	case r.RecallStatus != RecallStatusOngoing:
-		return http.StatusMovedPermanently
-	case r.RecallStage > stage:
-		return http.StatusMovedPermanently
-	case r.RecallStage < stage:
-		return http.StatusFound
+func (r RecallLegislator) GetParticipateURL(baseURL *url.URL) *url.URL {
+	return baseURL.JoinPath("legislators", r.PoliticianName)
+}
+
+func (r RecallLegislator) IsPetitioning() bool {
+	if r.RecallStage == 1 || r.RecallStage == 2 {
+		return true
 	}
 
-	return http.StatusOK
+	return false
+}
+
+func (r RecallLegislator) GetTmplFilename() string {
+	switch r.RecallStage {
+	case 1:
+		return fmt.Sprintf("preview-stage-%d-%s.html", r.RecallStage, r.PoliticianName)
+	case 2:
+		return ""
+	}
+
+	return ""
 }
 
 func (rs RecallLegislators) ToAreas() Areas {

@@ -84,7 +84,12 @@ type ResultSearchRecallConstituency struct {
 	Legislators RecallLegislators `json:"legislators,omitempty"`
 }
 
-func (ctrl Controller) FillForm() gin.HandlerFunc {
+func (ctrl Controller) QRCode() gin.HandlerFunc {
+	return func(c *gin.Context) {
+	}
+}
+
+func (ctrl Controller) Participate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		up := RequestUriStageLegislator{}
 		if err := c.ShouldBindUri(&up); err != nil {
@@ -98,8 +103,8 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 			return
 		}
 
-		if code := l.GetRedirectStatusCode(up.Stage); code != http.StatusOK {
-			c.Redirect(code, ctrl.AppBaseURL.String())
+		if l.RecallStatus != RecallStatusOngoing {
+			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
 			return
 		}
 
@@ -110,22 +115,32 @@ func (ctrl Controller) FillForm() gin.HandlerFunc {
 
 		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
 
-		previewURL := ctrl.AppBaseURL.JoinPath("stages", strconv.FormatUint(l.RecallStage, 10), l.PoliticianName, "preview")
+		previewURL := l.GetParticipateURL(ctrl.AppBaseURL).JoinPath("preview")
 
-		c.HTML(http.StatusOK, "fill-form.html", gin.H{
-			"BaseURL":          ctrl.AppBaseURL.String(),
-			"PreviewURL":       previewURL.String(),
-			"Address":          address,
-			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
-			"MaxBirthDate":     twentyYearsAgo,
-			"Legislator":       l,
-		})
+		switch l.RecallStage {
+		case 1, 2:
+			c.HTML(http.StatusOK, "fill-form.html", gin.H{
+				"BaseURL":          ctrl.AppBaseURL.String(),
+				"PreviewURL":       previewURL.String(),
+				"Address":          address,
+				"TurnstileSiteKey": ctrl.TurnstileSiteKey,
+				"MaxBirthDate":     twentyYearsAgo,
+				"Legislator":       l,
+			})
+		case 3, 4:
+			c.HTML(http.StatusOK, "vote-reminder.html", gin.H{
+				"BaseURL":    ctrl.AppBaseURL.String(),
+				"Legislator": l,
+			})
+		default:
+			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
+		}
 	}
 }
 
 type RequestUriStageLegislator struct {
-	Stage uint64 `uri:"stage" binding:"required,numeric,oneof=1 2 3 4"`
 	Name  string `uri:"name" binding:"required"`
+	Stage uint64 `uri:"stage" binding:"omitempty,numeric,oneof=1 2 3 4"`
 }
 
 func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
@@ -142,10 +157,17 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 			return
 		}
 
-		if code := l.GetRedirectStatusCode(up.Stage); code != http.StatusOK {
-			c.Redirect(code, ctrl.AppBaseURL.String())
+		if l.RecallStatus != RecallStatusOngoing {
+			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
 			return
 		}
+
+		if !l.IsPetitioning() {
+			c.HTML(http.StatusConflict, "4xx.html", GetViewHttpError(http.StatusConflict, "候選人不處於連署階段", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return
+		}
+
+		up.Stage = l.RecallStage
 
 		qp := RequestQueryPreview{}
 		if err := c.ShouldBindWith(&qp, binding.Form); err != nil {
@@ -163,7 +185,7 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 			return
 		}
 
-		tmpfile := fmt.Sprintf("preview-stage-%d-%s.html", l.RecallStage, l.PoliticianName)
+		tmpfile := l.GetTmplFilename()
 		c.HTML(http.StatusOK, tmpfile, data)
 	}
 }
@@ -196,12 +218,12 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 	birthYear = birthYear - 1911
 
 	stage := strconv.FormatUint(up.Stage, 10)
-	redirectURL := cfg.AppBaseURL.JoinPath("stages", stage, up.Name, "thank-you")
+	redirectURL := l.GetParticipateURL(ctrl.AppBaseURL).JoinPath("thank-you")
 	imagePrefix := fmt.Sprintf("stage-%s-%s", stage, up.Name)
 
 	data := &PreviewData{
 		BaseURL:          cfg.AppBaseURL.String(),
-		FillFormURL:      l.FillFormURL,
+		ParticipateURL:   l.ParticipateURL,
 		RedirectURL:      redirectURL.String(),
 		PoliticianName:   up.Name,
 		ConstituencyName: l.ConstituencyName,
@@ -245,7 +267,7 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 
 type PreviewData struct {
 	BaseURL          string
-	FillFormURL      string
+	ParticipateURL   string
 	RedirectURL      string
 	PoliticianName   string
 	ConstituencyName string
@@ -287,16 +309,16 @@ func (ctrl Controller) ThankYou() gin.HandlerFunc {
 			return
 		}
 
-		if code := l.GetRedirectStatusCode(up.Stage); code != http.StatusOK {
-			c.Redirect(code, ctrl.AppBaseURL.String())
+		if l.RecallStatus != RecallStatusOngoing {
+			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
 			return
 		}
 
 		c.HTML(http.StatusOK, "thank-you.html", gin.H{
-			"BaseURL":     ctrl.AppBaseURL.String(),
-			"FillFormURL": l.FillFormURL,
-			"CalendarURL": l.CalendarURL,
-			"CsoURL":      l.CsoURL,
+			"BaseURL":        ctrl.AppBaseURL.String(),
+			"ParticipateURL": l.ParticipateURL,
+			"CalendarURL":    l.CalendarURL,
+			"CsoURL":         l.CsoURL,
 		})
 	}
 }
@@ -315,32 +337,36 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 			return
 		}
 
-		if code := l.GetRedirectStatusCode(up.Stage); code != http.StatusOK {
+		switch up.Stage {
+		case 1:
+			tmpfile := fmt.Sprintf("preview-stage-%d-%s.html", up.Stage, up.Name)
+			redirectURL := l.GetParticipateURL(ctrl.AppBaseURL).JoinPath("thank-you")
+			imagePrefix := fmt.Sprintf("stage-%d-%s", up.Stage, up.Name)
+
+			c.HTML(http.StatusOK, tmpfile, &PreviewData{
+				BaseURL:          ctrl.AppBaseURL.String(),
+				ParticipateURL:   l.ParticipateURL,
+				RedirectURL:      redirectURL.String(),
+				PoliticianName:   up.Name,
+				ConstituencyName: l.ConstituencyName,
+				RecallStage:      up.Stage,
+				ImagePrefix:      imagePrefix,
+				Name:             "邱吉爾",
+				IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
+				BirthYear:        63,
+				BirthMonth:       11,
+				BirthDate:        30,
+				MobileNumber:     "0987654321",
+				Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
+			})
+			return
+		case 2:
+			// TODO:
+			return
+		default:
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
 			return
 		}
-
-		stage := strconv.FormatUint(up.Stage, 10)
-		redirectURL := ctrl.AppBaseURL.JoinPath("stages", stage, up.Name, "thank-you")
-		imagePrefix := fmt.Sprintf("stage-%s-%s", stage, up.Name)
-
-		tmpfile := fmt.Sprintf("preview-stage-%s-%s.html", stage, up.Name)
-		c.HTML(http.StatusOK, tmpfile, &PreviewData{
-			BaseURL:          ctrl.AppBaseURL.String(),
-			FillFormURL:      l.FillFormURL,
-			RedirectURL:      redirectURL.String(),
-			PoliticianName:   up.Name,
-			ConstituencyName: l.ConstituencyName,
-			RecallStage:      up.Stage,
-			ImagePrefix:      imagePrefix,
-			Name:             "邱吉爾",
-			IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			BirthYear:        63,
-			BirthMonth:       11,
-			BirthDate:        30,
-			MobileNumber:     "0987654321",
-			Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
-		})
 	}
 }
 
@@ -385,16 +411,17 @@ func (ctrl Controller) RobotsTxt() gin.HandlerFunc {
 
 func (ctrl Controller) Sitemap() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		date := "2025-02-27"
 		urls := []*SitemapURL{
-			&SitemapURL{ctrl.AppBaseURL.String(), "2025-02-26", "daily", "1.0"},
+			&SitemapURL{ctrl.AppBaseURL.String(), date, "daily", "1.0"},
 			&SitemapURL{ctrl.AppBaseURL.JoinPath("authorization-letter").String(), "2025-02-26", "yearly", "1.0"},
 		}
 
 		for _, l := range ctrl.RecallLegislators {
-			legislatorURL := ctrl.AppBaseURL.JoinPath("stages", strconv.FormatUint(l.RecallStage, 10), l.PoliticianName)
+			legislatorURL := l.GetParticipateURL(ctrl.AppBaseURL)
 			if l.RecallStatus == "ONGOING" {
-				urls = append(urls, &SitemapURL{legislatorURL.String(), "2025-02-26", "weekly", "0.9"})
-				urls = append(urls, &SitemapURL{legislatorURL.JoinPath("thank-you").String(), "2025-02-26", "weekly", "0.8"})
+				urls = append(urls, &SitemapURL{legislatorURL.String(), date, "weekly", "0.9"})
+				urls = append(urls, &SitemapURL{legislatorURL.JoinPath("thank-you").String(), date, "weekly", "0.8"})
 			}
 		}
 

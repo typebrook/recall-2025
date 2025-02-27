@@ -173,7 +173,7 @@ function showFilteredCandidateContainer(legislators, address) {
 
 					if (legislator.recallStage === 1 || legislator.recallStage === 2) {
 						if (legislator.formDeployed) {
-							candidateAction = `<a href="${legislator.fillFormURL}?address=${address}"><button class="btn-primary lg">連署罷免</button></a>`;
+							candidateAction = `<a href="${legislator.participateURL}?address=${address}"><button class="btn-primary lg">連署罷免</button></a>`;
 						} else {
 							candidateAction = `<button class="btn-primary lg" disabled>${legislator.recallStage} 階準備中</button>`
 						}
