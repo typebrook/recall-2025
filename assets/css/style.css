@@ -1,3 +1,12 @@
+html,
+body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+}
+
 * {
 	position: relative;
 	box-sizing: border-box;
@@ -13,8 +22,10 @@ a {
 	color: #2d2d2d;
 }
 
-.icon-text {
-	font-family: 'Material Symbols Outlined';
+.flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .icon-step-arrow {
@@ -37,35 +48,13 @@ a {
 	margin-right: 8px;
 }
 
-html,
-body {
-	width: 100%;
-	margin: 0;
-	padding: 0;
-	overflow-x: hidden;
-}
-
-body {
-	font-family: Arial, sans-serif;
-	background-color: #ffffff;
-}
-
 .alpha-list {
 	list-style-type: lower-alpha;
 }
 
 /*****************************************
-******************************************
-******************************************
-
-
-			Guideline
-
-******************************************
-******************************************
+Guideline
 ******************************************/
-
-
 :root {
 	/* --pri-color: #eae587; */
 	--pri-color: #00FF9C;
@@ -101,7 +90,6 @@ h3 {
 h6 {
 	font-size: 12px;
 	color: var(--text-color);
-
 	font-weight: 400;
 	letter-spacing: 0.05em;
 }
@@ -346,15 +334,47 @@ button.btn-black:hover {
 .dialog h3 {
 	text-align: center;
 	margin: 8px auto 16px auto;
+	font-size: 24px;
+	font-weight: 700;
+}
+.dialog p {
+	text-align: center;
+	font-size: 16px;
 }
 .dialog-calendar-status {
 	font-size: 14px;
-	font-weight: 400;
 	color: #888888;
 	padding: 0 0 16px 0;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+.dialog-qrcode {
+	position: relative;
+	display: inline-block;
+	padding: 16px 16px;
+	background-color: #ffffff;
+}
+.qr-logo {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-weight: bold;
+	background: white;
+	border-radius: 5px;
+	white-space: nowrap;
+	color: #000000;
+	text-align: center;
+}
+.downloaded-qrcode-container {
+	width: 4224px;
+	height: 4224px;
+	background-color: #ffffff;
+	position: absolute;
+	z-index: -999;
+	padding: 64px 64px;
+	overflow: hidden;
 }
 .icon-is-active {
   display: inline-block;
@@ -380,7 +400,6 @@ button.btn-black:hover {
 }
 .dialog .content p {
 	padding: 0 16px;
-	font-weight: 400;
 	color: #858585;
 }
 .dialog .dialog-action {
@@ -398,6 +417,42 @@ button.btn-black:hover {
 	background-color: #00000039;
 	z-index: 998;
 }
+
+/**************************************
+	mask & spinner
+*****************************************/
+.mask {
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 9999;
+	visibility: hidden;
+	opacity: 0;
+	transition: visibility 0.3s, opacity 0.3s;
+}
+
+.mask.active {
+	visibility: visible;
+	opacity: 1;
+}
+
+.spinner {
+	width: 80px;
+	height: 80px;
+	border: 8px solid rgba(0, 255, 156, 0.3);
+	border-top: 8px solid #00ff9c;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /**************************************
 	swiper
 *****************************************/
@@ -439,11 +494,6 @@ button.btn-black:hover {
 
 .swiper span {
 	color: var(--pri-color-hover);
-}
-
-.swiper span.icon-text {
-	font-size: 20px;
-	padding-right: 6px;
 }
 
 .swiper-pagination-bullet {
@@ -577,7 +627,6 @@ button.btn-black:hover {
 	background-color: #f4f5f5;
 	padding-top: 48px;
 	color: #888888;
-	font-weight: 400;
 }
 
 .footer h2 {
@@ -697,7 +746,6 @@ button.btn-black:hover {
 	text-decoration: none;
 	width: fit-content;
 	margin-right: 16px;
-	font-weight: 400;
 }
 
 .authorization-goback {
@@ -707,7 +755,6 @@ button.btn-black:hover {
 	text-decoration: none;
 	width: fit-content;
 	margin-right: 16px;
-	font-weight: 400;
 }
 
 /**************************************
@@ -772,6 +819,7 @@ button.btn-black:hover {
 	gap: 12px;
 	width: 100%;
 	justify-content: center;
+	gap: 24px;
 }
 
 .recall-form .form-group .input-group input {
@@ -789,12 +837,37 @@ button.btn-black:hover {
 	padding: 12px 24px;
 }
 
+.recall-form .form-group .input-group .show-qrcode {
+	font-size: 14px;
+	padding: 10px 24px;
+}
+
 .recall-form .form-group .form-comment {
 	width: 100%;
 	margin-top: 8px;
 	font-size: 14px;
 	color: #888888;
 	text-align: left;
+}
+
+.icon-qrcode {
+  display: inline-block;
+  width: 15px;
+  height: 16px;
+  background: url('data:image/svg+xml;charset=UTF-8,<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.33333 15.5V13.8333H10V15.5H8.33333ZM6.66667 13.8333V9.66667H8.33333V13.8333H6.66667ZM13.3333 11.3333V8H15V11.3333H13.3333ZM11.6667 8V6.33333H13.3333V8H11.6667ZM1.66667 9.66667V8H3.33333V9.66667H1.66667ZM0 8V6.33333H1.66667V8H0ZM7.5 2.16667V0.5H9.16667V2.16667H7.5ZM1.25 4.25H3.75V1.75H1.25V4.25ZM0 5.5V0.5H5V5.5H0ZM1.25 14.25H3.75V11.75H1.25V14.25ZM0 15.5V10.5H5V15.5H0ZM11.25 4.25H13.75V1.75H11.25V4.25ZM10 5.5V0.5H15V5.5H10ZM11.6667 15.5V13H10V11.3333H13.3333V13.8333H15V15.5H11.6667ZM8.33333 9.66667V8H11.6667V9.66667H8.33333ZM5 9.66667V8H3.33333V6.33333H8.33333V8H6.66667V9.66667H5ZM5.83333 5.5V2.16667H7.5V3.83333H9.16667V5.5H5.83333ZM1.875 3.625V2.375H3.125V3.625H1.875ZM1.875 13.625V12.375H3.125V13.625H1.875ZM11.875 3.625V2.375H13.125V3.625H11.875Z" fill="%231F1F1F"/></svg>')
+    no-repeat center center;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.icon-download {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url('data:image/svg+xml;charset=UTF-8,<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 11V14H2V11H0V14C0 15.1 0.9 16 2 16H14C15.1 16 16 15.1 16 14V11H14ZM13 7L11.59 5.59L9 8.17V0H7V8.17L4.41 5.59L3 7L8 12L13 7Z" fill="%232D2D2D"/></svg>')
+    no-repeat center center;
+  background-size: contain;
+  margin-right: 12px;
 }
 
 /* *************************************
@@ -1105,12 +1178,6 @@ button.btn-black:hover {
 	font-weight: 300;
 }
 
-.filtered-candidate-container .icon-text {
-	color: var(--pri-color);
-	font-size: 40px;
-	margin: -6px;
-}
-
 .tag-stage {
 	padding: 2px 8px 2px 8px;
 	border-radius: 4px;
@@ -1224,7 +1291,6 @@ button.btn-black:hover {
 
 .authorization-letter p {
 	font-size: 14px;
-	font-weight: 400;
 	margin: 0;
 }
 
@@ -1249,7 +1315,6 @@ button.btn-black:hover {
 
 .authorization-content {
 	font-size: 14px;
-	font-weight: 400;
 	color: #888888;
 }
 
@@ -1271,7 +1336,6 @@ button.btn-black:hover {
 
 .team-taiwandreamer {
 	font-size: 12px;
-	font-weight: 400;
 	color: #427f56;
 }
 

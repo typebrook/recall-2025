@@ -136,3 +136,60 @@ function isValidIdNumber(idNumber) {
 
 	return checksum % 10 === 0;
 }
+
+function generateQRCode(size) {
+	const qrcodeContainer = document.getElementById("qrcode-container");
+	const qrcode = qrcodeContainer.querySelector(".qrcode");
+	qrcode.innerHTML = "";
+	new QRCode(qrcode, {
+		text: window.location.href,
+		width: size,
+		height: size,
+		correctLevel: QRCode.CorrectLevel.H
+	});
+	const logo = qrcodeContainer.querySelector(".qr-logo");
+	logo.innerHTML = "OurTaiwan<br>連署書製作工具";
+	logo.style.fontSize = `${size * 0.075}px`;
+	logo.style.padding = `${size * 0.01}px ${size * 0.025}px`;
+}
+
+async function downloadQRCode() {
+  try {
+    const size = 4096;
+    const dlQRCodeContainer = document.createElement("div");
+    dlQRCodeContainer.classList.add("downloaded-qrcode-container");
+    dlQRCodeContainer.innerHTML = `<div class="qrcode"></div><div class="qr-logo"></div>`;
+    document.body.appendChild(dlQRCodeContainer);
+
+    const dlQRCode = dlQRCodeContainer.querySelector(".qrcode");
+    new QRCode(dlQRCode, {
+      text: window.location.href,
+      width: size,
+      height: size,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    const dlLogo = dlQRCodeContainer.querySelector(".qr-logo");
+    dlLogo.innerHTML = "OurTaiwan<br>連署書製作工具";
+    dlLogo.style.fontSize = `300px`;
+    dlLogo.style.padding = `24px 24px`;
+    dlLogo.style.borderRadius = `64px`;
+
+    const canvas = await html2canvas(dlQRCodeContainer, { backgroundColor: "#ffffff", scale: 1 });
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+
+    if (!blob) throw new Error("Failed to create Blob from canvas");
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "qrcode.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+
+    document.body.removeChild(dlQRCodeContainer);
+  } catch (error) {
+    console.error("Error generating QR code:", error);
+  }
+}

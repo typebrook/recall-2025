@@ -6,21 +6,21 @@
   <meta property="og:image" content="https://recall2025.ourtaiwan.tw/assets/images/og.png">
   <meta property="og:url" content="https://recall2025.ourtaiwan.tw">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.3">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.16">
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.20"></script>
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.4">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.17">
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.21" defer></script>
 {{- end }}
 
 {{- define "preview-head" }}
   <meta charset="utf-8" />
   <title>第 {{.RecallStage}} 階段罷免連署書 - {{.PoliticianName}} - {{.ConstituencyName}}</title>
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.3">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.8">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.4">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.17">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.12">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.20"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" defer></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.21" defer></script>
 {{- end }}
 
 {{- define "preview-control-panel" }}
@@ -45,7 +45,6 @@
 
   let resizeTimeout;
   window.addEventListener("resize", function () {
-    console.log(window.visualViewport.scale)
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
       controlPanel.classList.remove("xs", "sm", "md");
@@ -92,6 +91,16 @@
 	const dialogMask = document.querySelector(".dialog-mask");
 	const dialog = dialogMask.querySelector(".dialog");
 	const dialogClose = dialog.querySelector(".dialog-close");
+	dialogMask.addEventListener("click", function(event) {
+		if (event.target === dialogClose || dialogClose.contains(event.target)) {
+			dialogMask.style.display = "none";
+			return;
+		}
+
+		if (!dialog.contains(event.target)) {
+			dialogMask.style.display = "none";
+		}
+	});
 </script>
 {{- end}}
 

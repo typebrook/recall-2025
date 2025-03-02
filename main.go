@@ -27,7 +27,6 @@ func main() {
 	r.GET("/", c.Home())
 	r.GET("/authorization-letter", c.AuthorizationLetter())
 	r.GET("/apis/constituencies", c.SearchRecallConstituency())
-	r.GET("/qrcode/:name", c.QRCode())
 	r.GET("/legislators/:name", c.Participate())
 	r.POST("/legislators/:name/preview", c.VerifyTurnstile(), c.PreviewLocalForm())
 	r.GET("/legislators/:name/thank-you", c.ThankYou())

@@ -190,7 +190,7 @@ func ReadConfigRecallLegislators(baseURL *url.URL) (RecallLegislators, map[uint6
 
 	rlmap := map[uint64]RecallLegislators{}
 	for _, r := range rows {
-		r.ParticipateURL = baseURL.JoinPath("legislators", r.PoliticianName).String()
+		r.ParticipateURL = baseURL.JoinPath("legislators", r.PoliticianName)
 		if _, exists := rlmap[r.ConstituencyId]; !exists {
 			rlmap[r.ConstituencyId] = RecallLegislators{}
 		}
@@ -214,28 +214,24 @@ func (rs RecallLegislators) HasLegislatorInMunicipality(municipalityId uint64) b
 }
 
 type RecallLegislator struct {
-	ConstituencyId        uint64  `json:"constituencyId"`
-	MunicipalityId        uint64  `json:"municipalityId"`
-	Term                  uint64  `json:"term"`
-	MunicipalityName      string  `json:"municipalityName"`
-	ConstituencyNum       uint64  `json:"constituencyNum"`
-	PoliticianName        string  `json:"politicianName"`
-	RecallStage           uint64  `json:"recallStage"`
-	RecallStatus          string  `json:"recallStatus"`
-	FormDeployed          bool    `json:"formDeployed"`
-	CsoURL                string  `json:"csoURL"`
-	CalendarURL           string  `json:"calendarURL"`
-	HasCalendarMaintainer bool    `json:"hasCalendarMaintainer"`
-	VotingDate            *string `json:"votingDate"`
-	VotingEventURL        *string `json:"votingEventURL"`
-	ByElectionDate        *string `json:"byElectionDate"`
-	ByElectionEventURL    *string `json:"byElectionEventURL"`
-	ConstituencyName      string  `json:"constituencyName"`
-	ParticipateURL        string  `json:"participateURL"`
-}
-
-func (r RecallLegislator) GetParticipateURL(baseURL *url.URL) *url.URL {
-	return baseURL.JoinPath("legislators", r.PoliticianName)
+	ConstituencyId        uint64   `json:"constituencyId"`
+	MunicipalityId        uint64   `json:"municipalityId"`
+	Term                  uint64   `json:"term"`
+	MunicipalityName      string   `json:"municipalityName"`
+	ConstituencyNum       uint64   `json:"constituencyNum"`
+	PoliticianName        string   `json:"politicianName"`
+	RecallStage           uint64   `json:"recallStage"`
+	RecallStatus          string   `json:"recallStatus"`
+	FormDeployed          bool     `json:"formDeployed"`
+	CsoURL                string   `json:"csoURL"`
+	CalendarURL           string   `json:"calendarURL"`
+	HasCalendarMaintainer bool     `json:"hasCalendarMaintainer"`
+	VotingDate            *string  `json:"votingDate"`
+	VotingEventURL        *string  `json:"votingEventURL"`
+	ByElectionDate        *string  `json:"byElectionDate"`
+	ByElectionEventURL    *string  `json:"byElectionEventURL"`
+	ConstituencyName      string   `json:"constituencyName"`
+	ParticipateURL        *url.URL `json:"participateURL"`
 }
 
 func (r RecallLegislator) IsPetitioning() bool {

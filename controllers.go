@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"time"
@@ -84,11 +85,6 @@ type ResultSearchRecallConstituency struct {
 	Legislators RecallLegislators `json:"legislators,omitempty"`
 }
 
-func (ctrl Controller) QRCode() gin.HandlerFunc {
-	return func(c *gin.Context) {
-	}
-}
-
 func (ctrl Controller) Participate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		up := RequestUriStageLegislator{}
@@ -115,7 +111,7 @@ func (ctrl Controller) Participate() gin.HandlerFunc {
 
 		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
 
-		previewURL := l.GetParticipateURL(ctrl.AppBaseURL).JoinPath("preview")
+		previewURL := l.ParticipateURL.JoinPath("preview")
 
 		switch l.RecallStage {
 		case 1, 2:
@@ -218,7 +214,7 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 	birthYear = birthYear - 1911
 
 	stage := strconv.FormatUint(up.Stage, 10)
-	redirectURL := l.GetParticipateURL(cfg.AppBaseURL).JoinPath("thank-you")
+	redirectURL := l.ParticipateURL.JoinPath("thank-you")
 	imagePrefix := fmt.Sprintf("stage-%s-%s", stage, up.Name)
 
 	data := &PreviewData{
@@ -267,7 +263,7 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 
 type PreviewData struct {
 	BaseURL          string
-	ParticipateURL   string
+	ParticipateURL   *url.URL
 	RedirectURL      string
 	PoliticianName   string
 	ConstituencyName string
@@ -340,7 +336,7 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 		switch up.Stage {
 		case 1:
 			tmpfile := fmt.Sprintf("preview-stage-%d-%s.html", up.Stage, up.Name)
-			redirectURL := l.GetParticipateURL(ctrl.AppBaseURL).JoinPath("thank-you")
+			redirectURL := l.ParticipateURL.JoinPath("thank-you")
 			imagePrefix := fmt.Sprintf("stage-%d-%s", up.Stage, up.Name)
 
 			c.HTML(http.StatusOK, tmpfile, &PreviewData{
@@ -411,14 +407,14 @@ func (ctrl Controller) RobotsTxt() gin.HandlerFunc {
 
 func (ctrl Controller) Sitemap() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		date := "2025-02-27"
+		date := "2025-03-02"
 		urls := []*SitemapURL{
 			&SitemapURL{ctrl.AppBaseURL.String(), date, "daily", "1.0"},
 			&SitemapURL{ctrl.AppBaseURL.JoinPath("authorization-letter").String(), "2025-02-26", "yearly", "1.0"},
 		}
 
 		for _, l := range ctrl.RecallLegislators {
-			legislatorURL := l.GetParticipateURL(ctrl.AppBaseURL)
+			legislatorURL := l.ParticipateURL
 			if l.RecallStatus == "ONGOING" {
 				urls = append(urls, &SitemapURL{legislatorURL.String(), date, "weekly", "0.9"})
 				urls = append(urls, &SitemapURL{legislatorURL.JoinPath("thank-you").String(), date, "weekly", "0.8"})

@@ -4,17 +4,11 @@
 	{{ template "common-head" . }}
   <title>我要罷免{{.Legislator.PoliticianName}} - {{.Legislator.ConstituencyName}}</title>
   <meta name="description" property="og:description" content="我是{{.ConstituencyName}}選民，我要罷免{{.PoliticianName}}！">
-	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async></script>
+	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 </head>
 <body>
-	<div class="browser-warning-container" id="browser-warning-container">
-		<div class="browser-waring-title">
-			您使用的瀏覽器無法下載連署書
-		</div>
-		<div class="browser-warning-content">
-			您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。請於右上或右下功能按鈕，點選「以預設 (外部) 瀏覽器開啟」，或<a class="hyperlink-style" onclick="copyCurrentLink()">複製連結<div class="copy-icon"></div></a>後至其他瀏覽器開啟。
-		</div>
-	</div>
   <div class="banner">
 		<div class="section nav">
 			<a class="goback" href="{{.BaseURL}}"><div class="icon-goback"></div><div style="color:#ffffff;">罷免其他立委</div></a>
@@ -99,17 +93,28 @@
 					{{- end}}
   	  	</div>
   	  </div>
-			<div class="form-group">
+  	  <div class="form-group">
 				<div class="input-group">
-					<button type="button" class="btn-secondary lg w100" onclick="copyCurrentLink()">分享出去！邀請更多人參與</button>
-				</div>
-			</div>
+					<button type="button" class="btn-secondary lg w100" onclick="copyCurrentLink();">分享出去！邀請更多人參與</button>
+					<div class="show-qrcode"><a class="hyperlink-style"><i class="icon-qrcode"></i>取得本網頁 QR 碼</a></div>
+  	  	</div>
+  	  </div>
   	</form>
 	</div>
 
-	{{ template "faq" }}
+	{{ template "faq" . }}
 	{{ template "footer" }}
+	{{ template "dialog" . }}
+	{{ template "mask" }}
 	<div id="popout" class="hidden">已複製到剪貼簿</div>
+	<div class="browser-warning-container" id="browser-warning-container">
+		<div class="browser-waring-title">
+			您使用的瀏覽器無法下載連署書
+		</div>
+		<div class="browser-warning-content">
+			您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。請於右上或右下功能按鈕，點選「以預設 (外部) 瀏覽器開啟」，或<a class="hyperlink-style" onclick="copyCurrentLink()">複製連結<div class="copy-icon"></div></a>後至其他瀏覽器開啟。
+		</div>
+	</div>
 	<script>
 		const submitButton = document.querySelector("button[type='submit']");
 		const idInput = document.getElementById("id-number");
@@ -128,7 +133,32 @@
 			}
 		});
 
-		(function() {
+		document.addEventListener("DOMContentLoaded", () => {
+			dialog.querySelector("h3").innerHTML = "我是{{.Legislator.ConstituencyName}}選民<br>我要罷免『{{.Legislator.PoliticianName}}』";
+			dialog.querySelector(".content").innerHTML = `
+				<div class="dialog-qrcode" id="qrcode-container">
+					<div class="qrcode"></div>
+					<div class="qr-logo"></div>
+				</div>
+				<p>您可以下載 QR 碼圖檔，印出張貼在合適的宣傳地點，幫助更多民眾進行連署</p>
+				<div class="dialog-action">
+					<button class="btn-primary lg w100 flex-center"><i class="icon-download"></i>下載 QR 碼圖檔</button>
+				</div>`;
+
+			generateQRCode(144);
+
+			document.querySelector(".show-qrcode a").addEventListener("click", (() => {
+				dialogMask.style.display = "block";
+			}));
+
+			dialog.querySelector(".dialog-action button").addEventListener("click", ( async () => {
+				const mask = document.querySelector('.mask');
+				mask.classList.add('active');
+				await new Promise(resolve => setTimeout(resolve, 10));
+				await downloadQRCode();
+				mask.classList.remove('active');
+			}));
+
 			const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 			const isLine = userAgent.toLowerCase().includes("line");
 			const isMessenger = userAgent.toLowerCase().includes("fbav") || userAgent.toLowerCase().includes("messenger");
@@ -137,10 +167,11 @@
 			const isWeChat = userAgent.toLowerCase().includes("micromessenger");
 
 			if (isLine || isMessenger || isWhatsApp || isThreads || isWeChat ) {
-				const warningElement = document.getElementById('browser-warning-container');
-				warningElement.style.display = 'flex';
+				const warningElement = document.getElementById("browser-warning-container");
+				warningElement.style.display = "flex";
 			}
-		})();
+
+		});
 	</script>
 </body>
 </html>
