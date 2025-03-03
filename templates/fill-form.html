@@ -3,7 +3,7 @@
 <head>
 	{{ template "common-head" . }}
   <title>我要罷免{{.Legislator.PoliticianName}} - {{.Legislator.ConstituencyName}}</title>
-  <meta name="description" property="og:description" content="我是{{.ConstituencyName}}選民，我要罷免{{.PoliticianName}}！">
+  <meta name="description" property="og:description" content="我是{{.Legislator.ConstituencyName}}選民，我要罷免{{.Legislator.PoliticianName}}！">
 	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
