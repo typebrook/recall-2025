@@ -333,31 +333,32 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 			return
 		}
 
+		redirectURL := l.ParticipateURL.JoinPath("thank-you")
+		data := &PreviewData{
+			BaseURL:          ctrl.AppBaseURL.String(),
+			ParticipateURL:   l.ParticipateURL,
+			RedirectURL:      redirectURL.String(),
+			PoliticianName:   up.Name,
+			ConstituencyName: l.ConstituencyName,
+			RecallStage:      up.Stage,
+			Name:             "邱吉爾",
+			IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
+			BirthYear:        63,
+			BirthMonth:       11,
+			BirthDate:        30,
+			MobileNumber:     "0987654321",
+			Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
+		}
+
 		switch up.Stage {
 		case 1:
-			tmpfile := fmt.Sprintf("preview-stage-%d-%s.html", up.Stage, up.Name)
-			redirectURL := l.ParticipateURL.JoinPath("thank-you")
-			imagePrefix := fmt.Sprintf("stage-%d-%s", up.Stage, up.Name)
-
-			c.HTML(http.StatusOK, tmpfile, &PreviewData{
-				BaseURL:          ctrl.AppBaseURL.String(),
-				ParticipateURL:   l.ParticipateURL,
-				RedirectURL:      redirectURL.String(),
-				PoliticianName:   up.Name,
-				ConstituencyName: l.ConstituencyName,
-				RecallStage:      up.Stage,
-				ImagePrefix:      imagePrefix,
-				Name:             "邱吉爾",
-				IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-				BirthYear:        63,
-				BirthMonth:       11,
-				BirthDate:        30,
-				MobileNumber:     "0987654321",
-				Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
-			})
+			tmpfile := fmt.Sprintf("preview-stage-1-%s.html", up.Name)
+			data.ImagePrefix = fmt.Sprintf("stage-1-%s", up.Name)
+			c.HTML(http.StatusOK, tmpfile, data)
 			return
 		case 2:
-			// TODO:
+			tmpfile := "preview-stage-2.html"
+			c.HTML(http.StatusOK, tmpfile, data)
 			return
 		default:
 			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))

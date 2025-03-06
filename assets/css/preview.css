@@ -232,9 +232,6 @@ body {
 	margin: 0.5em;
 }
 
-
-
-
 #downloadArea.xs {
 	padding: 36px;
 }
@@ -248,4 +245,96 @@ body {
 	font-size: 38px;
 	padding: 28px 32px;
 	margin: 0.5em;
+}
+
+.a4-landscape .stage-2-form-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 77px 78px 0 80.5px;
+}
+.stage-2-form {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: collapse;
+	border: 2px solid black;
+}
+.stage-2-form tr.input-row {
+	font-size: 12px;
+	letter-spacing: 2px;
+}
+.stage-2-form tr.input-row {
+	font-size: 12px;
+	letter-spacing: 2px;
+}
+.stage-2-form th {
+	border: 1px solid black;
+  word-wrap: break-word;
+  word-break: break-word;
+	letter-spacing: 2px;
+}
+.stage-2-form td {
+	border: 1px solid black;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+.stage-2-form .secondary-header {
+	font-size: 14px;
+	font-weight: 300;
+}
+.stage-2-form .num {
+	height: 108px;
+}
+.stage-2-form .input-num {
+	height: 70px;
+}
+.stage-2-form .num br {
+	display: block;
+	content: "";
+	margin-bottom: 30px;
+}
+.stage-2-form th.nidc br {
+	display: block;
+	content: "";
+	margin-bottom: 6px;
+}
+.stage-2-form .name {
+	height: 34px;
+}
+.stage-2-form .input-name {
+	height: 35px;
+	font-size: 16px;
+	letter-spacing: 16px;
+}
+.stage-2-form .input-nidc {
+	font-size: 14px;
+  text-align: center;
+}
+.stage-2-form th.title {
+  font-size: 19px;
+	font-weight: 500;
+  text-align: start;
+	height: 50.5px;
+	letter-spacing: 2.4px;
+}
+.text-align-center {
+  text-align: center;
+}
+.stage-2-form colgroup .col-num {
+	width: 4.5%;
+}
+.stage-2-form colgroup .col-nidc-digit {
+	width: 2.57%;
+}
+.stage-2-form colgroup .col-birth-date {
+	width: 14.6%;
+}
+.stage-2-form colgroup .col-address {
+	width: 40.2%;
+}
+.stage-2-form colgroup .col-sign {
+	width: 10.5%;
+}
+.stage-2-form colgroup .col-note {
+	width: 6.5%;
 }
