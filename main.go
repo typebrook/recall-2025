@@ -16,6 +16,7 @@ func main() {
 	c := NewController(cfg)
 
 	r := gin.Default()
+
 	r.SetFuncMap(template.FuncMap{
 		"urlencode": url.QueryEscape,
 	})

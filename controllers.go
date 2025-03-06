@@ -204,9 +204,11 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 		return nil, fmt.Errorf("生日輸入錯誤")
 	}
 
-	if r.MobileNumber != "" {
-		if !isValidMobileNumber(r.MobileNumber) {
-			return nil, fmt.Errorf("手機號碼輸入錯誤")
+	if l.RecallStage == 1 {
+		if r.MobileNumber != "" {
+			if !isValidMobileNumber(r.MobileNumber) {
+				return nil, fmt.Errorf("手機號碼輸入錯誤")
+			}
 		}
 	}
 
@@ -351,13 +353,8 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 		}
 
 		switch up.Stage {
-		case 1:
-			tmpfile := fmt.Sprintf("preview-stage-1-%s.html", up.Name)
-			data.ImagePrefix = fmt.Sprintf("stage-1-%s", up.Name)
-			c.HTML(http.StatusOK, tmpfile, data)
-			return
 		case 2:
-			tmpfile := "preview-stage-2.html"
+			tmpfile := fmt.Sprintf("stage-2-%s.html", up.Name)
 			c.HTML(http.StatusOK, tmpfile, data)
 			return
 		default:
@@ -399,7 +396,7 @@ func (ctrl Controller) RobotsTxt() gin.HandlerFunc {
 			"DisallowPaths": ctrl.DisallowPaths,
 		}
 
-		c.Header("Content-Type", "text/plain; charset=utf-8")
+		c.Header("Content-Type", "text/plain; charset=utf-9")
 		if err := tmpl.Execute(c.Writer, data); err != nil {
 			c.String(http.StatusInternalServerError, "Render Error")
 		}
@@ -464,6 +461,12 @@ func (ctrl Controller) GetAsset() gin.HandlerFunc {
 		} else {
 			c.Header("Cache-Control", "no-cache")
 		}
+
+		switch up.Type {
+		case "pdfs":
+			c.Writer.Header().Set("Content-Type", "application/pdf")
+		}
+
 		c.File(filePath)
 	}
 }

@@ -191,6 +191,7 @@ func ReadConfigRecallLegislators(baseURL *url.URL) (RecallLegislators, map[uint6
 	rlmap := map[uint64]RecallLegislators{}
 	for _, r := range rows {
 		r.ParticipateURL = baseURL.JoinPath("legislators", r.PoliticianName)
+		r.ParticipateURLString = r.ParticipateURL.String()
 		if _, exists := rlmap[r.ConstituencyId]; !exists {
 			rlmap[r.ConstituencyId] = RecallLegislators{}
 		}
@@ -231,7 +232,8 @@ type RecallLegislator struct {
 	ByElectionDate        *string  `json:"byElectionDate"`
 	ByElectionEventURL    *string  `json:"byElectionEventURL"`
 	ConstituencyName      string   `json:"constituencyName"`
-	ParticipateURL        *url.URL `json:"participateURL"`
+	ParticipateURL        *url.URL `json:"-"`
+	ParticipateURLString  string   `json:"participateURL"`
 }
 
 func (r RecallLegislator) IsPetitioning() bool {
@@ -244,10 +246,8 @@ func (r RecallLegislator) IsPetitioning() bool {
 
 func (r RecallLegislator) GetTmplFilename() string {
 	switch r.RecallStage {
-	case 1:
-		return fmt.Sprintf("preview-stage-%d-%s.html", r.RecallStage, r.PoliticianName)
-	case 2:
-		return ""
+	case 1, 2:
+		return fmt.Sprintf("stage-%d-%s.html", r.RecallStage, r.PoliticianName)
 	}
 
 	return ""
