@@ -153,7 +153,7 @@ function generateQRCode(data, size) {
 	logo.style.padding = `${size * 0.01}px ${size * 0.025}px`;
 }
 
-async function downloadQRCode() {
+async function downloadQRCode(data) {
   try {
     const size = 4096;
     const dlQRCodeContainer = document.createElement("div");
@@ -163,7 +163,7 @@ async function downloadQRCode() {
 
     const dlQRCode = dlQRCodeContainer.querySelector(".qrcode");
     new QRCode(dlQRCode, {
-      text: window.location.href,
+      text: data,
       width: size,
       height: size,
       correctLevel: QRCode.CorrectLevel.H

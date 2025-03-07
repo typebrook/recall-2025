@@ -404,6 +404,9 @@ button.btn-black:hover {
 	padding: 0 16px;
 	color: #858585;
 }
+.dialog-footer {
+	margin-bottom: 8px;
+}
 .dialog .dialog-action {
 	border-top: 1px solid var(--aug-color);
 	padding: 24px 24px;
