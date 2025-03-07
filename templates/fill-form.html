@@ -143,18 +143,25 @@
 					<div class="qr-logo"></div>
 				</div>
 				<div class="dialog-footer">
+					<p>您可以下載 QR 碼圖檔，印出張貼在合適的宣傳地點，幫助更多民眾進行連署</p>
+					<div class="dialog-action">
+						<button class="btn-primary lg w100 flex-center"><i class="icon-download"></i>下載 QR 碼圖檔</button>
+					</div>
 				</div>
 			`;
 
-			const dialogFooter = dialog.querySelector(".dialog-footer");
+			dialog.querySelector(".dialog-footer button").addEventListener("click", ( async () => {
+				const url = window.location.origin + window.location.pathname;
+				mask.classList.add('active');
+				await new Promise(resolve => setTimeout(resolve, 10));
+				await downloadQRCode(url);
+				mask.classList.remove('active');
+			}));
 
 			document.querySelector(".nav-qrcode").addEventListener("click", (() => {
 				mask.classList.add('active');
 				const url = window.location.href;
 				generateQRCode(url, 144);
-				dialogFooter.innerHTML = `
-					<p>成為行動志工！將查詢的「縣市」「行政區」「鄉鎮村里」產生 QR 碼拿其他人掃描。讓連署更便利！<p>
-				`;
 				mask.classList.remove('active');
 				dialogMask.style.display = "block";
 			}));
@@ -163,20 +170,6 @@
 				mask.classList.add('active');
 				const url = window.location.origin + window.location.pathname;
 				generateQRCode(url, 144);
-				dialogFooter.innerHTML = `
-					<p>您可以下載 QR 碼圖檔，印出張貼在合適的宣傳地點，幫助更多民眾進行連署</p>
-					<div class="dialog-action">
-						<button class="btn-primary lg w100 flex-center"><i class="icon-download"></i>下載 QR 碼圖檔</button>
-					</div>
-				`;
-
-				dialogFooter.querySelector("button").addEventListener("click", ( async () => {
-					const url = window.location.origin + window.location.pathname;
-					mask.classList.add('active');
-					await new Promise(resolve => setTimeout(resolve, 10));
-					await downloadQRCode(url);
-					mask.classList.remove('active');
-				}));
 				mask.classList.remove('active');
 				dialogMask.style.display = "block";
 			}));
