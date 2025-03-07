@@ -297,10 +297,16 @@ button.btn-black:hover {
   z-index: 998;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
+	pointer-events: none;
 }
 .dialog-mask.show {
   display: flex;
   opacity: 1;
+	pointer-events: auto;
+}
+.dialog-mask.hide {
+  opacity: 0;
+	pointer-events: none;
 }
 .dialog {
   position: fixed;
@@ -319,6 +325,11 @@ button.btn-black:hover {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
 }
+.dialog-mask.hide .dialog {
+  transform: translate(-50%, -50%) scale(0.95);
+  opacity: 0;
+	transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
 @media (max-width: 768px) {
   .dialog {
     width: 100%;
@@ -333,6 +344,23 @@ button.btn-black:hover {
     transform: translate(-50%, 0);
     opacity: 1;
   }
+  .dialog-mask.hide .dialog {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+  }
+}
+.dialog-control-panel {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+.dialog-close {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	padding: 12px;
+	margin: 12px;
 }
 .dialog .content {
 	display: flex;
@@ -352,19 +380,6 @@ button.btn-black:hover {
 	border-top: 1px solid var(--aug-color);
 	padding: 24px 24px;
 	width: 100%;
-}
-.dialog-control-panel {
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-}
-.dialog-close {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-	padding: 12px;
-	margin: 12px;
 }
 .dialog .dialog-close:hover {
 	opacity: 1;

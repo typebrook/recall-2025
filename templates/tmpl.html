@@ -7,7 +7,7 @@
   <meta property="og:url" content="https://recall2025.ourtaiwan.tw">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.0">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.1">
 	<script src="{{.BaseURL}}/assets/js/common.js?v0.1.1" defer></script>
 {{- end }}
 
@@ -15,7 +15,7 @@
   <meta charset="utf-8" />
   <title>第 {{.RecallStage}} 階段罷免連署書 - {{.PoliticianName}} - {{.ConstituencyName}}</title>
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.0">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.2.1">
   <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.13">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
@@ -74,6 +74,9 @@
 <div class="mask">
   <div class="spinner"></div>
 </div>
+<script>
+	const mask = document.querySelector('.mask');
+</script>
 {{- end }}
 
 {{- define "dialog"}}
@@ -93,15 +96,22 @@
 	const dialogClose = dialog.querySelector(".dialog-close");
 	function showDialog() {
 		dialogMask.style.display = "flex";
-		setTimeout(() => dialogMask.classList.add("show"), 10);
+		setTimeout(() => {
+			dialogMask.classList.add("show");
+			dialogMask.classList.remove("hide");
+		}, 10);
 	}
 
 	function hideDialog() {
+		dialogMask.classList.add("hide");
 		dialogMask.classList.remove("show");
+
 		setTimeout(() => {
 			dialogMask.style.display = "none";
-		}, 300);
+			dialogMask.classList.remove("hide");
+		}, 310);
 	}
+
 	dialogMask.addEventListener("click", function(event) {
 		if (event.target === dialogClose || dialogClose.contains(event.target)) {
 			hideDialog();
