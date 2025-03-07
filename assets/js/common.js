@@ -29,7 +29,7 @@ async function downloadPDF(filename, redirectURL) {
 				ignoreElements: (elem) => elem.classList.contains('whereToSign'),
 			});
 
-			const imgData = canvas.toDataURL('image/webp', 1.0);
+			const imgData = canvas.toDataURL('image/png', 1.0);
 			const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
 			pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
