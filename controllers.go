@@ -345,7 +345,7 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 			RecallStage:      up.Stage,
 			Name:             "邱吉爾",
 			IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			BirthYear:        63,
+			BirthYear:        888,
 			BirthMonth:       11,
 			BirthDate:        30,
 			MobileNumber:     "0987654321",
