@@ -272,5 +272,5 @@ function showSubscribeDialog(event, hasMaintainer) {
 		<div class="dialog-action">
 			<a href="${calendarURL}" target="_blank"><button class="btn-primary lg w100">前往新增行事曆</button></a>
 		</div>`;
-	dialogMask.style.display = "block";
+	showDialog();
 }

@@ -91,14 +91,25 @@
 	const dialogMask = document.querySelector(".dialog-mask");
 	const dialog = dialogMask.querySelector(".dialog");
 	const dialogClose = dialog.querySelector(".dialog-close");
+	function showDialog() {
+		dialogMask.style.display = "flex";
+		setTimeout(() => dialogMask.classList.add("show"), 10);
+	}
+
+	function hideDialog() {
+		dialogMask.classList.remove("show");
+		setTimeout(() => {
+			dialogMask.style.display = "none";
+		}, 300);
+	}
 	dialogMask.addEventListener("click", function(event) {
 		if (event.target === dialogClose || dialogClose.contains(event.target)) {
-			dialogMask.style.display = "none";
+			hideDialog();
 			return;
 		}
 
 		if (!dialog.contains(event.target)) {
-			dialogMask.style.display = "none";
+			hideDialog();
 		}
 	});
 </script>
