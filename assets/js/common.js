@@ -137,12 +137,12 @@ function isValidIdNumber(idNumber) {
 	return checksum % 10 === 0;
 }
 
-function generateQRCode(size) {
+function generateQRCode(data, size) {
 	const qrcodeContainer = document.getElementById("qrcode-container");
 	const qrcode = qrcodeContainer.querySelector(".qrcode");
 	qrcode.innerHTML = "";
 	new QRCode(qrcode, {
-		text: window.location.href,
+		text: data,
 		width: size,
 		height: size,
 		correctLevel: QRCode.CorrectLevel.H

@@ -104,7 +104,7 @@
 						{{- else}}
 							{{- if lt $rl.RecallStage 3}}
 								{{- if $rl.FormDeployed}}
-								<a href="{{$rl.ParticipateURL}}?address={{$a.MunicipalityName}}"><button class="btn-primary md w100 fw700">連署罷免</button></a>
+								<a href="{{$rl.ParticipateURL}}"><button class="btn-primary md w100 fw700">連署罷免</button></a>
 								{{- else}}
 								<button class="btn-primary md w100" disabled>{{$rl.RecallStage}} 階準備中</button>
 								{{- end}}

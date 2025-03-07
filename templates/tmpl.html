@@ -6,21 +6,21 @@
   <meta property="og:image" content="https://recall2025.ourtaiwan.tw/assets/images/og.png">
   <meta property="og:url" content="https://recall2025.ourtaiwan.tw">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.4">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.17">
-	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.22" defer></script>
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.19">
+	<script src="{{.BaseURL}}/assets/js/common.js?v0.0.23" defer></script>
 {{- end }}
 
 {{- define "preview-head" }}
   <meta charset="utf-8" />
   <title>第 {{.RecallStage}} 階段罷免連署書 - {{.PoliticianName}} - {{.ConstituencyName}}</title>
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.4">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.17">
-  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.12">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style_layout.css?v0.0.5">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/style.css?v0.1.19">
+  <link rel="stylesheet" href="{{.BaseURL}}/assets/css/preview.css?v0.0.13">
   <link rel="icon" href="{{.BaseURL}}/assets/images/favicon.png" type="image/png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" defer></script>
-  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.22" defer></script>
+  <script src="{{.BaseURL}}/assets/js/common.js?v0.0.23" defer></script>
 {{- end }}
 
 {{- define "preview-control-panel" }}
@@ -35,7 +35,7 @@
       <a href="{{.ParticipateURL}}"><button class="btn-secondary lg w100">重新填寫</button></a>
     </div>
     <div class="col-6">
-      <button class="btn-primary lg w100" onclick="downloadPDF('第 {{.RecallStage}} 階段連署書 - {{.PoliticianName}}', '{{.RedirectURL}}')">確認下載</button>
+      <button class="btn-primary lg w100 flex-center" onclick="downloadPDF('第 {{.RecallStage}} 階段連署書 - {{.PoliticianName}}', '{{.RedirectURL}}')"><i class="icon-download"></i>確認下載</button>
     </div>
   </div>
 </div>

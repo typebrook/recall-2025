@@ -12,6 +12,7 @@
   <div class="banner">
 		<div class="section nav">
 			<a class="goback" href="{{.BaseURL}}"><div class="icon-goback"></div><div style="color:#ffffff;">罷免其他立委</div></a>
+			<div class="nav-qrcode"><i class="icon-qrcode-reverse"></i></div>
 		</div>
 		<div class="section">
     	<h1 class="fill-form-topic">我是{{.Legislator.ConstituencyName}}選民<br>我要罷免<span class="primary">『{{.Legislator.PoliticianName}}』</span></h1>
@@ -118,6 +119,7 @@
 	<script>
 		const submitButton = document.querySelector("button[type='submit']");
 		const idInput = document.getElementById("id-number");
+		const mask = document.querySelector('.mask');
 
 		idInput.addEventListener("input", () => {
 			idInput.setCustomValidity("");
@@ -145,14 +147,23 @@
 					<button class="btn-primary lg w100 flex-center"><i class="icon-download"></i>下載 QR 碼圖檔</button>
 				</div>`;
 
-			generateQRCode(144);
+			document.querySelector(".nav-qrcode").addEventListener("click", (() => {
+				mask.classList.add('active');
+				const url = window.location.href
+				generateQRCode(url, 144);
+				mask.classList.remove('active');
+				dialogMask.style.display = "block";
+			}));
 
 			document.querySelector(".show-qrcode a").addEventListener("click", (() => {
+				mask.classList.add('active');
+				const url = window.location.origin + window.location.pathname;
+				generateQRCode(url, 144);
+				mask.classList.remove('active');
 				dialogMask.style.display = "block";
 			}));
 
 			dialog.querySelector(".dialog-action button").addEventListener("click", ( async () => {
-				const mask = document.querySelector('.mask');
 				mask.classList.add('active');
 				await new Promise(resolve => setTimeout(resolve, 10));
 				await downloadQRCode();
@@ -170,6 +181,7 @@
 				const warningElement = document.getElementById("browser-warning-container");
 				warningElement.style.display = "flex";
 			}
+
 
 		});
 	</script>
