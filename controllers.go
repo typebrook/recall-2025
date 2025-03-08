@@ -14,6 +14,11 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
+const (
+	MayorName = "高虹安"
+	MayorCity = "新竹市"
+)
+
 type Controller struct {
 	*Config
 }
@@ -329,27 +334,47 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 			return
 		}
 
-		l := ctrl.GetRecallLegislator(up.Name)
-		if l == nil {
-			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
-			return
-		}
+		var data *PreviewData
+		if up.Name != MayorName {
+			l := ctrl.GetRecallLegislator(up.Name)
+			if l == nil {
+				c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
+				return
+			}
 
-		redirectURL := l.ParticipateURL.JoinPath("thank-you")
-		data := &PreviewData{
-			BaseURL:          ctrl.AppBaseURL.String(),
-			ParticipateURL:   l.ParticipateURL,
-			RedirectURL:      redirectURL.String(),
-			PoliticianName:   up.Name,
-			ConstituencyName: l.ConstituencyName,
-			RecallStage:      up.Stage,
-			Name:             "邱吉爾",
-			IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			BirthYear:        888,
-			BirthMonth:       11,
-			BirthDate:        30,
-			MobileNumber:     "0987654321",
-			Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
+			data = &PreviewData{
+				BaseURL:          ctrl.AppBaseURL.String(),
+				ParticipateURL:   l.ParticipateURL,
+				RedirectURL:      l.ParticipateURL.JoinPath("thank-you").String(),
+				PoliticianName:   up.Name,
+				ConstituencyName: l.ConstituencyName,
+				RecallStage:      up.Stage,
+				Name:             "邱吉爾",
+				IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
+				BirthYear:        888,
+				BirthMonth:       11,
+				BirthDate:        30,
+				MobileNumber:     "0987654321",
+				Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
+			}
+		} else {
+			fmt.Println("here")
+			participateURL := ctrl.AppBaseURL.JoinPath("mayor")
+			data = &PreviewData{
+				BaseURL:          ctrl.AppBaseURL.String(),
+				ParticipateURL:   participateURL,
+				RedirectURL:      participateURL.JoinPath("thank-you").String(),
+				PoliticianName:   up.Name,
+				ConstituencyName: MayorCity,
+				RecallStage:      up.Stage,
+				Name:             "邱吉爾",
+				IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
+				BirthYear:        888,
+				BirthMonth:       11,
+				BirthDate:        30,
+				MobileNumber:     "0987654321",
+				Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
+			}
 		}
 
 		switch up.Stage {
@@ -485,5 +510,115 @@ func (ctrl Controller) NotFound() gin.HandlerFunc {
 func (ctrl Controller) Ping() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "v0.0.1"})
+	}
+}
+
+// For mayor
+func (ctrl Controller) MParticipate() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
+
+		previewURL := ctrl.AppBaseURL.JoinPath("mayor", "preview")
+		address := MayorCity
+
+		c.HTML(http.StatusOK, "mayor-fill-form.html", gin.H{
+			"BaseURL":          ctrl.AppBaseURL.String(),
+			"PreviewURL":       previewURL.String(),
+			"Address":          address,
+			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
+			"MaxBirthDate":     twentyYearsAgo,
+		})
+	}
+}
+
+func (ctrl Controller) MPreviewLocalForm() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		qp := RequestQueryPreview{}
+		if err := c.ShouldBindWith(&qp, binding.Form); err != nil {
+			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+			return
+		}
+
+		data, err := qp.ToMayorPreviewData(ctrl.Config)
+		if err != nil {
+			c.HTML(http.StatusBadRequest, "4xx.html", ViewHttp4xxError{
+				HttpStatusCode: http.StatusBadRequest,
+				ErrorMessage:   err.Error(),
+				ReturnURL:      ctrl.AppBaseURL.String(),
+			})
+			return
+		}
+
+		c.HTML(http.StatusOK, "stage-2-"+MayorName+".html", data)
+	}
+}
+
+func (r RequestQueryPreview) ToMayorPreviewData(cfg *Config) (*PreviewData, error) {
+	if !isValidIdNumber(r.IdNumber) {
+		return nil, fmt.Errorf("身份證輸入錯誤")
+	}
+
+	t, err := time.Parse("2006-01-02", r.BirthDate)
+	if err != nil {
+		return nil, fmt.Errorf("生日輸入錯誤")
+	}
+
+	birthYear, birthMonth, birthDate := t.Date()
+	birthYear = birthYear - 1911
+
+	redirectURL := cfg.AppBaseURL.JoinPath("mayor", "thank-you")
+	imagePrefix := "stage-2-" + MayorName
+
+	data := &PreviewData{
+		BaseURL:          cfg.AppBaseURL.String(),
+		ParticipateURL:   cfg.AppBaseURL.JoinPath("mayor"),
+		RedirectURL:      redirectURL.String(),
+		PoliticianName:   MayorName,
+		ConstituencyName: MayorCity,
+		RecallStage:      2,
+		ImagePrefix:      imagePrefix,
+		Name:             r.Name,
+		BirthYear:        birthYear,
+		BirthMonth:       int(birthMonth),
+		BirthDate:        birthDate,
+		Address:          sanitizeAddress(r.Address),
+	}
+
+	for i := 0; i < len(r.IdNumber); i += 1 {
+		switch i {
+		case 0:
+			data.IdNumber.D0 = string(r.IdNumber[i])
+		case 1:
+			data.IdNumber.D1 = string(r.IdNumber[i])
+		case 2:
+			data.IdNumber.D2 = string(r.IdNumber[i])
+		case 3:
+			data.IdNumber.D3 = string(r.IdNumber[i])
+		case 4:
+			data.IdNumber.D4 = string(r.IdNumber[i])
+		case 5:
+			data.IdNumber.D5 = string(r.IdNumber[i])
+		case 6:
+			data.IdNumber.D6 = string(r.IdNumber[i])
+		case 7:
+			data.IdNumber.D7 = string(r.IdNumber[i])
+		case 8:
+			data.IdNumber.D8 = string(r.IdNumber[i])
+		case 9:
+			data.IdNumber.D9 = string(r.IdNumber[i])
+		}
+	}
+
+	return data, nil
+}
+
+func (ctrl Controller) MThankYou() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		fmt.Println("hre")
+		c.HTML(http.StatusOK, "mayor-thank-you.html", gin.H{
+			"BaseURL":        ctrl.AppBaseURL,
+			"ParticipateURL": ctrl.AppBaseURL.JoinPath("mayor"),
+			"CsoURL":         "https://www.facebook.com/hc.thebigrecall",
+		})
 	}
 }

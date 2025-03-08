@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+	{{ template "common-head" . }}
+  <title>我要罷免高虹安 - 新竹市</title>
+  <meta name="description" property="og:description" content="我是新竹市選民，我要罷免高虹安！">
+	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+</head>
+<body>
+  <div class="banner">
+		<div class="section nav">
+			<div class="nav-qrcode"><i class="icon-qrcode-reverse"></i></div>
+		</div>
+		<div class="section">
+    	<h1 class="fill-form-topic">我是新竹市選民<br>我要罷免<span class="primary">『高虹安』</span></h1>
+			<div class="recall-stage-flow">
+				<h4 class="recall-stage"><span>第 1 階段</span>連署罷免</h4>
+				<span class="icon-step-arrow"></span>
+				<h4 class="recall-stage active"><span>第 2 階段</span>連署罷免</h4>
+				<span class="icon-step-arrow"></span>
+				<h4 class="recall-stage"><span>第 3 階段</span>罷免投票</h4>
+			</div>
+		</div>
+  </div>
+	<div class="section fill-form">
+		<div class="fill-form-header">
+			<h2>拿出『身分證』對照填寫，<br>製作連署書並印出</h2>
+			<div class="fill-form-notification">本網站不會保存您的個人資料，填寫資訊經加密處理且僅用於一次性生成連署書下載，請安心填寫。詳情請見<a href="#footer">服務政策與聲明</a>。</div>
+		</div>
+		<form class="recall-form" action="{{.PreviewURL}}" id="recall-form" method="post">
+  	  <div class="form-group">
+  	    <label for="name">姓名</label>
+				<div class="input-group">
+  	    	<input type="text" id="name" name="name" required>
+				</div>
+  	  </div>
+  	  <div class="form-group">
+  	    <label for="id-number">身分證字號</label>
+				<div class="input-group">
+  	    	<input type="text" id="id-number" name="id-number" required>
+  	  	</div>
+  	  </div>
+  	  <div class="form-group birth-date">
+  	    <label>出生年月日</label>
+				<div class="input-group">
+					<input type="date" name="birth-date" max="{{.MaxBirthDate}}" required>
+				</div>
+				<div class="form-comment">系統將自動轉換西元出生年月日至民國。<b>提醒手機用戶！先於月曆上挑好您出生的「月」與「日」，最後點擊月曆左上角的年份，可直接挑選您的出生年。</b></div>
+  	  </div>
+  	  <div class="form-group">
+  	    <label for="address">戶籍地址</label>
+				<div class="input-group">
+  	    	<input type="text" id="address" name="address" value="{{.Address}}" required>
+  	  	</div>
+				<div class="form-comment">
+					請完全按照您國民身分證上<b>住址</b>欄位，<b>完全對照填寫</b>。特別留意以下情況：
+					<ul>
+						<li>
+							<div class="cw-sample-container"><div class="cw-icon correct"></div><div style="width:60px;">二段</div><div class="cw-icon wrong"></div>2 段<div>
+						</li>
+						<li>
+							<div class="cw-sample-container"><div class="cw-icon correct"></div><div style="width:60px;">十二樓</div><div class="cw-icon wrong"></div>12 樓<div>
+						</li>
+					</ul>
+				</div>
+  	  </div>
+			<div class="form-group">
+  	    <label for="turnstile">人機驗證</label>
+				<div class="input-group">
+					<div class="cf-turnstile" data-sitekey="{{.TurnstileSiteKey}}" data-theme="light"></div>
+				</div>
+			</div>
+  	  <div class="form-group">
+				<div class="input-group">
+  	  		<button type="submit" class="btn-primary lg w100" style="margin-bottom:-16px;">製作第 2 階段連署書</button>
+  	  	</div>
+  	  </div>
+  	  <div class="form-group">
+				<div class="input-group">
+					<button type="button" class="btn-secondary lg w100" onclick="copyCurrentLink();">分享出去！邀請更多人參與</button>
+					<div class="show-qrcode"><a class="hyperlink-style"><i class="icon-qrcode"></i>取得本網頁 QR 碼</a></div>
+  	  	</div>
+  	  </div>
+  	</form>
+	</div>
+
+	{{ template "faq" . }}
+	{{ template "footer" }}
+	{{ template "dialog" . }}
+	{{ template "mask" }}
+	<div id="popout" class="hidden">已複製到剪貼簿</div>
+	<div class="browser-warning-container" id="browser-warning-container">
+		<div class="browser-waring-title">
+			您使用的瀏覽器無法下載連署書
+		</div>
+		<div class="browser-warning-content">
+			您正以通訊軟體瀏覽器開啟本網站，該瀏覽器無法將你填完的罷免連署書下載至您的裝置。請於右上或右下功能按鈕，點選「以預設 (外部) 瀏覽器開啟」，或<a class="hyperlink-style" onclick="copyCurrentLink()">複製連結<div class="copy-icon"></div></a>後至其他瀏覽器開啟。
+		</div>
+	</div>
+	<script>
+		const submitButton = document.querySelector("button[type='submit']");
+		const idInput = document.getElementById("id-number");
+
+		idInput.addEventListener("input", () => {
+			idInput.setCustomValidity("");
+		});
+
+		submitButton.addEventListener("click", (event) => {
+			idInput.setCustomValidity("");
+			if (!isValidIdNumber(idInput.value)) {
+				idInput.setCustomValidity("請輸入合法的身分證字號");
+
+				idInput.focus();
+				setTimeout(() => idInput.reportValidity(), 600);
+			}
+		});
+
+		document.addEventListener("DOMContentLoaded", () => {
+			dialog.querySelector("h3").innerHTML = "我是新竹市選民<br>我要罷免『高虹安』";
+			dialog.querySelector(".content").innerHTML = `
+				<div class="dialog-qrcode" id="qrcode-container">
+					<div class="qrcode"></div>
+					<div class="qr-logo"></div>
+				</div>
+				<div class="dialog-footer">
+					<p>您可以下載 QR 碼圖檔，印出張貼在合適的宣傳地點，幫助更多民眾進行連署</p>
+					<div class="dialog-action">
+						<button class="btn-primary lg w100 flex-center"><i class="icon-download"></i>下載 QR 碼圖檔</button>
+					</div>
+				</div>
+			`;
+
+			dialog.querySelector(".dialog-footer button").addEventListener("click", ( async () => {
+				const url = window.location.origin + window.location.pathname;
+				mask.classList.add('active');
+				await new Promise(resolve => setTimeout(resolve, 10));
+				await downloadQRCode(url);
+				mask.classList.remove('active');
+			}));
+
+			document.querySelector(".nav-qrcode").addEventListener("click", (() => {
+				mask.classList.add('active');
+				const url = window.location.href;
+				generateQRCode(url, 144);
+				mask.classList.remove('active');
+				showDialog();
+			}));
+
+			document.querySelector(".show-qrcode a").addEventListener("click", (() => {
+				mask.classList.add('active');
+				const url = window.location.origin + window.location.pathname;
+				generateQRCode(url, 144);
+				mask.classList.remove('active');
+				showDialog();
+			}));
+
+			const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+			const isLine = userAgent.toLowerCase().includes("line");
+			const isMessenger = userAgent.toLowerCase().includes("fbav") || userAgent.toLowerCase().includes("messenger");
+			const isWhatsApp = userAgent.toLowerCase().includes("whatsapp");
+			const isThreads = userAgent.toLowerCase().includes("barcelona");
+			const isWeChat = userAgent.toLowerCase().includes("micromessenger");
+
+			if (isLine || isMessenger || isWhatsApp || isThreads || isWeChat ) {
+				const warningElement = document.getElementById("browser-warning-container");
+				warningElement.style.display = "flex";
+			}
+		});
+	</script>
+</body>
+</html>
