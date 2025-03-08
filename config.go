@@ -53,7 +53,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	scheme := "https"
-	if cfg.AppHostname == "localhost" {
+	if strings.HasPrefix(cfg.AppHostname, "localhost") {
 		scheme = "http"
 	}
 
