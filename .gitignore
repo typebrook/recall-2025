@@ -2,3 +2,4 @@
 *.swo
 .env
 .dev.env
+.DS_Store
