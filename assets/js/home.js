@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	};
 
 	municipalitiesSelect.addEventListener("change", () => {
+		mask.classList.add('active');
 		filteredCandidateContainer.innerHTML = "";
 		shareContainer.style.display = "none";
 		resetSelect(districtsSelect);
@@ -78,10 +79,14 @@ document.addEventListener("DOMContentLoaded", () => {
 			})
 			.catch(error => {
 				console.error(error);
+			})
+			.finally(() => {
+				mask.classList.remove('active');
 			});
 	});
 
 	districtsSelect.addEventListener("change", () => {
+		mask.classList.add('active');
 		filteredCandidateContainer.innerHTML = "";
 		shareContainer.style.display = "none";
 		resetSelect(wardsSelect);
@@ -98,10 +103,14 @@ document.addEventListener("DOMContentLoaded", () => {
 			})
 			.catch(error => {
 				console.error(error);
+			})
+			.finally(() => {
+				mask.classList.remove('active');
 			});
 	});
 
 	wardsSelect.addEventListener("change", () => {
+		mask.classList.add('active');
 		filteredCandidateContainer.innerHTML = "";
 		shareContainer.style.display = "none";
 		sendAjaxRequest(municipalitiesSelect.value, districtsSelect.value, wardsSelect.value)
@@ -117,6 +126,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			})
 			.catch(error => {
 				console.error(error);
+			})
+			.finally(() => {
+				mask.classList.remove('active');
 			});
 	});
 	
