@@ -305,14 +305,14 @@ func ReadConfigAdministrativeDivisions() (Municipalities, error) {
 			}
 
 			sort.Slice(d.Divisions, func(i, j int) bool {
-				return d.Divisions[i].Id < d.Divisions[j].Id
+				return d.Divisions[i].Name < d.Divisions[j].Name
 			})
 
 			m.Divisions = append(m.Divisions, d.Division)
 		}
 
 		sort.Slice(m.Divisions, func(i, j int) bool {
-			return m.Divisions[i].Id < m.Divisions[j].Id
+			return m.Divisions[i].Name < m.Divisions[j].Name
 		})
 	}
 
