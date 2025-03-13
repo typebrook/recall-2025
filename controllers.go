@@ -115,7 +115,7 @@ func (ctrl Controller) Participate() gin.HandlerFunc {
 			address = l.MunicipalityName
 		}
 
-		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
+		twentyYearsAgo := `2005-06-30`
 
 		previewURL := l.ParticipateURL.JoinPath("preview")
 

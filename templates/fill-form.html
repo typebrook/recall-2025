@@ -62,14 +62,11 @@
   	  <div class="form-group">
   	    <label for="address">戶籍地址</label>
 				<div class="input-group">
-  	    	<input type="text" id="address" name="address" value="{{.Address}}" required>
+  	    	<textarea class="input-address" type="text" id="address" name="address" required>{{.Address}}</textarea>
   	  	</div>
 				<div class="form-comment">
 					請完全按照您國民身分證上<b>住址</b>欄位，<b>完全對照填寫</b>。特別留意以下情況：
 					<ul>
-						<li>
-							<div class="cw-sample-container"><div class="cw-icon correct"></div><div style="width:60px;">臺北</div><div class="cw-icon wrong"></div>台北<div>
-						</li>
 						<li>
 							<div class="cw-sample-container"><div class="cw-icon correct"></div><div style="width:60px;">二段</div><div class="cw-icon wrong"></div>2 段<div>
 						</li>
