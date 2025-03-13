@@ -856,7 +856,8 @@ button.btn-black:hover {
 	gap: 12px;
 	width: 100%;
 	justify-content: center;
-	gap: 24px;
+	align-items: center;
+	gap: 12px;
 }
 
 .recall-form .form-group .input-group input {

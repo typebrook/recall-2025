@@ -9,7 +9,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -115,8 +114,6 @@ func (ctrl Controller) Participate() gin.HandlerFunc {
 			address = l.MunicipalityName
 		}
 
-		twentyYearsAgo := `2005-06-30`
-
 		previewURL := l.ParticipateURL.JoinPath("preview")
 
 		switch l.RecallStage {
@@ -126,7 +123,6 @@ func (ctrl Controller) Participate() gin.HandlerFunc {
 				"PreviewURL":       previewURL.String(),
 				"Address":          address,
 				"TurnstileSiteKey": ctrl.TurnstileSiteKey,
-				"MaxBirthDate":     twentyYearsAgo,
 				"Legislator":       l,
 			})
 		case 3, 4:
@@ -195,7 +191,9 @@ func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
 type RequestQueryPreview struct {
 	Name         string `form:"name" binding:"required"`
 	IdNumber     string `form:"id-number" binding:"required"`
-	BirthDate    string `form:"birth-date" binding:"required"`
+	BirthYear    int    `form:"birth-year" binding:"required"`
+	BirthMonth   int    `form:"birth-month" binding:"required"`
+	BirthDay     int    `form:"birth-day" binding:"required"`
 	Address      string `form:"address" binding:"required"`
 	MobileNumber string `form:"mobile-number" binidng:"required"`
 }
@@ -205,11 +203,6 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 		return nil, fmt.Errorf("身份證輸入錯誤")
 	}
 
-	t, err := time.Parse("2006-01-02", r.BirthDate)
-	if err != nil {
-		return nil, fmt.Errorf("生日輸入錯誤")
-	}
-
 	if l.RecallStage == 1 {
 		if r.MobileNumber != "" {
 			if !isValidMobileNumber(r.MobileNumber) {
@@ -217,9 +210,6 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 			}
 		}
 	}
-
-	birthYear, birthMonth, birthDate := t.Date()
-	birthYear = birthYear - 1911
 
 	stage := strconv.FormatUint(up.Stage, 10)
 	redirectURL := l.ParticipateURL.JoinPath("thank-you")
@@ -234,9 +224,9 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 		RecallStage:      up.Stage,
 		ImagePrefix:      imagePrefix,
 		Name:             r.Name,
-		BirthYear:        birthYear,
-		BirthMonth:       int(birthMonth),
-		BirthDate:        birthDate,
+		BirthYear:        r.BirthYear,
+		BirthMonth:       r.BirthMonth,
+		BirthDate:        r.BirthDay,
 		MobileNumber:     r.MobileNumber,
 		Address:          sanitizeAddress(r.Address),
 	}
@@ -516,8 +506,6 @@ func (ctrl Controller) Ping() gin.HandlerFunc {
 // For mayor
 func (ctrl Controller) MParticipate() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		twentyYearsAgo := time.Now().AddDate(-20, 0, 0).Format("2006-01-02")
-
 		previewURL := ctrl.AppBaseURL.JoinPath("mayor", "preview")
 		address := MayorCity
 
@@ -526,7 +514,6 @@ func (ctrl Controller) MParticipate() gin.HandlerFunc {
 			"PreviewURL":       previewURL.String(),
 			"Address":          address,
 			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
-			"MaxBirthDate":     twentyYearsAgo,
 		})
 	}
 }
@@ -558,14 +545,6 @@ func (r RequestQueryPreview) ToMayorPreviewData(cfg *Config) (*PreviewData, erro
 		return nil, fmt.Errorf("身份證輸入錯誤")
 	}
 
-	t, err := time.Parse("2006-01-02", r.BirthDate)
-	if err != nil {
-		return nil, fmt.Errorf("生日輸入錯誤")
-	}
-
-	birthYear, birthMonth, birthDate := t.Date()
-	birthYear = birthYear - 1911
-
 	redirectURL := cfg.AppBaseURL.JoinPath("mayor", "thank-you")
 	imagePrefix := "stage-2-" + MayorName
 
@@ -578,9 +557,9 @@ func (r RequestQueryPreview) ToMayorPreviewData(cfg *Config) (*PreviewData, erro
 		RecallStage:      2,
 		ImagePrefix:      imagePrefix,
 		Name:             r.Name,
-		BirthYear:        birthYear,
-		BirthMonth:       int(birthMonth),
-		BirthDate:        birthDate,
+		BirthYear:        r.BirthYear,
+		BirthMonth:       r.BirthMonth,
+		BirthDate:        r.BirthDay,
 		Address:          sanitizeAddress(r.Address),
 	}
 

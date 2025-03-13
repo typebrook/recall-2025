@@ -45,26 +45,17 @@
   	  <div class="form-group birth-date">
   	    <label>出生年月日</label>
 				<div class="input-group">
-					<input type="date" name="birth-date" max="{{.MaxBirthDate}}" required>
+					<input type="number" name="birth-year" max="94" style="text-align:center;" required> 年
+					<input type="number" name="birth-month" min="1" style="text-align:center;" max="12" required> 月
+					<input type="number" name="birth-day" min="1" style="text-align:center;" max="31" required> 日
 				</div>
-				<div class="form-comment">系統將自動轉換西元出生年月日至民國。<b>提醒手機用戶！先於月曆上挑好您出生的「月」與「日」，最後點擊月曆左上角的年份，可直接挑選您的出生年。</b></div>
   	  </div>
   	  <div class="form-group">
   	    <label for="address">戶籍地址</label>
 				<div class="input-group">
-  	    	<input type="text" id="address" name="address" value="{{.Address}}" required>
+  	    	<textarea class="input-address" type="text" id="address" name="address" required>{{.Address}}</textarea>
   	  	</div>
-				<div class="form-comment">
-					請完全按照您國民身分證上<b>住址</b>欄位，<b>完全對照填寫</b>。特別留意以下情況：
-					<ul>
-						<li>
-							<div class="cw-sample-container"><div class="cw-icon correct"></div><div style="width:60px;">二段</div><div class="cw-icon wrong"></div>2 段<div>
-						</li>
-						<li>
-							<div class="cw-sample-container"><div class="cw-icon correct"></div><div style="width:60px;">十二樓</div><div class="cw-icon wrong"></div>12 樓<div>
-						</li>
-					</ul>
-				</div>
+				<div class="form-comment">請完全按照您國民身分證上<strong>住址</strong>欄位，<strong>完全對照填寫</strong></div>
   	  </div>
 			<div class="form-group">
   	    <label for="turnstile">人機驗證</label>
@@ -102,20 +93,9 @@
 	<script>
 		const submitButton = document.querySelector("button[type='submit']");
 		const idInput = document.getElementById("id-number");
-
-		idInput.addEventListener("input", () => {
-			idInput.setCustomValidity("");
-		});
-
-		submitButton.addEventListener("click", (event) => {
-			idInput.setCustomValidity("");
-			if (!isValidIdNumber(idInput.value)) {
-				idInput.setCustomValidity("請輸入合法的身分證字號");
-
-				idInput.focus();
-				setTimeout(() => idInput.reportValidity(), 600);
-			}
-		});
+		const birthYear = document.querySelector("input[name='birth-year']");
+		const birthMonth = document.querySelector("input[name='birth-month']");
+		const birthDay = document.querySelector("input[name='birth-day']");
 
 		document.addEventListener("DOMContentLoaded", () => {
 			dialog.querySelector("h3").innerHTML = "我是新竹市選民<br>我要罷免『高虹安』";
@@ -156,6 +136,40 @@
 				showDialog();
 			}));
 
+			submitButton.addEventListener("click", (event) => {
+				idInput.setCustomValidity("");
+				if (!isValidIdNumber(idInput.value)) {
+					idInput.setCustomValidity("請輸入合法的身分證字號");
+
+					idInput.focus();
+					setTimeout(() => idInput.reportValidity(), 600);
+				}
+
+				const year = parseInt(birthYear.value.trim(), 10);
+				const month = parseInt(birthMonth.value.trim(), 10);
+				const day = parseInt(birthDay.value.trim(), 10);
+
+				if (!year || !month || !day || !isValidDate(year, month, day)) {
+					alert("輸入的日期不合法，請重新檢查！");
+					event.preventDefault();
+					birthDay.focus();
+					return;
+				}
+			});
+
+			function isValidDate(year, month, day) {
+				if (month < 1 || month > 12 || day < 1 || day > 31) {
+					return false;
+				}
+				const fullYear = 1911 + parseInt(year, 10);
+				const date = new Date(fullYear, month - 1, day);
+				return date.getFullYear() === fullYear && date.getMonth() === month - 1 && date.getDate() === day;
+			}
+
+			idInput.addEventListener("input", () => {
+				idInput.setCustomValidity("");
+			});
+
 			const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 			const isLine = userAgent.toLowerCase().includes("line");
 			const isMessenger = userAgent.toLowerCase().includes("fbav") || userAgent.toLowerCase().includes("messenger");
@@ -168,6 +182,7 @@
 				warningElement.style.display = "flex";
 			}
 		});
+
 	</script>
 </body>
 </html>
