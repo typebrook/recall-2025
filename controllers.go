@@ -8,7 +8,6 @@ import (
 	"net/url"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -473,11 +472,12 @@ func (ctrl Controller) GetAsset() gin.HandlerFunc {
 		}
 
 		if ctrl.AppEnv == "production" {
-			if up.Type == "images" && strings.HasPrefix(up.File, "stage-2-") {
-				c.Header("Cache-Control", "no-cache")
-			} else {
-				c.Header("Cache-Control", "public, max-age=3600")
-			}
+			//if up.Type == "images" && strings.HasPrefix(up.File, "stage-2-") {
+			//	c.Header("Cache-Control", "no-cache")
+			//} else {
+			//	c.Header("Cache-Control", "public, max-age=3600")
+			//}
+			c.Header("Cache-Control", "public, max-age=3600")
 		} else {
 			c.Header("Cache-Control", "no-cache")
 		}
