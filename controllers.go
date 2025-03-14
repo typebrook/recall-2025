@@ -424,6 +424,8 @@ func (ctrl Controller) Sitemap() gin.HandlerFunc {
 		urls := []*SitemapURL{
 			&SitemapURL{ctrl.AppBaseURL.String(), date, "daily", "1.0"},
 			&SitemapURL{ctrl.AppBaseURL.JoinPath("authorization-letter").String(), "2025-02-26", "yearly", "1.0"},
+			&SitemapURL{ctrl.AppBaseURL.JoinPath("mayor").String(), "2025-03-12", "weekly", "0.9"},
+			&SitemapURL{ctrl.AppBaseURL.JoinPath("mayor", "thank-you").String(), "2025-03-12", "weekly", "0.9"},
 		}
 
 		for _, l := range ctrl.RecallLegislators {
