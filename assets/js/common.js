@@ -5,13 +5,11 @@ async function downloadPDF(filename, redirectURL) {
 		console.error('No elements found with the given class name.');
 		return;
 	}
-
 	const mask = document.querySelector('.mask');
 	mask.classList.add('active');
 
 	try {
 		let pdf;
-
 		for (const [index, container] of containers.entries()) {
 			const isLandscape = container.classList.contains('a4-landscape');
 			const orientation = isLandscape ? 'l' : 'p';
@@ -23,15 +21,12 @@ async function downloadPDF(filename, redirectURL) {
 			}
 
 			const pdfWidth = pdf.internal.pageSize.getWidth();
-
 			const canvas = await html2canvas(container, {
-				scale: 2,
+				scale: 1.5,
 				ignoreElements: (elem) => elem.classList.contains('whereToSign'),
 			});
-
 			const imgData = canvas.toDataURL('image/png', 1.0);
 			const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
 			pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
 		}
 

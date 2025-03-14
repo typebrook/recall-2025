@@ -62,7 +62,6 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
 }
 
 .inputField.center {
@@ -71,7 +70,6 @@ body {
 
 .inputField.whiteBg {
 	background-color: #fff;
-	padding: 8px;
 }
 
 .inputField>table {
