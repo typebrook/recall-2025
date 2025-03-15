@@ -348,7 +348,6 @@ func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
 				Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
 			}
 		} else {
-			fmt.Println("here")
 			participateURL := ctrl.AppBaseURL.JoinPath("mayor")
 			data = &PreviewData{
 				BaseURL:          ctrl.AppBaseURL.String(),
@@ -595,7 +594,6 @@ func (r RequestQueryPreview) ToMayorPreviewData(cfg *Config) (*PreviewData, erro
 
 func (ctrl Controller) MThankYou() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("hre")
 		c.HTML(http.StatusOK, "mayor-thank-you.html", gin.H{
 			"BaseURL":        ctrl.AppBaseURL,
 			"ParticipateURL": ctrl.AppBaseURL.JoinPath("mayor"),
