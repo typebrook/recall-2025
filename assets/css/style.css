@@ -224,8 +224,6 @@ button.btn-black:hover {
 	opacity: 0.8;
 }
 
-
-
 .floating-btn-container {
 	position: fixed;
 	bottom: 0;
@@ -237,15 +235,9 @@ button.btn-black:hover {
 	z-index: 1000;
 }
 
-
-
-
-/* *************************************
-
+/**************************************
 	tag-municipality
-
-**************************************** */
-
+***************************************/
 .municipality-tag-container {
   display: flex;
 	flex-wrap: wrap;
