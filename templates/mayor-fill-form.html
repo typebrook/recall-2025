@@ -139,6 +139,7 @@
 
 			submitButton.addEventListener("click", (event) => {
 				idInput.setCustomValidity("");
+				idInput.value = idInput.value.toUpperCase();
 				if (!isValidIdNumber(idInput.value)) {
 					idInput.setCustomValidity("請輸入合法的身分證字號");
 
