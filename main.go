@@ -2,9 +2,9 @@ package main
 
 import (
 	"html/template"
-	"net/url"
-
-	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
+	"time"
 )
 
 func main() {
@@ -13,32 +13,56 @@ func main() {
 		panic(err)
 	}
 
-	c := NewController(cfg)
+	tmpl, err := template.ParseGlob("templates/*.html")
+	if err != nil {
+		panic("template parse error: " + err.Error())
+	}
 
-	r := gin.Default()
+	ctrl := NewController(cfg, tmpl)
+	mux := http.NewServeMux()
 
-	r.SetFuncMap(template.FuncMap{
-		"urlencode": url.QueryEscape,
+	mux.HandleFunc("/health/v1/ping", withRecovery(ctrl.Ping))
+	mux.HandleFunc("/robots.txt", withRecovery(ctrl.RobotsTxt))
+	mux.HandleFunc("/sitemap.xml", withRecovery(ctrl.Sitemap))
+	mux.HandleFunc("/assets/", withRecovery(ctrl.GetAsset))
+
+	mux.HandleFunc("/", withRecovery(ctrl.Home))
+	mux.HandleFunc("/authorization-letter", withRecovery(ctrl.AuthorizationLetter))
+	mux.HandleFunc("/apis/constituencies", withRecovery(ctrl.SearchRecallConstituency))
+	mux.HandleFunc("/preview/stages/", withRecovery(ctrl.PreviewOriginalLocalForm))
+	mux.HandleFunc("/legislators/", withRecovery(ctrl.LegislatorRouter))
+	mux.HandleFunc("/mayor", withRecovery(ctrl.MParticipate))
+	mux.HandleFunc("/mayor/preview", withRecovery(ctrl.MPreviewLocalForm))
+	mux.HandleFunc("/mayor/thank-you", withRecovery(ctrl.MThankYou))
+
+	srv := &http.Server{
+		Addr:         ":" + cfg.AppPort,
+		Handler:      logRequest(mux),
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  120 * time.Second,
+	}
+
+	log.Printf("Listening on port %s", cfg.AppPort)
+	if err := srv.ListenAndServe(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func withRecovery(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		defer func() {
+			if err := recover(); err != nil {
+				http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			}
+		}()
+		h(w, r)
+	}
+}
+
+func logRequest(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%s %s %s", r.RemoteAddr, r.Method, r.URL.Path)
+		next.ServeHTTP(w, r)
 	})
-	r.LoadHTMLGlob("templates/*.html")
-	r.SetTrustedProxies(cfg.AppTrustedProxies)
-
-	r.NoRoute(c.NotFound())
-	r.GET("/health/v1/ping", c.Ping())
-	r.GET("/robots.txt", c.RobotsTxt())
-	r.GET("/sitemap.xml", c.Sitemap())
-	r.GET("/assets/:type/:file", c.GetAsset())
-
-	r.GET("/", c.Home())
-	r.GET("/authorization-letter", c.AuthorizationLetter())
-	r.GET("/apis/constituencies", c.SearchRecallConstituency())
-	r.GET("/preview/stages/:stage/:name", c.PreviewOriginalLocalForm())
-	r.GET("/legislators/:name", c.Participate())
-	r.POST("/legislators/:name/preview", c.VerifyTurnstile(), c.PreviewLocalForm())
-	r.GET("/legislators/:name/thank-you", c.ThankYou())
-	r.GET("/mayor", c.MParticipate())
-	r.POST("/mayor/preview", c.VerifyTurnstile(), c.MPreviewLocalForm())
-	r.GET("/mayor/thank-you", c.MThankYou())
-
-	r.Run(":" + cfg.AppPort)
 }

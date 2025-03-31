@@ -1,16 +1,16 @@
 package main
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"html/template"
 	"net/http"
 	"net/url"
 	"os"
+	"path"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
+	"strings"
 )
 
 const (
@@ -20,63 +20,393 @@ const (
 
 type Controller struct {
 	*Config
+	Templates *template.Template
 }
 
-func NewController(cfg *Config) *Controller {
+func NewController(cfg *Config, tmpl *template.Template) *Controller {
 	return &Controller{
-		Config: cfg,
+		Config:    cfg,
+		Templates: tmpl,
 	}
 }
 
-func (ctrl Controller) Home() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "home.html", gin.H{
+func (ctrl *Controller) Home(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path == "/" {
+		ctrl.renderTemplate(w, "home.html", map[string]interface{}{
 			"BaseURL":        ctrl.AppBaseURL.String(),
 			"Municipalities": ctrl.Municipalities,
 			"Areas":          ctrl.Areas,
 		})
+	} else {
+		ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
 	}
 }
 
-func (ctrl Controller) AuthorizationLetter() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "authorization-letter.html", gin.H{
-			"BaseURL": ctrl.AppBaseURL.String(),
+func (ctrl *Controller) AuthorizationLetter(w http.ResponseWriter, r *http.Request) {
+	ctrl.renderTemplate(w, "authorization-letter.html", map[string]interface{}{
+		"BaseURL": ctrl.AppBaseURL.String(),
+	})
+}
+
+func (ctrl *Controller) SearchRecallConstituency(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	var qp RequestQuerySearchRecallConstituency
+
+	m := r.FormValue("municipality")
+	mid, err := strconv.ParseUint(m, 10, 64)
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"message": "municipality error"})
+		return
+	}
+	qp.MunicipalityId = mid
+
+	if d := r.FormValue("district"); d != "" {
+		val, err := strconv.ParseUint(d, 10, 64)
+		if err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"message": "district error"})
+			return
+		}
+		qp.DistrictId = &val
+	}
+
+	if wd := r.FormValue("ward"); wd != "" {
+		val, err := strconv.ParseUint(wd, 10, 64)
+		if err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"message": "ward error"})
+			return
+		}
+		qp.WardId = &val
+	}
+
+	exists, divisions, legislators := ctrl.HasRecallLegislators(qp.MunicipalityId, qp.DistrictId, qp.WardId)
+	if !exists {
+		writeJSON(w, http.StatusNotFound, RespSearchRecallConstituency{
+			Message: http.StatusText(http.StatusNotFound),
 		})
+		return
+	}
+
+	writeJSON(w, http.StatusOK, RespSearchRecallConstituency{
+		Message: http.StatusText(http.StatusOK),
+		Result: &ResultSearchRecallConstituency{
+			Divisions:   divisions,
+			Legislators: legislators,
+		},
+	})
+}
+
+func (ctrl *Controller) Participate(w http.ResponseWriter, r *http.Request, name string) {
+	l := ctrl.GetRecallLegislator(name)
+	if l == nil || l.RecallStatus != RecallStatusOngoing {
+		http.Redirect(w, r, ctrl.AppBaseURL.String(), http.StatusMovedPermanently)
+		return
+	}
+
+	address := r.URL.Query().Get("address")
+	if address == "" {
+		address = l.MunicipalityName
+	}
+
+	switch l.RecallStage {
+	case 1, 2:
+		ctrl.renderTemplate(w, "fill-form.html", map[string]interface{}{
+			"BaseURL":          ctrl.AppBaseURL.String(),
+			"PreviewURL":       l.ParticipateURL.JoinPath("preview").String(),
+			"Address":          address,
+			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
+			"Legislator":       l,
+		})
+	case 3, 4:
+		ctrl.renderTemplate(w, "vote-reminder.html", map[string]interface{}{
+			"BaseURL":    ctrl.AppBaseURL.String(),
+			"Legislator": l,
+		})
+	default:
+		http.Redirect(w, r, ctrl.AppBaseURL.String(), http.StatusMovedPermanently)
 	}
 }
 
-func (ctrl Controller) SearchRecallConstituency() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		qp := RequestQuerySearchRecallConstituency{}
-		if err := c.ShouldBindQuery(&qp); err != nil {
-			c.AbortWithStatusJSON(http.StatusBadRequest, RespSearchRecallConstituency{http.StatusText(http.StatusBadRequest), nil})
-			return
-		}
-
-		exists, divisions, legislators := ctrl.HasRecallLegislators(qp.MunicipalityId, qp.DistrictId, qp.WardId)
-		if !exists {
-			c.AbortWithStatusJSON(http.StatusNotFound, RespSearchRecallConstituency{
-				Message: http.StatusText(http.StatusNotFound),
-				Result:  nil,
-			})
-			return
-		}
-
-		c.JSON(http.StatusOK, RespSearchRecallConstituency{
-			Message: http.StatusText(http.StatusOK),
-			Result: &ResultSearchRecallConstituency{
-				Divisions:   divisions,
-				Legislators: legislators,
-			},
-		})
+func (ctrl *Controller) PreviewLocalForm(w http.ResponseWriter, r *http.Request, name string) {
+	l := ctrl.GetRecallLegislator(name)
+	if l == nil || l.RecallStatus != RecallStatusOngoing || !l.IsPetitioning() {
+		ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusConflict, "候選人不處於連署階段", ctrl.AppBaseURL, ctrl.AppBaseURL))
+		return
 	}
+
+	qp, err := getRequestForm(r)
+	if err != nil {
+		ctrl.renderTemplate(w, "4xx.html", ViewHttp4xxError{
+			HttpStatusCode: http.StatusBadRequest,
+			ErrorMessage:   "輸入有誤",
+			ReturnURL:      ctrl.AppBaseURL.String(),
+		})
+		return
+	}
+
+	up := RequestUriStageLegislator{Name: name, Stage: l.RecallStage}
+	data, err := qp.ToPreviewData(ctrl.Config, &up, l)
+	if err != nil {
+		ctrl.renderTemplate(w, "4xx.html", ViewHttp4xxError{
+			HttpStatusCode: http.StatusBadRequest,
+			ErrorMessage:   err.Error(),
+			ReturnURL:      ctrl.AppBaseURL.String(),
+		})
+		return
+	}
+
+	tmpfile := l.GetTmplFilename()
+	ctrl.renderTemplate(w, tmpfile, data)
+}
+
+func getRequestForm(r *http.Request) (*RequestForm, error) {
+	r.ParseForm()
+
+	name := strings.TrimSpace(r.FormValue("name"))
+	if name == "" {
+		return nil, fmt.Errorf("invalid name")
+	}
+
+	idNumber := strings.TrimSpace(r.FormValue("id-number"))
+	if idNumber == "" {
+		return nil, fmt.Errorf("invalid id-number")
+	}
+
+	birthYear := strings.TrimSpace(r.FormValue("birth-year"))
+	if birthYear == "" {
+		return nil, fmt.Errorf("invalid date")
+	}
+
+	birthMonth := strings.TrimSpace(r.FormValue("birth-month"))
+	if birthMonth == "" {
+		return nil, fmt.Errorf("invalid date")
+	}
+
+	birthDay := strings.TrimSpace(r.FormValue("birth-day"))
+	if birthDay == "" {
+		return nil, fmt.Errorf("invalid date")
+	}
+
+	address := strings.TrimSpace(r.FormValue("address"))
+	if address == "" {
+		return nil, fmt.Errorf("empty address")
+	}
+
+	mobileNumber := strings.TrimSpace(r.FormValue("mobile-number"))
+
+	return &RequestForm{
+		Name:         name,
+		IdNumber:     idNumber,
+		BirthYear:    birthYear,
+		BirthMonth:   birthMonth,
+		BirthDay:     birthDay,
+		Address:      sanitizeAddress(address),
+		MobileNumber: mobileNumber,
+	}, nil
+}
+
+func (ctrl *Controller) ThankYou(w http.ResponseWriter, r *http.Request, name string) {
+	l := ctrl.GetRecallLegislator(name)
+	if l == nil || l.RecallStatus != RecallStatusOngoing {
+		http.Redirect(w, r, ctrl.AppBaseURL.String(), http.StatusMovedPermanently)
+		return
+	}
+
+	ctrl.renderTemplate(w, "thank-you.html", map[string]interface{}{
+		"BaseURL":        ctrl.AppBaseURL.String(),
+		"ParticipateURL": l.ParticipateURL,
+		"CalendarURL":    l.CalendarURL,
+		"CsoURL":         l.CsoURL,
+	})
+}
+
+func (ctrl *Controller) MParticipate(w http.ResponseWriter, r *http.Request) {
+	ctrl.renderTemplate(w, "mayor-fill-form.html", map[string]interface{}{
+		"BaseURL":          ctrl.AppBaseURL.String(),
+		"PreviewURL":       ctrl.AppBaseURL.JoinPath("mayor", "preview").String(),
+		"Address":          MayorCity,
+		"TurnstileSiteKey": ctrl.TurnstileSiteKey,
+	})
+}
+
+func (ctrl *Controller) MPreviewLocalForm(w http.ResponseWriter, r *http.Request) {
+	qp, err := getRequestForm(r)
+	if err != nil {
+		ctrl.renderTemplate(w, "4xx.html", ViewHttp4xxError{
+			HttpStatusCode: http.StatusBadRequest,
+			ErrorMessage:   "輸入有誤",
+			ReturnURL:      ctrl.AppBaseURL.String(),
+		})
+		return
+	}
+
+	data, err := qp.ToMayorPreviewData(ctrl.Config)
+	if err != nil {
+		ctrl.renderTemplate(w, "4xx.html", ViewHttp4xxError{
+			HttpStatusCode: http.StatusBadRequest,
+			ErrorMessage:   err.Error(),
+			ReturnURL:      ctrl.AppBaseURL.String(),
+		})
+		return
+	}
+	ctrl.renderTemplate(w, "stage-2-"+MayorName+".html", data)
+}
+
+func (ctrl *Controller) MThankYou(w http.ResponseWriter, r *http.Request) {
+	ctrl.renderTemplate(w, "mayor-thank-you.html", map[string]interface{}{
+		"BaseURL":        ctrl.AppBaseURL.String(),
+		"ParticipateURL": ctrl.AppBaseURL.JoinPath("mayor"),
+		"CsoURL":         "https://www.facebook.com/hc.thebigrecall",
+	})
+}
+
+func (ctrl *Controller) VerifyTurnstile(w http.ResponseWriter, r *http.Request) bool {
+	r.ParseForm()
+	token := r.FormValue("cf-turnstile-response")
+	if token == "" {
+		ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
+		return false
+	}
+	success, err := ctrl.VerifyTurnstileToken(token)
+	if err != nil || !success {
+		ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusForbidden, "驗證失敗，請回到首頁重新輸入", ctrl.AppBaseURL, ctrl.AppBaseURL))
+		return false
+	}
+	return true
+}
+
+func parseInt(s string) int {
+	i, _ := strconv.Atoi(s)
+	return i
+}
+
+func writeJSON(w http.ResponseWriter, status int, data interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(data)
+}
+
+func (ctrl *Controller) renderTemplate(w http.ResponseWriter, name string, data interface{}) {
+	if err := ctrl.Templates.ExecuteTemplate(w, name, data); err != nil {
+		http.Error(w, "Template rendering error", http.StatusInternalServerError)
+	}
+}
+
+type SitemapURL struct {
+	Loc        string `xml:"loc"`
+	LastMod    string `xml:"lastmod"`
+	ChangeFreq string `xml:"changefreq"`
+	Priority   string `xml:"priority"`
+}
+
+type SitemapURLSet struct {
+	XMLName     xml.Name      `xml:"urlset"`
+	Xmlns       string        `xml:"xmlns,attr"`
+	SitemapURLs []*SitemapURL `xml:"url"`
+}
+
+func (ctrl *Controller) Ping(w http.ResponseWriter, r *http.Request) {
+	writeJSON(w, http.StatusOK, map[string]string{"message": "v0.0.1"})
+}
+
+func (ctrl *Controller) RobotsTxt(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("templates/robots.txt")
+	if err != nil {
+		http.Error(w, "Template Error", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	tmpl.Execute(w, map[string]interface{}{
+		"BaseURL":       ctrl.AppBaseURL.String(),
+		"DisallowPaths": ctrl.DisallowPaths,
+	})
+}
+
+func (ctrl *Controller) Sitemap(w http.ResponseWriter, r *http.Request) {
+	date := "2025-03-02"
+	urls := []*SitemapURL{
+		{ctrl.AppBaseURL.String(), date, "daily", "1.0"},
+		{ctrl.AppBaseURL.JoinPath("authorization-letter").String(), "2025-02-26", "yearly", "1.0"},
+		{ctrl.AppBaseURL.JoinPath("mayor").String(), "2025-03-12", "weekly", "0.9"},
+		{ctrl.AppBaseURL.JoinPath("mayor", "thank-you").String(), "2025-03-12", "weekly", "0.9"},
+	}
+
+	for _, l := range ctrl.RecallLegislators {
+		if l.RecallStatus == "ONGOING" {
+			urls = append(urls,
+				&SitemapURL{l.ParticipateURL.String(), date, "weekly", "0.9"},
+				&SitemapURL{l.ParticipateURL.JoinPath("thank-you").String(), date, "weekly", "0.8"},
+			)
+		}
+	}
+
+	sitemap := SitemapURLSet{
+		Xmlns:       "http://www.sitemaps.org/schemas/sitemap/0.9",
+		SitemapURLs: urls,
+	}
+
+	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+	xml.NewEncoder(w).Encode(sitemap)
+}
+
+func (ctrl *Controller) GetAsset(w http.ResponseWriter, r *http.Request) {
+	parts := strings.Split(strings.TrimPrefix(r.URL.Path, "/assets/"), "/")
+	if len(parts) < 2 {
+		http.NotFound(w, r)
+		return
+	}
+
+	filePath := path.Join("assets", parts[0], parts[1])
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		http.NotFound(w, r)
+		return
+	}
+
+	if ctrl.AppEnv == "production" {
+		w.Header().Set("Cache-Control", "public, max-age=3600")
+	} else {
+		w.Header().Set("Cache-Control", "no-cache")
+	}
+
+	http.ServeFile(w, r, filePath)
+}
+
+func (ctrl *Controller) LegislatorRouter(w http.ResponseWriter, r *http.Request) {
+	path := strings.TrimPrefix(r.URL.Path, "/legislators/")
+	parts := strings.Split(path, "/")
+
+	if len(parts) == 1 && r.Method == http.MethodGet {
+		ctrl.Participate(w, r, parts[0])
+		return
+	}
+
+	if len(parts) == 2 {
+		name := parts[0]
+		switch parts[1] {
+		case "preview":
+			if r.Method == http.MethodPost {
+				if !ctrl.VerifyTurnstile(w, r) {
+					ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusBadRequest, "不合法的請求", ctrl.AppBaseURL, ctrl.AppBaseURL))
+					return
+				} else {
+					ctrl.PreviewLocalForm(w, r, name)
+					return
+				}
+			}
+		case "thank-you":
+			if r.Method == http.MethodGet {
+				ctrl.ThankYou(w, r, name)
+				return
+			}
+		}
+	}
+
+	ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
 }
 
 type RequestQuerySearchRecallConstituency struct {
-	MunicipalityId uint64  `form:"municipality" binding:"required,numeric"`
-	DistrictId     *uint64 `form:"district" binding:"omitempty,numeric"`
-	WardId         *uint64 `form:"ward" binding:"omitempty,numeric"`
+	MunicipalityId uint64
+	DistrictId     *uint64
+	WardId         *uint64
 }
 
 type RespSearchRecallConstituency struct {
@@ -89,124 +419,124 @@ type ResultSearchRecallConstituency struct {
 	Legislators RecallLegislators `json:"legislators,omitempty"`
 }
 
-func (ctrl Controller) Participate() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		up := RequestUriStageLegislator{}
-		if err := c.ShouldBindUri(&up); err != nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-
-		l := ctrl.GetRecallLegislator(up.Name)
-		if l == nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-
-		if l.RecallStatus != RecallStatusOngoing {
-			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
-			return
-		}
-
-		address := c.Query("address")
-		if address == "" {
-			address = l.MunicipalityName
-		}
-
-		previewURL := l.ParticipateURL.JoinPath("preview")
-
-		switch l.RecallStage {
-		case 1, 2:
-			c.HTML(http.StatusOK, "fill-form.html", gin.H{
-				"BaseURL":          ctrl.AppBaseURL.String(),
-				"PreviewURL":       previewURL.String(),
-				"Address":          address,
-				"TurnstileSiteKey": ctrl.TurnstileSiteKey,
-				"Legislator":       l,
-			})
-		case 3, 4:
-			c.HTML(http.StatusOK, "vote-reminder.html", gin.H{
-				"BaseURL":    ctrl.AppBaseURL.String(),
-				"Legislator": l,
-			})
-		default:
-			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
-		}
-	}
+type RequestForm struct {
+	Name         string
+	IdNumber     string
+	BirthYear    string
+	BirthMonth   string
+	BirthDay     string
+	Address      string
+	MobileNumber string
 }
 
 type RequestUriStageLegislator struct {
-	Name  string `uri:"name" binding:"required"`
-	Stage uint64 `uri:"stage" binding:"omitempty,numeric,oneof=1 2 3 4"`
+	Name  string
+	Stage uint64
 }
 
-func (ctrl Controller) PreviewLocalForm() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		up := RequestUriStageLegislator{}
-		if err := c.ShouldBindUri(&up); err != nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-
-		l := ctrl.GetRecallLegislator(up.Name)
-		if l == nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-
-		if l.RecallStatus != RecallStatusOngoing {
-			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
-			return
-		}
-
-		if !l.IsPetitioning() {
-			c.HTML(http.StatusConflict, "4xx.html", GetViewHttpError(http.StatusConflict, "候選人不處於連署階段", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-
-		up.Stage = l.RecallStage
-
-		qp := RequestQueryPreview{}
-		if err := c.ShouldBindWith(&qp, binding.Form); err != nil {
-			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-
-		data, err := qp.ToPreviewData(ctrl.Config, &up, l)
-		if err != nil {
-			c.HTML(http.StatusBadRequest, "4xx.html", ViewHttp4xxError{
-				HttpStatusCode: http.StatusBadRequest,
-				ErrorMessage:   err.Error(),
-				ReturnURL:      ctrl.AppBaseURL.String(),
-			})
-			return
-		}
-
-		tmpfile := l.GetTmplFilename()
-		c.HTML(http.StatusOK, tmpfile, data)
+func (ctrl *Controller) PreviewOriginalLocalForm(w http.ResponseWriter, r *http.Request) {
+	parts := strings.Split(strings.TrimPrefix(r.URL.Path, "/preview/stages/"), "/")
+	if len(parts) != 2 {
+		http.Redirect(w, r, ctrl.AppBaseURL.String(), http.StatusMovedPermanently)
+		return
 	}
+
+	name := parts[1]
+	stage, err := strconv.ParseUint(parts[0], 10, 64)
+	if err != nil {
+		http.Redirect(w, r, ctrl.AppBaseURL.String(), http.StatusMovedPermanently)
+		return
+	}
+
+	var data *PreviewData
+	if name != MayorName {
+		l := ctrl.GetRecallLegislator(name)
+		if l == nil {
+			http.Redirect(w, r, ctrl.AppBaseURL.String(), http.StatusMovedPermanently)
+			return
+		}
+
+		data = &PreviewData{
+			BaseURL:          ctrl.AppBaseURL.String(),
+			ParticipateURL:   l.ParticipateURL,
+			RedirectURL:      l.ParticipateURL.JoinPath("thank-you").String(),
+			PoliticianName:   name,
+			ConstituencyName: l.ConstituencyName,
+			RecallStage:      stage,
+			Name:             "邱吉爾",
+			IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
+			BirthYear:        "888",
+			BirthMonth:       "11",
+			BirthDate:        "30",
+			MobileNumber:     "0987654321",
+			Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
+		}
+	} else {
+		participateURL := ctrl.AppBaseURL.JoinPath("mayor")
+		data = &PreviewData{
+			BaseURL:          ctrl.AppBaseURL.String(),
+			ParticipateURL:   participateURL,
+			RedirectURL:      participateURL.JoinPath("thank-you").String(),
+			PoliticianName:   name,
+			ConstituencyName: MayorCity,
+			RecallStage:      stage,
+			Name:             "邱吉爾",
+			IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
+			BirthYear:        "888",
+			BirthMonth:       "11",
+			BirthDate:        "30",
+			MobileNumber:     "0987654321",
+			Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
+		}
+	}
+
+	if stage == 2 {
+		tmpl := fmt.Sprintf("stage-2-%s.html", name)
+		ctrl.renderTemplate(w, tmpl, data)
+		return
+	}
+
+	ctrl.renderTemplate(w, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
 }
 
-type RequestQueryPreview struct {
-	Name         string `form:"name" binding:"required"`
-	IdNumber     string `form:"id-number" binding:"required"`
-	BirthYear    int    `form:"birth-year" binding:"required"`
-	BirthMonth   int    `form:"birth-month" binding:"required"`
-	BirthDay     int    `form:"birth-day" binding:"required"`
-	Address      string `form:"address" binding:"required"`
-	MobileNumber string `form:"mobile-number" binidng:"required"`
+type PreviewData struct {
+	BaseURL          string
+	ParticipateURL   *url.URL
+	RedirectURL      string
+	PoliticianName   string
+	ConstituencyName string
+	RecallStage      uint64
+	ImagePrefix      string
+	Name             string
+	IdNumber         IdNumber
+	BirthYear        string
+	BirthMonth       string
+	BirthDate        string
+	MobileNumber     string
+	Address          string
 }
 
-func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegislator, l *RecallLegislator) (*PreviewData, error) {
+type IdNumber struct {
+	D0 string
+	D1 string
+	D2 string
+	D3 string
+	D4 string
+	D5 string
+	D6 string
+	D7 string
+	D8 string
+	D9 string
+}
+
+func (r RequestForm) ToPreviewData(cfg *Config, up *RequestUriStageLegislator, l *RecallLegislator) (*PreviewData, error) {
 	if !isValidIdNumber(r.IdNumber) {
 		return nil, fmt.Errorf("身份證輸入錯誤")
 	}
 
 	if l.RecallStage == 1 {
-		if r.MobileNumber != "" {
-			if !isValidMobileNumber(r.MobileNumber) {
-				return nil, fmt.Errorf("手機號碼輸入錯誤")
-			}
+		if r.MobileNumber != "" && !isValidMobileNumber(r.MobileNumber) {
+			return nil, fmt.Errorf("手機號碼輸入錯誤")
 		}
 	}
 
@@ -227,10 +557,10 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 		BirthMonth:       r.BirthMonth,
 		BirthDate:        r.BirthDay,
 		MobileNumber:     r.MobileNumber,
-		Address:          sanitizeAddress(r.Address),
+		Address:          r.Address,
 	}
 
-	for i := 0; i < len(r.IdNumber); i += 1 {
+	for i := 0; i < len(r.IdNumber); i++ {
 		switch i {
 		case 0:
 			data.IdNumber.D0 = string(r.IdNumber[i])
@@ -258,290 +588,7 @@ func (r RequestQueryPreview) ToPreviewData(cfg *Config, up *RequestUriStageLegis
 	return data, nil
 }
 
-type PreviewData struct {
-	BaseURL          string
-	ParticipateURL   *url.URL
-	RedirectURL      string
-	PoliticianName   string
-	ConstituencyName string
-	RecallStage      uint64
-	ImagePrefix      string
-	Name             string
-	IdNumber         IdNumber
-	BirthYear        int
-	BirthMonth       int
-	BirthDate        int
-	MobileNumber     string
-	Address          string
-}
-
-type IdNumber struct {
-	D0 string
-	D1 string
-	D2 string
-	D3 string
-	D4 string
-	D5 string
-	D6 string
-	D7 string
-	D8 string
-	D9 string
-}
-
-func (ctrl Controller) ThankYou() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		up := RequestUriStageLegislator{}
-		if err := c.ShouldBindUri(&up); err != nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-
-		l := ctrl.GetRecallLegislator(up.Name)
-		if l == nil {
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-
-		if l.RecallStatus != RecallStatusOngoing {
-			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
-			return
-		}
-
-		c.HTML(http.StatusOK, "thank-you.html", gin.H{
-			"BaseURL":        ctrl.AppBaseURL.String(),
-			"ParticipateURL": l.ParticipateURL,
-			"CalendarURL":    l.CalendarURL,
-			"CsoURL":         l.CsoURL,
-		})
-	}
-}
-
-func (ctrl Controller) PreviewOriginalLocalForm() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		up := RequestUriStageLegislator{}
-		if err := c.ShouldBindUri(&up); err != nil {
-			c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
-			return
-		}
-
-		var data *PreviewData
-		if up.Name != MayorName {
-			l := ctrl.GetRecallLegislator(up.Name)
-			if l == nil {
-				c.Redirect(http.StatusMovedPermanently, ctrl.AppBaseURL.String())
-				return
-			}
-
-			data = &PreviewData{
-				BaseURL:          ctrl.AppBaseURL.String(),
-				ParticipateURL:   l.ParticipateURL,
-				RedirectURL:      l.ParticipateURL.JoinPath("thank-you").String(),
-				PoliticianName:   up.Name,
-				ConstituencyName: l.ConstituencyName,
-				RecallStage:      up.Stage,
-				Name:             "邱吉爾",
-				IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-				BirthYear:        888,
-				BirthMonth:       11,
-				BirthDate:        30,
-				MobileNumber:     "0987654321",
-				Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
-			}
-		} else {
-			participateURL := ctrl.AppBaseURL.JoinPath("mayor")
-			data = &PreviewData{
-				BaseURL:          ctrl.AppBaseURL.String(),
-				ParticipateURL:   participateURL,
-				RedirectURL:      participateURL.JoinPath("thank-you").String(),
-				PoliticianName:   up.Name,
-				ConstituencyName: MayorCity,
-				RecallStage:      up.Stage,
-				Name:             "邱吉爾",
-				IdNumber:         IdNumber{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-				BirthYear:        888,
-				BirthMonth:       11,
-				BirthDate:        30,
-				MobileNumber:     "0987654321",
-				Address:          "某某市某某區某某里某某路三段 123 號七樓一段超長的地址一段超長的地址一段超長的地址一段超長的地址一段超長的地址",
-			}
-		}
-
-		switch up.Stage {
-		case 2:
-			tmpfile := fmt.Sprintf("stage-2-%s.html", up.Name)
-			c.HTML(http.StatusOK, tmpfile, data)
-			return
-		default:
-			c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-	}
-}
-
-func (ctrl Controller) VerifyTurnstile() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		token := c.PostForm("cf-turnstile-response")
-		if token == "" {
-			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			c.Abort()
-			return
-		}
-
-		if success, err := ctrl.VerifyTurnstileToken(token); err != nil || !success {
-			c.HTML(http.StatusForbidden, "4xx.html", GetViewHttpError(http.StatusForbidden, "驗證失敗，請回到首頁重新輸入", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			c.Abort()
-			return
-		}
-
-		c.Next()
-	}
-}
-
-func (ctrl Controller) RobotsTxt() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		tmpl, err := template.ParseFiles("templates/robots.txt")
-		if err != nil {
-			c.String(http.StatusInternalServerError, "Template Error")
-			return
-		}
-
-		data := gin.H{
-			"BaseURL":       ctrl.AppBaseURL.String(),
-			"DisallowPaths": ctrl.DisallowPaths,
-		}
-
-		c.Header("Content-Type", "text/plain; charset=utf-9")
-		if err := tmpl.Execute(c.Writer, data); err != nil {
-			c.String(http.StatusInternalServerError, "Render Error")
-		}
-	}
-}
-
-func (ctrl Controller) Sitemap() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		date := "2025-03-02"
-		urls := []*SitemapURL{
-			&SitemapURL{ctrl.AppBaseURL.String(), date, "daily", "1.0"},
-			&SitemapURL{ctrl.AppBaseURL.JoinPath("authorization-letter").String(), "2025-02-26", "yearly", "1.0"},
-			&SitemapURL{ctrl.AppBaseURL.JoinPath("mayor").String(), "2025-03-12", "weekly", "0.9"},
-			&SitemapURL{ctrl.AppBaseURL.JoinPath("mayor", "thank-you").String(), "2025-03-12", "weekly", "0.9"},
-		}
-
-		for _, l := range ctrl.RecallLegislators {
-			legislatorURL := l.ParticipateURL
-			if l.RecallStatus == "ONGOING" {
-				urls = append(urls, &SitemapURL{legislatorURL.String(), date, "weekly", "0.9"})
-				urls = append(urls, &SitemapURL{legislatorURL.JoinPath("thank-you").String(), date, "weekly", "0.8"})
-			}
-		}
-
-		sitemap := SitemapURLSet{
-			Xmlns:       "http://www.sitemaps.org/schemas/sitemap/0.9",
-			SitemapURLs: urls,
-		}
-
-		c.Header("Content-Type", "application/xml; charset=utf-8")
-		c.XML(http.StatusOK, sitemap)
-	}
-}
-
-type SitemapURL struct {
-	Loc        string `xml:"loc"`
-	LastMod    string `xml:"lastmod"`
-	ChangeFreq string `xml:"changefreq"`
-	Priority   string `xml:"priority"`
-}
-
-type SitemapURLSet struct {
-	XMLName     xml.Name      `xml:"urlset"`
-	Xmlns       string        `xml:"xmlns,attr"`
-	SitemapURLs []*SitemapURL `xml:"url"`
-}
-
-func (ctrl Controller) GetAsset() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		up := RequestURIAsset{}
-		if err := c.ShouldBindUri(&up); err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "File not found"})
-			return
-		}
-
-		filePath := fmt.Sprintf("./assets/%s/%s", up.Type, up.File)
-		if _, err := os.Stat(filePath); os.IsNotExist(err) {
-			c.JSON(http.StatusNotFound, gin.H{"error": "File not found"})
-			return
-		}
-
-		if ctrl.AppEnv == "production" {
-			//if up.Type == "images" && strings.HasPrefix(up.File, "stage-2-") {
-			//	c.Header("Cache-Control", "no-cache")
-			//} else {
-			//	c.Header("Cache-Control", "public, max-age=3600")
-			//}
-			c.Header("Cache-Control", "public, max-age=3600")
-		} else {
-			c.Header("Cache-Control", "no-cache")
-		}
-
-		c.File(filePath)
-	}
-}
-
-type RequestURIAsset struct {
-	Type string `uri:"type" binding:"required"`
-	File string `uri:"file" binding:"required"`
-}
-
-func (ctrl Controller) NotFound() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusNotFound, "4xx.html", GetViewHttpError(http.StatusNotFound, "您請求的頁面不存在", ctrl.AppBaseURL, ctrl.AppBaseURL))
-	}
-}
-
-func (ctrl Controller) Ping() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "v0.0.1"})
-	}
-}
-
-// For mayor
-func (ctrl Controller) MParticipate() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		previewURL := ctrl.AppBaseURL.JoinPath("mayor", "preview")
-		address := MayorCity
-
-		c.HTML(http.StatusOK, "mayor-fill-form.html", gin.H{
-			"BaseURL":          ctrl.AppBaseURL.String(),
-			"PreviewURL":       previewURL.String(),
-			"Address":          address,
-			"TurnstileSiteKey": ctrl.TurnstileSiteKey,
-		})
-	}
-}
-
-func (ctrl Controller) MPreviewLocalForm() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		qp := RequestQueryPreview{}
-		if err := c.ShouldBindWith(&qp, binding.Form); err != nil {
-			c.HTML(http.StatusBadRequest, "4xx.html", GetViewHttpError(http.StatusBadRequest, "您的請求有誤，請回到首頁重新輸入。", ctrl.AppBaseURL, ctrl.AppBaseURL))
-			return
-		}
-
-		data, err := qp.ToMayorPreviewData(ctrl.Config)
-		if err != nil {
-			c.HTML(http.StatusBadRequest, "4xx.html", ViewHttp4xxError{
-				HttpStatusCode: http.StatusBadRequest,
-				ErrorMessage:   err.Error(),
-				ReturnURL:      ctrl.AppBaseURL.String(),
-			})
-			return
-		}
-
-		c.HTML(http.StatusOK, "stage-2-"+MayorName+".html", data)
-	}
-}
-
-func (r RequestQueryPreview) ToMayorPreviewData(cfg *Config) (*PreviewData, error) {
+func (r RequestForm) ToMayorPreviewData(cfg *Config) (*PreviewData, error) {
 	if !isValidIdNumber(r.IdNumber) {
 		return nil, fmt.Errorf("身份證輸入錯誤")
 	}
@@ -561,10 +608,11 @@ func (r RequestQueryPreview) ToMayorPreviewData(cfg *Config) (*PreviewData, erro
 		BirthYear:        r.BirthYear,
 		BirthMonth:       r.BirthMonth,
 		BirthDate:        r.BirthDay,
-		Address:          sanitizeAddress(r.Address),
+		MobileNumber:     r.MobileNumber,
+		Address:          r.Address,
 	}
 
-	for i := 0; i < len(r.IdNumber); i += 1 {
+	for i := 0; i < len(r.IdNumber); i++ {
 		switch i {
 		case 0:
 			data.IdNumber.D0 = string(r.IdNumber[i])
@@ -590,14 +638,4 @@ func (r RequestQueryPreview) ToMayorPreviewData(cfg *Config) (*PreviewData, erro
 	}
 
 	return data, nil
-}
-
-func (ctrl Controller) MThankYou() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "mayor-thank-you.html", gin.H{
-			"BaseURL":        ctrl.AppBaseURL,
-			"ParticipateURL": ctrl.AppBaseURL.JoinPath("mayor"),
-			"CsoURL":         "https://www.facebook.com/hc.thebigrecall",
-		})
-	}
 }
