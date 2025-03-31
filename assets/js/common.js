@@ -168,7 +168,7 @@ function generateQRCode(data, size) {
 		correctLevel: QRCode.CorrectLevel.H
 	});
 	const logo = qrcodeContainer.querySelector(".qr-logo");
-	logo.innerHTML = "OurTaiwan<br>製作連署書";
+	logo.innerHTML = "OurTaiwan<br>罷免連署";
 	logo.style.fontSize = `${size * 0.075}px`;
 	logo.style.padding = `${size * 0.01}px ${size * 0.025}px`;
 }
@@ -190,7 +190,7 @@ async function downloadQRCode(data) {
     });
 
     const dlLogo = dlQRCodeContainer.querySelector(".qr-logo");
-    dlLogo.innerHTML = "OurTaiwan<br>製作連署書";
+    dlLogo.innerHTML = "OurTaiwan<br>罷免連署";
     dlLogo.style.fontSize = `300px`;
     dlLogo.style.padding = `24px 24px`;
     dlLogo.style.borderRadius = `64px`;
