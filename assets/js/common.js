@@ -54,25 +54,21 @@ async function downloadPDF(pdf, filename) {
 }
 
 async function previewPDF(pdf) {
+	const newWindow = window.open(pdf.output('bloburl'), '_blank');
+	if (!newWindow) {
+		console.error('Failed to open new window. Please allow popups for this site.');
+		return;
+	}
+
+	newWindow.focus();
+
 	await new Promise((resolve) => {
-		const url = window.URL.createObjectURL(pdf.output('blob'));
-
-		const newWindow = window.open('', '_blank');
-		if (!newWindow) {
-			throw new Error('Failed to open new window. Please allow popups for this site.');
-		}
-
-		newWindow.document.write(`<iframe src="${url}" width="100%" height="100%" style="border: none;"></iframe>`);
-
-		const checkWindowClosed = setInterval(() => {
-			if (newWindow.closed) {
-				window.URL.revokeObjectURL(url);
-				clearInterval(checkWindowClosed);
-			}
-		}, 1000);
-
-		setTimeout(resolve, 500);
-	});
+        const onFocus = () => {
+            window.removeEventListener('focus', onFocus);
+            setTimeout(resolve, 500);
+        };
+        window.addEventListener('focus', onFocus);
+    });
 }
 
 async function shareLink(text, url) {
