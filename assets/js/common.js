@@ -33,7 +33,7 @@ async function preparePDF(filename, redirectURL, nextAction) {
 		if (nextAction === 'download') {
 			await downloadPDF(pdf, filename);
 		} else if (nextAction === 'preview') {
-			await previewPDF(pdf, filename);
+			await previewPDF(pdf);
 		} else {
 			console.error('Invalid next action:', nextAction);
 		}
@@ -53,7 +53,7 @@ async function downloadPDF(pdf, filename) {
 	});
 }
 
-async function previewPDF(pdf, filename) {
+async function previewPDF(pdf) {
 	await new Promise((resolve) => {
 		const url = window.URL.createObjectURL(pdf.output('blob'));
 
@@ -62,14 +62,7 @@ async function previewPDF(pdf, filename) {
 			throw new Error('Failed to open new window. Please allow popups for this site.');
 		}
 
-		newWindow.document.write(`
-			<head>
-				<title>${filename}</title>
-			</head>
-			<body style="margin: 0;">
-				<iframe src="${url}" width="100%" height="100%" style="border: none;"></iframe>
-			</body>
-		`);
+		newWindow.document.write(`<iframe src="${url}" width="100%" height="100%" style="border: none;"></iframe>`);
 
 		const checkWindowClosed = setInterval(() => {
 			if (newWindow.closed) {
