@@ -647,6 +647,26 @@ button.btn-black:hover {
 	gap: 4px;
 }
 
+.candidate .urgency {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: start;
+}
+
+.candidate .urgency .days-left {
+	display: flex;
+	align-items: center;
+	font-weight: 700;
+	font-size: 14px;
+}
+
+.candidate .urgency .safety-cutoff-date {
+	font-weight: 400;
+	font-size: 14px;
+	color: #888888;
+}
+
 .candidate-name {
 	display: flex;
 	align-items: center;

@@ -9,12 +9,18 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"time"
 )
 
 const (
 	RecallStatusOngoing = "ONGOING"
 	RecallStatusSuccess = "SUCCESS"
 	RecallStatusFailed  = "FAILED"
+)
+
+const (
+	AppEnvProduction = "production"
+	AppEnvDev        = "dev"
 )
 
 type Config struct {
@@ -192,6 +198,14 @@ func ReadConfigRecallLegislators(baseURL *url.URL) (RecallLegislators, map[uint6
 	for _, r := range rows {
 		r.ParticipateURL = baseURL.JoinPath("legislators", r.PoliticianName)
 		r.ParticipateURLString = r.ParticipateURL.String()
+		if r.SafetyCutoffDate != nil && *r.SafetyCutoffDate != "" {
+			t, err := time.Parse("2006-01-02", *r.SafetyCutoffDate)
+			if err != nil {
+				return nil, nil, err
+			}
+			r.SafetyCutoffDateStr = fmt.Sprintf("%d 月 %d 日", t.Month(), t.Day())
+		}
+
 		if _, exists := rlmap[r.ConstituencyId]; !exists {
 			rlmap[r.ConstituencyId] = RecallLegislators{}
 		}
@@ -214,6 +228,12 @@ func (rs RecallLegislators) HasLegislatorInMunicipality(municipalityId uint64) b
 	return false
 }
 
+func (rs *RecallLegislators) CalcDaysLeft(now time.Time) {
+	for _, r := range *rs {
+		r.CalcDaysLeft(now)
+	}
+}
+
 type RecallLegislator struct {
 	ConstituencyId        uint64   `json:"constituencyId"`
 	MunicipalityId        uint64   `json:"municipalityId"`
@@ -231,9 +251,27 @@ type RecallLegislator struct {
 	VotingEventURL        *string  `json:"votingEventURL"`
 	ByElectionDate        *string  `json:"byElectionDate"`
 	ByElectionEventURL    *string  `json:"byElectionEventURL"`
+	SafetyCutoffDate      *string  `json:"safetyCutoffDate"`
 	ConstituencyName      string   `json:"constituencyName"`
 	ParticipateURL        *url.URL `json:"-"`
 	ParticipateURLString  string   `json:"participateURL"`
+	DaysLeft              int      `json:"daysLeft"`
+	SafetyCutoffDateStr   string   `json:"-"`
+}
+
+func (r *RecallLegislator) CalcDaysLeft(now time.Time) {
+	if r.SafetyCutoffDate == nil || *r.SafetyCutoffDate == "" {
+		r.DaysLeft = 0
+		return
+	}
+
+	cutoff, err := time.Parse("2006-01-02", *r.SafetyCutoffDate)
+	if err != nil {
+		r.DaysLeft = 0
+		return
+	}
+
+	r.DaysLeft = int(cutoff.Sub(now).Hours() / 24)
 }
 
 func (r RecallLegislator) IsPetitioning() bool {

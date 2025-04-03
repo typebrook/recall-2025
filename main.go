@@ -19,6 +19,21 @@ func main() {
 	}
 
 	ctrl := NewController(cfg, tmpl)
+	if err := ctrl.CalcDaysLeft(); err != nil {
+		panic("calc days left error: " + err.Error())
+	}
+	go func() {
+		ticker := time.NewTicker(1 * time.Hour)
+		defer ticker.Stop()
+
+		for {
+			if err := ctrl.CalcDaysLeft(); err != nil {
+				log.Println("CalcDaysLeft error:", err)
+			}
+			<-ticker.C
+		}
+	}()
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/health/v1/ping", withRecovery(ctrl.Ping))

@@ -65,7 +65,7 @@
 				<p>第一階段連署 <span>⮕</span> 第二階段連署 <span>⮕</span> 第三階段投票。第一階段簽過，也要簽二階段喔！</p>
 			</div>
 			<div class="swiper-slide">
-				<h4><i class="icon-notify"></i>提醒：<span>訂閱 Google 行事曆</span>追蹤罷免投票時程</h4>
+				<h4><i class="icon-notify"></i>提醒：加入<span>罷免行事曆</span>追蹤投票時程</h4>
 				<p>填寫連署書外，也請加入罷免投票行事曆，以免錯過後續最重要的投票階段！</p>
 			</div>
 		</div>
@@ -93,6 +93,19 @@
 						<div class="candidate-name">{{$rl.PoliticianName}}<div class="tag-stage stage-{{.RecallStage}}">{{.RecallStage}} 階</div>
 						</div>
 						<div class="candidate-zone">{{$rl.ConstituencyName}}</div>
+						<div class="urgency">
+							<div class="days-left">
+								<i class="icon-urgent"></i>
+								{{- if lt $rl.DaysLeft 14}}
+									<i class="icon-urgent"></i>
+								{{- end}}
+								{{- if lt $rl.DaysLeft 0}}
+									<i class="icon-urgent"></i>
+								{{- end}}
+								倒數 {{$rl.DaysLeft}} 天
+							</div>
+							<div class="safety-cutoff-date">{{$rl.SafetyCutoffDateStr}}前繳交以利罷團作業</div>
+						</div>
 					</div>
 					<div class="candidate-action">
 						{{- if eq $rl.RecallStatus "ABORTED"}}

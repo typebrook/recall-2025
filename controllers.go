@@ -11,6 +11,7 @@ import (
 	"path"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -28,6 +29,17 @@ func NewController(cfg *Config, tmpl *template.Template) *Controller {
 		Config:    cfg,
 		Templates: tmpl,
 	}
+}
+
+func (ctrl *Controller) CalcDaysLeft() error {
+	loc, err := time.LoadLocation("Asia/Taipei")
+	if err != nil {
+		return err
+	}
+
+	now := time.Now().In(loc)
+	ctrl.Config.CalcDaysLeft(now)
+	return nil
 }
 
 func (ctrl *Controller) Home(w http.ResponseWriter, r *http.Request) {
@@ -286,8 +298,16 @@ func writeJSON(w http.ResponseWriter, status int, data interface{}) {
 }
 
 func (ctrl *Controller) renderTemplate(w http.ResponseWriter, name string, data interface{}) {
-	if err := ctrl.Templates.ExecuteTemplate(w, name, data); err != nil {
-		http.Error(w, "Template rendering error", http.StatusInternalServerError)
+	if ctrl.AppEnv == AppEnvProduction {
+		if err := ctrl.Templates.ExecuteTemplate(w, name, data); err != nil {
+			http.Error(w, "Template rendering error", http.StatusInternalServerError)
+		}
+	} else {
+		if t, err := template.ParseFiles("templates/tmpl.html", "templates/"+name); err != nil {
+			http.Error(w, fmt.Errorf("Template parsing error: %v", err).Error(), http.StatusInternalServerError)
+		} else if err := t.ExecuteTemplate(w, name, data); err != nil {
+			http.Error(w, fmt.Errorf("Template rendering error: %v", err).Error(), http.StatusInternalServerError)
+		}
 	}
 }
 
@@ -361,7 +381,7 @@ func (ctrl *Controller) GetAsset(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if ctrl.AppEnv == "production" {
+	if ctrl.AppEnv == AppEnvProduction {
 		w.Header().Set("Cache-Control", "public, max-age=3600")
 	} else {
 		w.Header().Set("Cache-Control", "no-cache")
