@@ -33,7 +33,7 @@ async function preparePDF(filename, redirectURL, nextAction) {
 		if (nextAction === 'download') {
 			await downloadPDF(pdf, filename);
 		} else if (nextAction === 'preview') {
-			await previewPDF(pdf);
+			await previewPDF(pdf, filename);
 		} else {
 			console.error('Invalid next action:', nextAction);
 		}
@@ -53,7 +53,11 @@ async function downloadPDF(pdf, filename) {
 	});
 }
 
-async function previewPDF(pdf) {
+async function previewPDF(pdf, filename) {
+	pdf.setProperties({
+        title: filename,
+    });
+
 	const newWindow = window.open(pdf.output('bloburl'), '_blank');
 	if (!newWindow) {
 		console.error('Failed to open new window. Please allow popups for this site.');
