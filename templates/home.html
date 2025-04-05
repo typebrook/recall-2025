@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.10" defer></script>
+	<script src="{{.BaseURL}}/assets/js/home.js?v0.0.11" defer></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 	{{ template "common-head" . }}
 	<title>守護我們珍愛的臺灣，我們需要你！</title>
@@ -93,19 +93,27 @@
 						<div class="candidate-name">{{$rl.PoliticianName}}<div class="tag-stage stage-{{.RecallStage}}">{{.RecallStage}} 階</div>
 						</div>
 						<div class="candidate-zone">{{$rl.ConstituencyName}}</div>
+						{{- if eq $rl.RecallStatus "ONGOING" }}
 						<div class="urgency">
 							<div class="days-left">
 								<i class="icon-urgent"></i>
-								{{- if lt $rl.DaysLeft 14}}
+								{{- if lt $rl.DaysLeft 15}}
 									<i class="icon-urgent"></i>
-								{{- end}}
+								{{- end }}
 								{{- if lt $rl.DaysLeft 0}}
 									<i class="icon-urgent"></i>
 								{{- end}}
-								倒數 {{$rl.DaysLeft}} 天
+								{{- if gt $rl.DaysLeft 0}}倒數 {{$rl.DaysLeft}} 天{{- else }}請儘速繳交，罷團已開始造冊{{- end }}
 							</div>
-							<div class="safety-cutoff-date">{{$rl.SafetyCutoffDateStr}}前繳交以利罷團作業</div>
+							<div class="safety-cutoff-date">
+							{{- if gt $rl.DaysLeft 0}}
+								{{$rl.SafetyCutoffDateStr}}前繳交以利罷團作業
+							{{- else }}
+								罷團已開始造冊, 請盡速補交
+							{{- end }}
+							</div>
 						</div>
+						{{- end }}
 					</div>
 					<div class="candidate-action">
 						{{- if eq $rl.RecallStatus "ABORTED"}}

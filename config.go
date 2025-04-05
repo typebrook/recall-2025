@@ -256,7 +256,7 @@ type RecallLegislator struct {
 	ParticipateURL        *url.URL `json:"-"`
 	ParticipateURLString  string   `json:"participateURL"`
 	DaysLeft              int      `json:"daysLeft"`
-	SafetyCutoffDateStr   string   `json:"-"`
+	SafetyCutoffDateStr   string   `json:"safetyCutoffDateStr"`
 }
 
 func (r *RecallLegislator) CalcDaysLeft(now time.Time) {

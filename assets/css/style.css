@@ -146,6 +146,17 @@ ul.point li {
 	align-items: start;
 }
 
+.legislator-urgency {
+	background-color: #FFFFFF26;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #FFFFFF;
+	width: 90%;
+	padding: 12px 24px;
+	border-radius: 4px;
+}
+
 /* *************************************
 
 	Button
@@ -556,7 +567,7 @@ button.btn-black:hover {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 32px 0 32px 0;
+	padding: 24px 0;
 	gap: 24px;
 }
 
@@ -654,7 +665,7 @@ button.btn-black:hover {
 	align-items: start;
 }
 
-.candidate .urgency .days-left {
+.days-left {
 	display: flex;
 	align-items: center;
 	font-weight: 700;
@@ -1224,6 +1235,13 @@ button.btn-black:hover {
 	flex-direction: column;
 	text-align: center;
 	gap: 8px;
+}
+
+.candidate-action .urgency {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 8px;
 }
 
 .filtered-candidate-container .candidate-action button {

@@ -183,6 +183,8 @@ function showFilteredCandidateContainer(legislators, address) {
 
 					recallStages = `<div class="recall-stage-flow">${recallStages}</div>`;
 
+					
+
 					if (legislator.recallStage === 1 || legislator.recallStage === 2) {
 						if (legislator.formDeployed) {
 							candidateAction = `<a href="${legislator.participateURL}?address=${address}"><button class="btn-primary lg">連署罷免</button></a>`;
@@ -203,6 +205,16 @@ function showFilteredCandidateContainer(legislators, address) {
 				<div class="recall-stage-container">
 					${recallStages}
 					<div class="candidate-action">
+						<div class="urgency">
+							<div class="days-left">
+								<i class="icon-urgent"></i>
+								${legislator.daysLeft < 15 ? '<i class="icon-urgent"></i>' : ''} 
+								${legislator.daysLeft < 0 ? '<i class="icon-urgent"></i>' : ''} 
+								${legislator.daysLeft > 0
+									? `${legislator.safetyCutoffDateStr} 截止，剩餘 ${legislator.daysLeft} 天`
+									: `請儘速繳交，罷團已開始造冊`}
+							</div>
+						</div>
 						${candidateAction}
 					</div>
 				</div>

@@ -21,6 +21,22 @@
 				<span class="icon-step-arrow"></span>
 				<h4 class="recall-stage {{if eq .Legislator.RecallStage 3}}active{{end}}"><span>第 3 階段</span>罷免投票</h4>
 			</div>
+			<div class="legislator-urgency">
+				<div class="days-left">
+					<i class="icon-urgent"></i>
+					{{- if lt .Legislator.DaysLeft 15}}
+					<i class="icon-urgent"></i>
+					{{- end }}
+					{{- if lt .Legislator.DaysLeft 0}}
+					<i class="icon-urgent"></i>
+					{{- end}}
+					{{- if gt .Legislator.DaysLeft 0}}
+						{{.Legislator.SafetyCutoffDateStr}}截止，倒數 {{.Legislator.DaysLeft}} 天
+					{{- else}}
+						請儘速繳交，罷團已開始造冊
+					{{- end}}
+				</div>
+			</div>
 		</div>
   </div>
 	<div class="section fill-form">
