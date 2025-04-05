@@ -770,6 +770,12 @@ button.btn-black:hover {
 	transition: all 0.3s ease;
 }
 
+.faq .faq-row ul {
+	list-style: disc;
+	line-height: 4px;
+	padding-left: 32px;
+}
+
 .faq .faq-header {
 	display: flex;
 	justify-content: space-between;
@@ -801,6 +807,8 @@ button.btn-black:hover {
 	background-color: #f4f5f5;
 	margin: 24px 16px 24px 16px;
 	font-size: 14px;
+	font-weight: 400;
+	color: #888888;
 }
 
 .answer li {
