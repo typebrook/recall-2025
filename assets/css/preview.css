@@ -85,25 +85,30 @@ body {
 
 .inputField.xl {
 	font-size: 32px;
-	letter-spacing: 0.2em
+	letter-spacing: 0.2em;
+	text-decoration: none;
 }
 
 .inputField.lg {
 	font-size: 23px;
-	letter-spacing: 0.1em
+	letter-spacing: 0.1em;
+	text-decoration: none;
 }
 
 .inputField.md {
 	font-size: 19px;
-	letter-spacing: 0.1em
+	letter-spacing: 0.1em;
+	text-decoration: none;
 }
 
 .inputField.sm {
 	font-size: 15px;
+	text-decoration: none;
 }
 
-.inputField.xsm {
+.inputField.addr-xsm {
 	font-size: 14px;
+	text-decoration: none;
 }
 
 .whereToSign {
